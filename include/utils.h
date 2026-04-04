@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <raylib.h>
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
