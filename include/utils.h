@@ -1,4 +1,5 @@
 #pragma once
+
 #include <glm/glm.hpp>
 
 #define WINDOW_WIDTH 1600
