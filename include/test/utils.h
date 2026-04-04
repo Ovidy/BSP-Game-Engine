@@ -1,9 +1,10 @@
 #pragma once
 
-#include <vector>
 #include <glm/glm.hpp>
-#include <raylib.h>
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
 #define WINDOW_RESOLUTION glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT)
+#define MAP_OFFSET 50
+#define MAP_WIDTH WINDOW_WIDTH - MAP_OFFSET
+#define MAP_HEIGHT WINDOW_HEIGHT - MAP_OFFSET

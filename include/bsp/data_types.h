@@ -1,6 +1,6 @@
 #pragma once
 
-#include <utils.h>
+#include <glm/glm.hpp>
 
 namespace bsp {
     struct Segment {

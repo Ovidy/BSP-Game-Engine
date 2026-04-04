@@ -1,6 +1,6 @@
 #pragma once
 
-#include <data_types.h>
+#include <bsp/data_types.h>
 
 namespace bsp {
     struct LevelData {

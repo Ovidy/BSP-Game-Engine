@@ -7,8 +7,10 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 */
 
-#include <utils.h>
 #include <bsp/renderer.h>
+#include <bsp/map_renderer.h>
+#include <test/utils.h>
+#include <test/level.h>
 
 #include "raylib.h"
 
@@ -24,9 +26,17 @@ int main ()
 	// Create the window and OpenGL context
 	InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, "BSP Game Engine");
 
-	// Create our BSP renderer
-	Renderer renderer;
+	// Set the target FPS to 60 so that our game loop runs at a consistent speed
+	SetTargetFPS(60);
+
 	glm::float32_t deltaTime = 0.0f;
+
+	// create our renderer and load the test level segments into it
+	Renderer renderer;
+	renderer.load_level(bsp::test_level_segments);
+
+	// create our map renderer
+	MapRenderer map_renderer;
 
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
@@ -45,6 +55,7 @@ int main ()
 		ClearBackground(BLACK);
 
 		renderer.render();
+		map_renderer.render();
 
 		// draw some text using the default font
 		// DrawText("Hello Raylib", 200,200,20,WHITE);
