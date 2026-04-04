@@ -8,10 +8,13 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 */
 
 #include <utils.h>
+#include <bsp/renderer.h>
 
 #include "raylib.h"
 
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
+
+using namespace bsp;
 
 int main ()
 {
@@ -19,7 +22,12 @@ int main ()
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 
 	// Create the window and OpenGL context
-	InitWindow(800, 600, "Hello Raylib");
+	InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, "BSP Game Engine");
+
+	// Create our BSP renderer
+	Renderer renderer;
+	glm::float32_t deltaTime = 0.0f;
+
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
@@ -36,8 +44,10 @@ int main ()
 		// Setup the back buffer for drawing (clear color and depth buffers)
 		ClearBackground(BLACK);
 
+		renderer.render();
+
 		// draw some text using the default font
-		DrawText("Hello Raylib", 200,200,20,WHITE);
+		// DrawText("Hello Raylib", 200,200,20,WHITE);
 
 		// draw our texture to the screen
 		DrawTexture(wabbit, 400, 200, WHITE);

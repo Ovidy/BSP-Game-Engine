@@ -2,13 +2,15 @@
 
 #include <utils.h>
 
-class BSPRenderer {
+namespace bsp {
+    class Renderer {
     public:
-        BSPRenderer();
-        ~BSPRenderer();
+        Renderer();
+        ~Renderer();
 
         void render();
     private:
         void render_2d();
         void render_3d();
+    };
 }

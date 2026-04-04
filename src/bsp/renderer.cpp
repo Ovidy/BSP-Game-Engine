@@ -1,14 +1,14 @@
-#include <bsp_renderer.h>
+#include <bsp/renderer.h>
 
-BSPRenderer::BSPRenderer() {
+bsp::Renderer::Renderer() {
     // constructor code here
 }
 
-BSPRenderer::~BSPRenderer() {
+bsp::Renderer::~Renderer() {
     // destructor code here
 }
 
-void BSPRenderer::render() {
+void bsp::Renderer::render() {
     // drawing
     BeginDrawing();
 
@@ -23,10 +23,10 @@ void BSPRenderer::render() {
     EndDrawing();
 }
 
-void BSPRenderer::render_2d() {
+void bsp::Renderer::render_2d() {
     // 2D rendering code here
 }
 
-void BSPRenderer::render_3d() {
+void bsp::Renderer::render_3d() {
     // 3D rendering code here
 }
