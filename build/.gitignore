@@ -1,0 +1,4 @@
+external/glm/
+external/raylib-master/
+bin/
+obj/

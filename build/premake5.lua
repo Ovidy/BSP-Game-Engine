@@ -67,9 +67,36 @@ function check_raylib()
     os.chdir("../")
 end
 
+function check_glm()
+    os.chdir("external")
+    -- GLM is usually in a folder named 'glm' or 'glm-master'
+    if(os.isdir("glm") == false) then
+        if(not os.isfile("glm.zip")) then
+            print("GLM not found, downloading from github...")
+            -- Using a direct link to the 1.0.1 release (or use master)
+            local result_str, response_code = http.download("https://github.com/g-truc/glm/archive/refs/heads/master.zip", "glm.zip", {
+                progress = download_progress,
+                headers = { "From: Premake", "Referer: Premake" }
+            })
+        end
+        print("Unzipping GLM...")
+        zip.extract("glm.zip", os.getcwd())
+        
+        -- Clean up: Rename folder to just 'glm' for easier pathing
+        -- Note: check the exact folder name in the zip, usually 'glm-master'
+        if (os.isdir("glm-master")) then
+            os.rename("glm-master", "glm")
+        end
+        
+        os.remove("glm.zip")
+    end
+    os.chdir("../")
+end
+
 function build_externals()
      print("calling externals")
      check_raylib()
+     check_glm()
 end
 
 function platform_defines()
@@ -206,6 +233,7 @@ if (downloadRaylib) then
         
         includedirs { "../src" }
         includedirs { "../include" }
+        includedirs { "external/glm" }
 
         links {"raylib"}
 
