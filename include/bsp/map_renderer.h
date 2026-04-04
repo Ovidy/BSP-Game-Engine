@@ -21,7 +21,9 @@ namespace bsp {
 
     private:
         void draw_segments();
+        void draw_normals();
 
+        std::vector<Segment> get_normalized_segments() const;
         std::vector<Segment> remap_segments(const std::vector<Segment>& segments) const;
         glm::vec2 remap_vec2(const glm::vec2& vec) const;
         glm::int32_t remap_x(const glm::int32_t& x, const glm::int32_t& out_min=MAP_OFFSET, const glm::int32_t& out_max=MAP_WIDTH) const;

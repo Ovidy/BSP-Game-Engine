@@ -18,6 +18,7 @@ namespace bsp {
 
     void MapRenderer::render() {
         draw_segments();
+        draw_normals();
     }
 
     void MapRenderer::draw_segments() {
@@ -29,6 +30,37 @@ namespace bsp {
             DrawCircleV(Vector2({segment.start.x, segment.start.y}), 5, RED);
             DrawCircleV(Vector2({segment.end.x, segment.end.y}), 5, RED);
         }
+    }
+
+    void MapRenderer::draw_normals() {
+        std::vector<Segment> normalized_segments = get_normalized_segments();
+
+        for (const auto& segment : normalized_segments) {
+            // Draw the normal vector as a line segment
+            DrawLineV(Vector2({segment.start.x, segment.start.y}), Vector2({segment.end.x, segment.end.y}), BLUE);
+            
+            // Draw an arrowhead at the end of the normal vector
+            glm::vec2 direction = segment.end - segment.start;
+            glm::vec2 perpendicular = glm::normalize(glm::vec2(-direction.y, direction.x)) * 10.0f; // Scale for arrowhead size
+            DrawLineV(Vector2({segment.end.x, segment.end.y}), Vector2({segment.end.x + perpendicular.x, segment.end.y + perpendicular.y}), BLUE);
+            DrawLineV(Vector2({segment.end.x, segment.end.y}), Vector2({segment.end.x - perpendicular.x, segment.end.y - perpendicular.y}), BLUE);
+        }
+    }
+
+    std::vector<Segment> MapRenderer::get_normalized_segments() const {
+        std::vector<Segment> normalized_segments;
+        normalized_segments.reserve(segments.size());
+
+        // Calculate the normal vector for each segment and 
+        // create a new segment representing the normal at the middle of the original segment
+        for (const auto& segment : segments) {
+            glm::vec2 direction = segment.end - segment.start;
+            glm::vec2 normal = glm::normalize(glm::vec2(-direction.y, direction.x)) * 20.0f; // Scale for normal length
+            glm::vec2 midpoint = (segment.start + segment.end) * 0.5f;
+            normalized_segments.push_back({midpoint, midpoint + normal});
+        }
+
+        return normalized_segments;
     }
 
     std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments) const {
