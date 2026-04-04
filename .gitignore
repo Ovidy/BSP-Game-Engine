@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/cmake,c++,premake-gmake,macos,windows,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=cmake,c++,premake-gmake,macos,windows,linux
 
+bin/
+
 ### C++ ###
 # Prerequisites
 *.d

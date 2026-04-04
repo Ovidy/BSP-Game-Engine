@@ -197,6 +197,7 @@ if (downloadRaylib) then
 
     project (workspaceName)
         kind "ConsoleApp"
+        language "C++"
         location "../"
         targetdir "../bin/%{cfg.buildcfg}"
 
@@ -258,6 +259,7 @@ if (downloadRaylib) then
             libdirs {"../bin/%{cfg.buildcfg}"}
 
         filter "system:linux"
+            links {"stdc++"}
             links {"pthread", "m", "dl", "rt"}
 
         filter {"system:linux", "options:wayland=off"}
@@ -267,8 +269,16 @@ if (downloadRaylib) then
             links {"wayland-client", "wayland-cursor", "wayland-egl", "xkbcommon"}
 
         filter "system:macosx"
+            buildoptions { "-stdlib=libc++" }
+            links {"c++"}
             links {"OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreAudio.framework", "CoreVideo.framework", "AudioToolbox.framework"}
+filter "system:linux"
+    -- Add this to your existing links
+    links {"pthread", "m", "dl", "rt"}
 
+filter "system:macosx"
+    buildoptions { "-stdlib=libc++" }
+    links {"c++"}
         filter{}
         
 
