@@ -1,12 +1,14 @@
 #pragma once
 
-#include <level_data.h>
-#include <utils.h>
+#include <limits>
+#include <raylib.h>
+#include <bsp/level_data.h>
+#include <bsp/utils.h>
 
 namespace bsp {
     class MapRenderer {
     public:
-        MapRenderer(LevelData& level_data);
+        MapRenderer() = default;
         MapRenderer(const MapRenderer&) = default;
         MapRenderer(MapRenderer&&) = default;
         MapRenderer& operator=(MapRenderer&&) = default;
@@ -15,15 +17,17 @@ namespace bsp {
 
         void render();
 
-        std::vector<glm::vec2> remap_vectors(const std::vector<glm::vec2>& vectors) const;
-
-        glm::vec2 remap_vec2(const glm::vec2& vec) const;
+        void load_level_data(const LevelData& level_data);
 
     private:
+        void draw_segments();
+
+        std::vector<Segment> remap_segments(const std::vector<Segment>& segments) const;
+        glm::vec2 remap_vec2(const glm::vec2& vec) const;
         glm::int32_t remap_x(const glm::int32_t& x, const glm::int32_t& out_min=MAP_OFFSET, const glm::int32_t& out_max=MAP_WIDTH) const;
         glm::int32_t remap_y(const glm::int32_t& y, const glm::int32_t& out_min=MAP_OFFSET, const glm::int32_t& out_max=MAP_HEIGHT) const;
 
-        LevelData& level_data;
+        std::vector<Segment> segments;
         glm::vec2 min;
         glm::vec2 max;
     };

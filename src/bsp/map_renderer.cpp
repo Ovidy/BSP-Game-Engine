@@ -1,8 +1,7 @@
 #include <bsp/map_renderer.h>
-#include <limits>
 
 namespace bsp {
-    MapRenderer::MapRenderer(LevelData& level_data) : level_data(level_data) {
+    void MapRenderer::load_level_data(const LevelData& level_data) {
         // Initialize min and max based on the level data
         min = glm::vec2(std::numeric_limits<float>::max());
         max = glm::vec2(std::numeric_limits<float>::lowest());
@@ -13,18 +12,34 @@ namespace bsp {
             max = glm::max(max, segment.start);
             max = glm::max(max, segment.end);
         }
+
+        segments = remap_segments(level_data.segments);
     }
 
     void MapRenderer::render() {
+        draw_segments();
     }
 
-    std::vector<glm::vec2> MapRenderer::remap_vectors(const std::vector<glm::vec2>& vectors) const {
-        std::vector<glm::vec2> remapped;
-        remapped.reserve(vectors.size());
-        for (const auto& vec : vectors) {
-            remapped.push_back(remap_vec2(vec));
+    void MapRenderer::draw_segments() {
+        for (const auto& segment : segments) {
+            // Draw the line segment
+            DrawLineV(Vector2({segment.start.x, segment.start.y}), Vector2({segment.end.x, segment.end.y}), ORANGE);
+            
+            // Draw circles at the start and end points of the segment
+            DrawCircleV(Vector2({segment.start.x, segment.start.y}), 5, RED);
+            DrawCircleV(Vector2({segment.end.x, segment.end.y}), 5, RED);
         }
-        return remapped;
+    }
+
+    std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments) const {
+        std::vector<Segment> remapped_segments;
+        remapped_segments.reserve(segments.size());
+
+        for (const auto& segment : segments) {
+            remapped_segments.push_back({remap_vec2(segment.start), remap_vec2(segment.end)});
+        }
+
+        return remapped_segments;
     }
 
     glm::vec2 MapRenderer::remap_vec2(const glm::vec2& vec) const {
