@@ -19,7 +19,7 @@ namespace bsp {
             traverse(node->get_back());
         } else {
             traverse(node->get_back());
-            segment_ids_to_render.push_back(node->get_segment_id());
+            // segment_ids_to_render.push_back(node->get_segment_id());  --- We dont need to render the back segment, since it's the same as the front one, just reversed. ---
             traverse(node->get_front());
         }
     }
