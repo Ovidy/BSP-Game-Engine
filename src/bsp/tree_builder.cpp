@@ -34,12 +34,6 @@ namespace bsp {
     std::pair<std::vector<Segment>, std::vector<Segment>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& input_segments) {
         const Segment& splitter = input_segments[0]; // For simplicity, we use the first segment as the partitioning plane
 
-        // this function runs endlessly if all segments are collinear with the splitter, we need to handle this case
-        if (input_segments.size() == 1) {
-            add_segment_to_node(node, splitter);
-            return {{}, {}};
-        }
-
         node->set_splitter(splitter);
 
         std::vector<Segment> front_segments;
@@ -57,33 +51,34 @@ namespace bsp {
             bool numinator_zero = std::abs(numinator) < EPSILON;
 
             if (denominator_zero && numinator_zero) {
-                // Segments are collinear, we can treat them as being on the same side
-                if (glm::dot(segment.get_start() - splitter.get_start(), dir_splitter) >= 0) {
-                    front_segments.push_back(segment);
-                } else {
-                    back_segments.push_back(segment);
-                }
-            } else if (denominator_zero) {
-                // Segments are parallel but not collinear, we can treat them as being on the same side
-                if (glm::dot(segment.get_start() - splitter.get_start(), dir_splitter) >= 0) {
-                    front_segments.push_back(segment);
-                } else {
-                    back_segments.push_back(segment);
-                }
-            } else {
-                // Segments intersect, we need to split the segment
-                float t = numinator / denominator;
-                glm::vec2 intersection_point = segment.get_start() + t * dir_segment;
+                front_segments.push_back(segment);
+            } else if (!denominator_zero) {
+                glm::float32_t t = numinator / denominator;
 
-                Segment front_part(segment.get_start(), intersection_point);
-                Segment back_part(intersection_point, segment.get_end());
+                if (t > 0.0f && t < 1.0f) {
+                    glm::vec2 intersection_point = segment.get_start() + t * dir_segment;
 
-                if (glm::dot(front_part.get_direction(), dir_splitter) >= 0) {
+                    Segment front_part(segment.get_start(), intersection_point);
+                    Segment back_part(intersection_point, segment.get_end());
+
+                    if (numinator > 0) {
+                        std::swap(front_part, back_part);
+                    }
+
                     front_segments.push_back(front_part);
                     back_segments.push_back(back_part);
                 } else {
-                    back_segments.push_back(front_part);
-                    front_segments.push_back(back_part);
+                    if (numinator < 0 || (numinator_zero && denominator > 0)) {
+                        front_segments.push_back(segment);
+                    } else {
+                        back_segments.push_back(segment);
+                    }
+                }
+            } else {
+                if (numinator < 0 || (numinator_zero && denominator > 0)) {
+                    front_segments.push_back(segment);
+                } else {
+                    back_segments.push_back(segment);
                 }
             }
         }
