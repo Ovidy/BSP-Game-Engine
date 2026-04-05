@@ -7,6 +7,7 @@ namespace bsp {
     class Segment {
     public:
         Segment(const glm::vec2& start, const glm::vec2& end);
+        ~Segment() = default;
 
         const glm::vec2& get_start() const;
         const glm::vec2& get_end() const;
@@ -20,6 +21,8 @@ namespace bsp {
     class BSPNode {
     public:
         BSPNode();
+        ~BSPNode() = default;
+        
         std::shared_ptr<BSPNode> front;
         std::shared_ptr<BSPNode> back;
         Segment partition;
