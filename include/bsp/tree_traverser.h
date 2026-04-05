@@ -15,6 +15,8 @@ namespace bsp {
 
         void update();
 
+        std::vector<glm::int32_t> get_segment_ids_to_render() const;
+
         const glm::vec2 get_camera_position() const;
 
     private:

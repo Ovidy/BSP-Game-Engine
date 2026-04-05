@@ -32,7 +32,7 @@ namespace bsp {
 
     void Renderer::render_2d() {
         // 2D rendering code here
-        map_renderer.render(tree_traverser.get_camera_position());
+        map_renderer.render(tree_traverser);
     }
 
     void Renderer::render_3d() {

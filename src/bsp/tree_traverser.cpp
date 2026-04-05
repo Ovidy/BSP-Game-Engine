@@ -34,4 +34,8 @@ namespace bsp {
     const glm::vec2 TreeTraverser::get_camera_position() const {
         return camera_position;
     }
+
+    std::vector<glm::int32_t> TreeTraverser::get_segment_ids_to_render() const {
+        return segment_ids_to_render;
+    }
 }

@@ -17,11 +17,11 @@ namespace bsp {
         tree_segments = remap_segments(tree_builder.get_root() ? tree_builder.get_segments() : std::vector<Segment>{});
     }
 
-    void MapRenderer::render(const glm::vec2& camera_position) {
+    void MapRenderer::render(const TreeTraverser& tree_traverser) {
         draw_segments();
-        draw_tree_segments();
+        draw_tree_segments(tree_traverser);
         draw_normals();
-        draw_player(camera_position);
+        draw_player(tree_traverser.get_camera_position());
     }
 
     void MapRenderer::draw_player(const glm::vec2& camera_position) {
@@ -40,10 +40,13 @@ namespace bsp {
         }
     }
 
-    void MapRenderer::draw_tree_segments() {
-        std::cout << "Segment count: " << tree_segments.size() << std::endl;
-        for (const auto& segment : tree_segments) {
-            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), RED);
+    void MapRenderer::draw_tree_segments(const TreeTraverser& tree_traverser) {
+        std::vector<glm::int32_t> segment_ids = tree_traverser.get_segment_ids_to_render();
+        for (const auto& id : segment_ids) {
+            if (id >= 0 && id < tree_segments.size()) {
+                const auto& segment = tree_segments[id];
+                DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), RED);
+            }
         }
     }
 
