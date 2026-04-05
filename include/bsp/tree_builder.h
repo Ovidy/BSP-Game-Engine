@@ -16,6 +16,7 @@ namespace bsp {
         void build(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments);
 
         std::shared_ptr<Node> get_root() const;
+        const std::vector<Segment>& get_segments() const;
 
     private:
         void add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment);

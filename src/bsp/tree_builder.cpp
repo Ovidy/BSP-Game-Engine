@@ -4,6 +4,11 @@ namespace bsp {
     TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0) {}
 
     void TreeBuilder::build(const std::vector<Segment>& segments) {
+        if (segments.empty()) {
+            std::cout<< "No segments to build tree with." << std::endl;
+            return;
+        }
+        
         build_tree(root_node, segments);
     }
 
@@ -22,6 +27,10 @@ namespace bsp {
         return root_node;
     }
 
+    const std::vector<Segment>& TreeBuilder::get_segments() const {
+        return segments;
+    }
+
     void TreeBuilder::add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment) {
         segments.push_back(segment);
         node->set_segment_id(segment_id++);
@@ -29,6 +38,12 @@ namespace bsp {
 
     std::pair<std::vector<Segment>, std::vector<Segment>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
         const Segment& splitter = segments[0]; // For simplicity, we use the first segment as the partitioning plane
+
+        // this function runs endlessly if all segments are collinear with the splitter, we need to handle this case
+        if (segments.size() == 1) {
+            add_segment_to_node(node, splitter);
+            return {{}, {}};
+        }
 
         node->set_splitter(splitter);
 

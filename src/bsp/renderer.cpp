@@ -19,6 +19,8 @@ namespace bsp {
         // render 2D and 3D content
         render_2d();
         render_3d();
+
+        tree_traverser.update();
         
         // end the frame and get ready for the next one  (display frame, poll input, etc...)
         EndDrawing();
@@ -30,7 +32,7 @@ namespace bsp {
 
     void Renderer::render_2d() {
         // 2D rendering code here
-        map_renderer.render();
+        map_renderer.render(tree_traverser.get_camera_position());
     }
 
     void Renderer::render_3d() {
@@ -39,13 +41,14 @@ namespace bsp {
 
     void Renderer::load_level(const std::vector<Segment>& segments) {
         level_data = LevelData(segments);
-        map_renderer.load_level_data(level_data);
         tree_builder.build(segments);
+        tree_traverser.set_root(tree_builder.get_root());
+        map_renderer.load_level_data(level_data, tree_builder);
     }
 
     void Renderer::load_level(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
         level_data = LevelData(segments);
-        map_renderer.load_level_data(level_data);
+        map_renderer.load_level_data(level_data, tree_builder);
         tree_builder.build(segments);
     }
 }

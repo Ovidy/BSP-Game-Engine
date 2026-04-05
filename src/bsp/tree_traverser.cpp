@@ -30,4 +30,8 @@ namespace bsp {
         segments.clear();
         traverse(root_node);
     }
+
+    const glm::vec2 TreeTraverser::get_camera_position() const {
+        return camera_position;
+    }
 }

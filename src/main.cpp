@@ -7,6 +7,8 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 */
 
+#include <iostream>
+
 #include <bsp/renderer.h>
 #include <bsp/map_renderer.h>
 #include <bsp/tree_builder.h>
@@ -37,13 +39,6 @@ int main ()
 	Renderer renderer;
 	renderer.load_level(bsp::test_level_segments);
 
-	TreeBuilder tree_builder;
-	tree_builder.build(bsp::test_level_segments);
-
-	TreeTraverser tree_traverser;
-	tree_traverser.set_root(tree_builder.get_root());
-
-
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
 
@@ -53,7 +48,6 @@ int main ()
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
-		tree_traverser.update();
 		renderer.render();
 	}
 

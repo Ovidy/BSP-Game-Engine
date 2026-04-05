@@ -1,7 +1,7 @@
 #include <bsp/map_renderer.h>
 
 namespace bsp {
-    void MapRenderer::load_level_data(const LevelData& level_data) {
+    void MapRenderer::load_level_data(const LevelData& level_data, const TreeBuilder& tree_builder) {
         // Initialize min and max based on the level data
         min = glm::vec2(std::numeric_limits<float>::max());
         max = glm::vec2(std::numeric_limits<float>::lowest());
@@ -14,21 +14,28 @@ namespace bsp {
         }
 
         segments = remap_segments(level_data.segments);
+        tree_segments = remap_segments(tree_builder.get_root() ? tree_builder.get_segments() : std::vector<Segment>{});
     }
 
-    void MapRenderer::render() {
+    void MapRenderer::render(const glm::vec2& camera_position) {
         draw_segments();
         draw_normals();
+        draw_player(camera_position);
+    }
+
+    void MapRenderer::draw_player(const glm::vec2& camera_position) {
+        glm::vec2 player_pos = remap_vec2(camera_position);
+        DrawCircleV(Vector2({player_pos.x, player_pos.y}), 10, GREEN);
     }
 
     void MapRenderer::draw_segments() {
         for (const auto& segment : segments) {
             // Draw the line segment
-            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), ORANGE);
+            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), DARKBROWN);
             
             // Draw circles at the start and end points of the segment
-            DrawCircleV(Vector2({segment.get_start().x, segment.get_start().y}), 5, RED);
-            DrawCircleV(Vector2({segment.get_end().x, segment.get_end().y}), 5, RED);
+            DrawCircleV(Vector2({segment.get_start().x, segment.get_start().y}), 5, DARKGRAY);
+            DrawCircleV(Vector2({segment.get_end().x, segment.get_end().y}), 5, DARKGRAY);
         }
     }
 
@@ -63,11 +70,15 @@ namespace bsp {
         return normalized_segments;
     }
 
-    std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments) const {
+    std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments_) const {
         std::vector<Segment> remapped_segments;
-        remapped_segments.reserve(segments.size());
+        remapped_segments.reserve(segments_.size());
+        
+        if (segments_.empty()) {
+            return remapped_segments;
+        }
 
-        for (const auto& segment : segments) {
+        for (const auto& segment : segments_) {
             remapped_segments.push_back({remap_vec2(segment.get_start()), remap_vec2(segment.get_end())});
         }
 

@@ -15,6 +15,8 @@ namespace bsp {
 
         void update();
 
+        const glm::vec2 get_camera_position() const;
+
     private:
         std::shared_ptr<Node> root_node;
         std::vector<Segment> segments;

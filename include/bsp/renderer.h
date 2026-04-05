@@ -2,6 +2,7 @@
 
 #include <bsp/map_renderer.h>
 #include <bsp/tree_builder.h>
+#include <bsp/tree_traverser.h>
 #include <raylib.h>
 
 namespace bsp {
@@ -23,5 +24,6 @@ namespace bsp {
         LevelData level_data;
         MapRenderer map_renderer;
         TreeBuilder tree_builder;
+        TreeTraverser tree_traverser;
     };
 }
