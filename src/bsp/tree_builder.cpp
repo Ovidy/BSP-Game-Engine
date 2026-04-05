@@ -10,9 +10,9 @@ namespace bsp {
         std::cout << "Split segments: " << num_split_segments << std::endl;
     }
 
-    void TreeBuilder::load_segments(const std::vector<Segment>& input_segments) {
+    void TreeBuilder::load_segments(const glm::int32_t& seed, const std::vector<Segment>& input_segments) {
         // Find best seed using the Python defaults: 0 to 20,000, weight 3
-        glm::int32_t best_seed = find_best_seed(input_segments, 0, 20000, 3);
+        glm::int32_t best_seed = (!seed) ? find_best_seed(input_segments, 0, 20000, 3) : seed;
         
         std::mt19937 rng(best_seed);
         std::vector<Segment> shuffled_segments = input_segments;
@@ -36,6 +36,71 @@ namespace bsp {
 
     const std::vector<Segment>& TreeBuilder::get_segments() const {
         return segments;
+    }
+
+    glm::int32_t TreeBuilder::find_best_seed_modern(const std::vector<Segment>& input_segments, glm::int32_t start_seed, glm::int32_t end_seed, glm::int32_t weight_factor) {
+        unsigned int cpu_count = std::thread::hardware_concurrency();
+        if (cpu_count == 0) cpu_count = 4; // Fallback
+
+        glm::int32_t total_seeds = end_seed - start_seed;
+        glm::int32_t chunk_size = total_seeds / cpu_count;
+
+        std::vector<std::future<std::pair<glm::int32_t, glm::int32_t>>> futures;
+
+        for (unsigned int i = 0; i < cpu_count; ++i) {
+            glm::int32_t chunk_start = start_seed + i * chunk_size;
+            glm::int32_t chunk_end = (i == cpu_count - 1) ? end_seed : chunk_start + chunk_size;
+
+            std::cout << "CPU " << i << ": " << chunk_start << ", " << chunk_end << std::endl;
+
+            // Launch the thread asynchronously. 
+            // Notice: No 'this' pointer is captured, making it perfectly isolated.
+            futures.push_back(std::async(std::launch::async, [input_segments, chunk_start, chunk_end, weight_factor]() {
+                return TreeBuilder::evaluate_seed_range(input_segments, chunk_start, chunk_end, weight_factor);
+            }));
+        }
+
+        glm::int32_t best_seed = -1;
+        glm::int32_t best_score = std::numeric_limits<glm::int32_t>::max();
+
+        for (auto& fut : futures) {
+            auto result = fut.get(); 
+            glm::int32_t local_score = result.first;
+            glm::int32_t local_seed = result.second;
+
+            if (local_score < best_score) {
+                best_score = local_score;
+                best_seed = local_seed;
+            }
+        }
+
+        std::cout << "\nBest seed: " << best_seed << " with score: " << best_score << std::endl;
+        return best_seed;
+    }
+
+    std::pair<glm::int32_t, glm::int32_t> TreeBuilder::evaluate_seed_range(const std::vector<Segment>& input_segments, glm::int32_t start_seed, glm::int32_t end_seed, glm::int32_t weight_factor) {
+        glm::int32_t local_best_seed = -1;
+        glm::int32_t local_best_score = std::numeric_limits<glm::int32_t>::max();
+
+        for (glm::int32_t seed = start_seed; seed < end_seed; ++seed) {
+            std::mt19937 rng(seed);
+            std::vector<Segment> shuffled_segments = input_segments;
+            std::shuffle(shuffled_segments.begin(), shuffled_segments.end(), rng);
+
+            // Because this method is static, we MUST create an instance here.
+            // This guarantees thread safety.
+            TreeBuilder temp_builder;
+            temp_builder.build_tree(temp_builder.get_root(), shuffled_segments);
+
+            glm::int32_t score = std::abs(temp_builder.num_back_segments - temp_builder.num_front_segments) + (weight_factor * temp_builder.num_split_segments);
+
+            if (score < local_best_score) {
+                local_best_score = score;
+                local_best_seed = seed;
+            }
+        }
+
+        return {local_best_score, local_best_seed}; 
     }
 
     glm::int32_t TreeBuilder::find_best_seed(const std::vector<Segment>& input_segments, glm::int32_t start_seed, glm::int32_t end_seed, glm::int32_t weight_factor) {

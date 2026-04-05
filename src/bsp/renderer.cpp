@@ -43,7 +43,7 @@ namespace bsp {
 
     void Renderer::load_level(const std::vector<Segment>& segments) {
         level_data = LevelData(segments);
-        tree_builder.load_segments(segments);
+        tree_builder.load_segments(TreeBuilder::find_best_seed_modern(segments), segments);
         tree_traverser.set_root(tree_builder.get_root());
         map_renderer.load_level_data(level_data, tree_builder);
     }
