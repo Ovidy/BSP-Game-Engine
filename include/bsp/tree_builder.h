@@ -19,6 +19,7 @@ namespace bsp {
         const std::vector<Segment>& get_segments() const;
 
     private:
+        glm::int32_t find_best_seed(const std::vector<Segment>& input_segments, glm::int32_t start_seed = 0, glm::int32_t end_seed = 20000, glm::int32_t weight_factor = 3);
         void add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment);
         std::pair<std::vector<Segment>, std::vector<Segment>> split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
         void build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments);

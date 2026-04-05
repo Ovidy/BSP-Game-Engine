@@ -11,7 +11,22 @@ namespace bsp {
     }
 
     void TreeBuilder::load_segments(const std::vector<Segment>& input_segments) {
-        build_tree(root_node, input_segments);
+        // Find best seed using the Python defaults: 0 to 20,000, weight 3
+        glm::int32_t best_seed = find_best_seed(input_segments, 0, 20000, 3);
+        
+        std::mt19937 rng(best_seed);
+        std::vector<Segment> shuffled_segments = input_segments;
+        std::shuffle(shuffled_segments.begin(), shuffled_segments.end(), rng);
+        
+        // Reset state one final time for the actual, permanent tree
+        root_node = std::make_shared<Node>();
+        segments.clear();
+        segment_id = 0;
+        num_front_segments = 0;
+        num_back_segments = 0;
+        num_split_segments = 0;
+
+        build_tree(root_node, shuffled_segments);
         print_number_of_segments();
     }
 
@@ -21,6 +36,42 @@ namespace bsp {
 
     const std::vector<Segment>& TreeBuilder::get_segments() const {
         return segments;
+    }
+
+    glm::int32_t TreeBuilder::find_best_seed(const std::vector<Segment>& input_segments, glm::int32_t start_seed, glm::int32_t end_seed, glm::int32_t weight_factor) {
+        glm::int32_t best_seed = -1;
+        glm::int32_t best_score = std::numeric_limits<glm::int32_t>::max();
+
+        // Note: seed < end_seed matches Python's range(start, end) which is exclusive
+        for (glm::int32_t seed = start_seed; seed < end_seed; ++seed) {
+            std::mt19937 rng(seed);
+            std::vector<Segment> shuffled_segments = input_segments;
+            std::shuffle(shuffled_segments.begin(), shuffled_segments.end(), rng);
+
+            // Reset state for this iteration (matching the Python code)
+            std::shared_ptr<Node> temp_root = std::make_shared<Node>();
+            segments.clear();
+            segment_id = 0;
+            num_front_segments = 0;
+            num_back_segments = 0;
+            num_split_segments = 0;
+
+            // Build test tree
+            build_tree(temp_root, shuffled_segments);
+
+            // Calculate the score based on your formula:
+            // score = abs(num_back - num_front) + weight_factor * num_splits
+            glm::int32_t score = std::abs(num_back_segments - num_front_segments) + (weight_factor * num_split_segments);
+
+            if (score < best_score) {
+                best_score = score;
+                best_seed = seed;
+            }
+        }
+
+        std::cout << "Best seed found: " << best_seed << " with score: " << best_score << std::endl;
+
+        return best_seed;
     }
 
     void TreeBuilder::add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment) {
