@@ -42,10 +42,39 @@ namespace bsp {
 
     void MapRenderer::draw_tree_segments(const TreeTraverser& tree_traverser) {
         std::vector<glm::int32_t> segment_ids = tree_traverser.get_segment_ids_to_render();
-        for (const auto& id : segment_ids) {
+        glm::vec2 current_camera_pos = tree_traverser.get_camera_position();
+
+        // 1. Reset the animation if the camera moves to demonstrate the new calculation
+        if (current_camera_pos != last_camera_pos) {
+            current_draw_count = 0;
+            animation_timer = 0.0f;
+            last_camera_pos = current_camera_pos;
+        }
+
+        // 2. Accumulate delta time
+        animation_timer += GetFrameTime(); // Raylib function for time between frames
+
+        // 3. Advance the draw count if the delay has passed
+        if (animation_timer >= render_delay) {
+            animation_timer = 0.0f; // Reset timer
+            if (current_draw_count < segment_ids.size()) {
+                current_draw_count++; // Allow one more segment to be drawn
+            }
+        }
+
+        // 4. Render only up to the current allowed count
+        for (size_t i = 0; i < current_draw_count && i < segment_ids.size(); ++i) {
+            glm::int32_t id = segment_ids[i];
             if (id >= 0 && id < tree_segments.size()) {
                 const auto& segment = tree_segments[id];
-                DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), RED);
+                
+                // Tip: Using DrawLineEx to make the active BSP lines a bit thicker (3.0f) 
+                // so they stand out clearly against the underlying map segments
+                DrawLineEx(
+                    Vector2({segment.get_start().x, segment.get_start().y}), 
+                    Vector2({segment.get_end().x, segment.get_end().y}), 
+                    3.0f, RED
+                );
             }
         }
     }

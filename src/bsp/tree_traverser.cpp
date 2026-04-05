@@ -27,10 +27,6 @@ namespace bsp {
     void TreeTraverser::update() {
         segment_ids_to_render.clear();
         traverse(root_node);
-        camera_position += glm::vec2(0.01f, 0.0f); // Move the camera position for demonstration purposes
-        if (camera_position.x > 7.0f) {
-            camera_position = glm::vec2(1.0f, 7.0f); // Reset camera position after it moves too far
-        }
     }
 
     const glm::vec2 TreeTraverser::get_camera_position() const {
