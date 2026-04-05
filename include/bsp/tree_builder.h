@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <random>
 #include <glm/glm.hpp>
 
 #include <bsp/utils.h>
@@ -13,7 +14,6 @@ namespace bsp {
         ~TreeBuilder() = default;
 
         void load_segments(const std::vector<Segment>& segments);
-        void load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments);
 
         std::shared_ptr<Node> get_root() const;
         const std::vector<Segment>& get_segments() const;

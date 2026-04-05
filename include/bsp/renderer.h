@@ -15,7 +15,6 @@ namespace bsp {
         void render();
 
         void load_level(const std::vector<Segment>& segments);
-        void load_level(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments);
 
         const LevelData& get_level_data() const;
     private:

@@ -15,18 +15,6 @@ namespace bsp {
         print_number_of_segments();
     }
 
-    void TreeBuilder::load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& input_segments) {
-        std::vector<Segment> segment_objects;
-        segment_objects.reserve(input_segments.size());
-
-        for (const auto& pair : input_segments) {
-            segment_objects.emplace_back(pair.first, pair.second);
-        }
-
-        build_tree(root_node, segment_objects);
-        print_number_of_segments();
-    }
-
     std::shared_ptr<Node> TreeBuilder::get_root() const {
         return root_node;
     }
