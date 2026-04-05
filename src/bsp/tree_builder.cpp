@@ -36,11 +36,11 @@ namespace bsp {
         node->set_segment_id(segment_id++);
     }
 
-    std::pair<std::vector<Segment>, std::vector<Segment>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
-        const Segment& splitter = segments[0]; // For simplicity, we use the first segment as the partitioning plane
+    std::pair<std::vector<Segment>, std::vector<Segment>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& input_segments) {
+        const Segment& splitter = input_segments[0]; // For simplicity, we use the first segment as the partitioning plane
 
         // this function runs endlessly if all segments are collinear with the splitter, we need to handle this case
-        if (segments.size() == 1) {
+        if (input_segments.size() == 1) {
             add_segment_to_node(node, splitter);
             return {{}, {}};
         }
@@ -50,48 +50,52 @@ namespace bsp {
         std::vector<Segment> front_segments;
         std::vector<Segment> back_segments;
 
-        for (auto segment : segments) {
-            // Determine which side of the splitter the segment lies on
-            glm::vec2 start_to_splitter = segment.get_start() - splitter.get_start();
-            glm::vec2 end_to_splitter = segment.get_end() - splitter.get_start();
+        for (size_t i = 1; i < input_segments.size(); ++i) {
+            const Segment& segment = input_segments[i];
+            glm::vec2 dir_splitter = splitter.get_direction();
+            glm::vec2 dir_segment = segment.get_direction();
 
-            float start_side = glm::dot(start_to_splitter, glm::vec2(-splitter.get_direction().y, splitter.get_direction().x));
-            float end_side = glm::dot(end_to_splitter, glm::vec2(-splitter.get_direction().y, splitter.get_direction().x));
+            glm::float32_t numinator = bsp::cross(dir_segment, dir_splitter);
+            glm::float32_t denominator = bsp::cross(dir_splitter, dir_segment);
 
-            bool denominator_is_zero = glm::abs(glm::dot(splitter.get_direction(), splitter.get_direction())) < EPSILON;
-            bool numerator_is_zero = glm::abs(glm::dot(start_to_splitter, splitter.get_direction())) < EPSILON;
+            bool denominator_zero = std::abs(denominator) < EPSILON;
+            bool numinator_zero = std::abs(numinator) < EPSILON;
 
-            if (denominator_is_zero && numerator_is_zero) {
-                // The segment is collinear with the splitter, we can choose to put it in either front or back
-                front_segments.push_back(segment);
-            } else if (start_side >= 0 && end_side >= 0) {
-                // Both endpoints are in front of the splitter
-                front_segments.push_back(segment);
-            } else if (start_side <= 0 && end_side <= 0) {
-                // Both endpoints are behind the splitter
-                back_segments.push_back(segment);
-            } else {
-                // The segment intersects the splitter, we need to split it into two segments
-                glm::vec2 direction = splitter.get_direction();
-                float t = glm::dot(splitter.get_start() - segment.get_start(), direction) / glm::dot(segment.get_direction(), direction);
-                glm::vec2 intersection_point = segment.get_start() + t * segment.get_direction();
-
-                if (start_side > 0) {
-                    front_segments.push_back(Segment(segment.get_start(), intersection_point));
-                    back_segments.push_back(Segment(intersection_point, segment.get_end()));
+            if (denominator_zero && numinator_zero) {
+                // Segments are collinear, we can treat them as being on the same side
+                if (glm::dot(segment.get_start() - splitter.get_start(), dir_splitter) >= 0) {
+                    front_segments.push_back(segment);
                 } else {
-                    back_segments.push_back(Segment(segment.get_start(), intersection_point));
-                    front_segments.push_back(Segment(intersection_point, segment.get_end()));
+                    back_segments.push_back(segment);
+                }
+            } else if (denominator_zero) {
+                // Segments are parallel but not collinear, we can treat them as being on the same side
+                if (glm::dot(segment.get_start() - splitter.get_start(), dir_splitter) >= 0) {
+                    front_segments.push_back(segment);
+                } else {
+                    back_segments.push_back(segment);
+                }
+            } else {
+                // Segments intersect, we need to split the segment
+                float t = numinator / denominator;
+                glm::vec2 intersection_point = segment.get_start() + t * dir_segment;
+
+                Segment front_part(segment.get_start(), intersection_point);
+                Segment back_part(intersection_point, segment.get_end());
+
+                if (glm::dot(front_part.get_direction(), dir_splitter) >= 0) {
+                    front_segments.push_back(front_part);
+                    back_segments.push_back(back_part);
+                } else {
+                    back_segments.push_back(front_part);
+                    front_segments.push_back(back_part);
                 }
             }
-
-            add_segment_to_node(node, splitter);
-
-            return {front_segments, back_segments};
         }
         
-        
+        add_segment_to_node(node, splitter);
 
+        return {front_segments, back_segments};
     }
 
     void TreeBuilder::build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
