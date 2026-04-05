@@ -48,7 +48,8 @@ namespace bsp {
 
     void Renderer::load_level(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
         level_data = LevelData(segments);
-        map_renderer.load_level_data(level_data, tree_builder);
         tree_builder.build(segments);
+        tree_traverser.set_root(tree_builder.get_root());
+        map_renderer.load_level_data(level_data, tree_builder);
     }
 }
