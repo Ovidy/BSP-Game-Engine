@@ -11,7 +11,7 @@ namespace bsp {
         const glm::vec2& get_start() const;
         const glm::vec2& get_end() const;
         const glm::vec2 get_direction() const;
-        
+
     private:
         glm::vec2 start;
         glm::vec2 end;
@@ -22,6 +22,6 @@ namespace bsp {
         BSPNode();
         std::shared_ptr<BSPNode> front;
         std::shared_ptr<BSPNode> back;
-
+        Segment partition;
     };
 }
