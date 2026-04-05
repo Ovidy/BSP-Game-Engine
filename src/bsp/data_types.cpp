@@ -32,7 +32,15 @@ namespace bsp {
         return splitter;
     }
 
+    const glm::int32_t Node::get_segment_id() const {
+        return segment_id;
+    }
+
     void Node::set_splitter(const Segment& splitter) {
         this->splitter = splitter;
+    }
+
+    void Node::set_segment_id(const glm::int32_t& id) {
+        this->segment_id = id;
     }
 }

@@ -22,6 +22,11 @@ namespace bsp {
         return root_node;
     }
 
+    void TreeBuilder::add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment) {
+        segments.push_back(segment);
+        node->set_segment_id(segment_id++);
+    }
+
     std::pair<std::vector<Segment>, std::vector<Segment>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
         const Segment& splitter = segments[0]; // For simplicity, we use the first segment as the partitioning plane
 
@@ -64,6 +69,8 @@ namespace bsp {
                     front_segments.push_back(Segment(intersection_point, segment.get_end()));
                 }
             }
+
+            add_segment_to_node(node, splitter);
 
             return {front_segments, back_segments};
         }

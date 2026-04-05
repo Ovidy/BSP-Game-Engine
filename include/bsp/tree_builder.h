@@ -18,11 +18,12 @@ namespace bsp {
         std::shared_ptr<Node> get_root() const;
 
     private:
+        void add_segment_to_node(std::shared_ptr<Node> node, const Segment& segment);
         std::pair<std::vector<Segment>, std::vector<Segment>> split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
         void build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
 
         std::shared_ptr<Node> root_node;
-        std::vector<Segment> segments; // Store segments for potential use in rendering or debugging
+        std::vector<Segment> segments;
         glm::int32_t segment_id;
     };
 }
