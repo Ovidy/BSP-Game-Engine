@@ -7,10 +7,10 @@ namespace bsp {
         max = glm::vec2(std::numeric_limits<float>::lowest());
 
         for (const auto& segment : level_data.segments) {
-            min = glm::min(min, segment.start);
-            min = glm::min(min, segment.end);
-            max = glm::max(max, segment.start);
-            max = glm::max(max, segment.end);
+            min = glm::min(min, segment.get_start());
+            min = glm::min(min, segment.get_end());
+            max = glm::max(max, segment.get_start());
+            max = glm::max(max, segment.get_end());
         }
 
         segments = remap_segments(level_data.segments);
@@ -24,11 +24,11 @@ namespace bsp {
     void MapRenderer::draw_segments() {
         for (const auto& segment : segments) {
             // Draw the line segment
-            DrawLineV(Vector2({segment.start.x, segment.start.y}), Vector2({segment.end.x, segment.end.y}), ORANGE);
+            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), ORANGE);
             
             // Draw circles at the start and end points of the segment
-            DrawCircleV(Vector2({segment.start.x, segment.start.y}), 5, RED);
-            DrawCircleV(Vector2({segment.end.x, segment.end.y}), 5, RED);
+            DrawCircleV(Vector2({segment.get_start().x, segment.get_start().y}), 5, RED);
+            DrawCircleV(Vector2({segment.get_end().x, segment.get_end().y}), 5, RED);
         }
     }
 
@@ -37,13 +37,13 @@ namespace bsp {
 
         for (const auto& segment : normalized_segments) {
             // Draw the normal vector as a line segment
-            DrawLineV(Vector2({segment.start.x, segment.start.y}), Vector2({segment.end.x, segment.end.y}), BLUE);
+            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), BLUE);
             
             // Draw an arrowhead at the end of the normal vector
-            glm::vec2 direction = segment.end - segment.start;
+            glm::vec2 direction = segment.get_end() - segment.get_start();
             glm::vec2 perpendicular = glm::normalize(glm::vec2(-direction.y, direction.x)) * 10.0f; // Scale for arrowhead size
-            DrawLineV(Vector2({segment.end.x, segment.end.y}), Vector2({segment.end.x + perpendicular.x, segment.end.y + perpendicular.y}), BLUE);
-            DrawLineV(Vector2({segment.end.x, segment.end.y}), Vector2({segment.end.x - perpendicular.x, segment.end.y - perpendicular.y}), BLUE);
+            DrawLineV(Vector2({segment.get_end().x, segment.get_end().y}), Vector2({segment.get_end().x + perpendicular.x, segment.get_end().y + perpendicular.y}), BLUE);
+            DrawLineV(Vector2({segment.get_end().x, segment.get_end().y}), Vector2({segment.get_end().x - perpendicular.x, segment.get_end().y - perpendicular.y}), BLUE);
         }
     }
 
@@ -54,9 +54,9 @@ namespace bsp {
         // Calculate the normal vector for each segment and 
         // create a new segment representing the normal at the middle of the original segment
         for (const auto& segment : segments) {
-            glm::vec2 direction = segment.end - segment.start;
+            glm::vec2 direction = segment.get_end() - segment.get_start();
             glm::vec2 normal = glm::normalize(glm::vec2(-direction.y, direction.x)) * 20.0f; // Scale for normal length
-            glm::vec2 midpoint = (segment.start + segment.end) * 0.5f;
+            glm::vec2 midpoint = (segment.get_start() + segment.get_end()) * 0.5f;
             normalized_segments.push_back({midpoint, midpoint + normal});
         }
 
@@ -68,7 +68,7 @@ namespace bsp {
         remapped_segments.reserve(segments.size());
 
         for (const auto& segment : segments) {
-            remapped_segments.push_back({remap_vec2(segment.start), remap_vec2(segment.end)});
+            remapped_segments.push_back({remap_vec2(segment.get_start()), remap_vec2(segment.get_end())});
         }
 
         return remapped_segments;
