@@ -86,12 +86,14 @@ namespace bsp {
 
         auto partition_segments = split_space(node, segments);
 
-        if (partition_segments.first) {
-            build_tree(partition_segments.first, segments); // Recursively build the front node
+        if (!partition_segments.first.empty()) {
+            node->set_back(std::make_shared<Node>()); // Create a new node for the front space
+            build_tree(node, partition_segments.first); // Recursively build the front node
         }
 
-        if (partition_segments.second) {
-            build_tree(partition_segments.second, segments); // Recursively build the back node
+        if (!partition_segments.second.empty()) {
+            node->set_front(std::make_shared<Node>()); // Create a new node for the back space
+            build_tree(node, partition_segments.second); // Recursively build the back node
         }
     }
 }

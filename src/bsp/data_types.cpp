@@ -36,6 +36,14 @@ namespace bsp {
         return segment_id;
     }
 
+    void Node::set_front(const std::shared_ptr<Node>& front) {
+        this->front = front;
+    }
+
+    void Node::set_back(const std::shared_ptr<Node>& back) {
+        this->back = back;
+    }
+
     void Node::set_splitter(const Segment& splitter) {
         this->splitter = splitter;
     }

@@ -28,6 +28,8 @@ namespace bsp {
         const Segment& get_splitter() const;
         const glm::int32_t get_segment_id() const;
 
+        void set_front(const std::shared_ptr<Node>& front);
+        void set_back(const std::shared_ptr<Node>& back);
         void set_splitter(const Segment& splitter);
         void set_segment_id(const glm::int32_t& id);
     private:
