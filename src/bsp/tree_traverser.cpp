@@ -10,17 +10,15 @@ namespace bsp {
     void TreeTraverser::traverse(const std::shared_ptr<Node>& node) {
         if (!node) return;
 
-        bool on_front = glm::dot(camera_position - node->get_splitter().get_start(), glm::vec2(-node->get_splitter().get_direction().y, node->get_splitter().get_direction().x)) >= 0;
-
+        bool on_front = is_on_front(camera_position - node->get_splitter().get_start(), node->get_splitter().get_end() - node->get_splitter().get_start());
+        
         if (on_front) {
             traverse(node->get_front());
             segment_ids_to_render.push_back(node->get_segment_id());
-            segments.push_back(node->get_splitter());
             traverse(node->get_back());
         } else {
             traverse(node->get_back());
             segment_ids_to_render.push_back(node->get_segment_id());
-            segments.push_back(node->get_splitter());
             traverse(node->get_front());
         }
     }
