@@ -18,17 +18,17 @@ namespace bsp {
         glm::vec2 end;
     };
 
-    class BSPNode {
+    class Node {
     public:
-        BSPNode();
-        ~BSPNode() = default;
+        Node();
+        ~Node() = default;
 
-        const std::shared_ptr<BSPNode>& get_front() const;
-        const std::shared_ptr<BSPNode>& get_back() const;
+        const std::shared_ptr<Node>& get_front() const;
+        const std::shared_ptr<Node>& get_back() const;
         const Segment& get_partition() const;
     private:
-        std::shared_ptr<BSPNode> front;
-        std::shared_ptr<BSPNode> back;
+        std::shared_ptr<Node> front;
+        std::shared_ptr<Node> back;
         Segment partition;
     };
 }

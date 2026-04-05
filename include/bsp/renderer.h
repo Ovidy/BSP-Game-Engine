@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bsp/map_renderer.h>
+#include <bsp/tree_builder.h>
 #include <raylib.h>
 
 namespace bsp {
@@ -21,5 +22,6 @@ namespace bsp {
 
         LevelData level_data;
         MapRenderer map_renderer;
+        TreeBuilder tree_builder;
     };
 }
