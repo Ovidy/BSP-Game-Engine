@@ -13,5 +13,7 @@ namespace bsp {
         return end;
     }
 
-    
+    const glm::vec2 Segment::get_direction() const {
+        return end - start;
+    }
 }
