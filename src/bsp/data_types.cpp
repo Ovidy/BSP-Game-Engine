@@ -18,7 +18,7 @@ namespace bsp {
     }
 
     // BSPNode class implementation
-    Node::Node() : front(nullptr), back(nullptr), partition({{0.0f, 0.0f}, {0.0f, 0.0f}}) {}
+    Node::Node() : front(nullptr), back(nullptr), splitter({{0.0f, 0.0f}, {0.0f, 0.0f}}) {}
 
     const std::shared_ptr<Node>& Node::get_front() const {
         return front;
@@ -28,7 +28,11 @@ namespace bsp {
         return back;
     }
 
-    const Segment& Node::get_partition() const {
-        return partition;
+    const Segment& Node::get_splitter() const {
+        return splitter;
+    }
+
+    void Node::set_splitter(const Segment& splitter) {
+        this->splitter = splitter;
     }
 }

@@ -25,10 +25,12 @@ namespace bsp {
 
         const std::shared_ptr<Node>& get_front() const;
         const std::shared_ptr<Node>& get_back() const;
-        const Segment& get_partition() const;
+        const Segment& get_splitter() const;
+
+        void set_splitter(const Segment& splitter);
     private:
         std::shared_ptr<Node> front;
         std::shared_ptr<Node> back;
-        Segment partition;
+        Segment splitter;
     };
 }

@@ -1,8 +1,10 @@
 #include <bsp/tree_builder.h>
 
 namespace bsp {
+    TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()) {}
+
     void TreeBuilder::build(const std::vector<Segment>& segments) {
-        root_node = build_tree(segments);
+        build_tree(root_node, segments);
     }
 
     void TreeBuilder::build(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
@@ -13,40 +15,32 @@ namespace bsp {
             segment_objects.emplace_back(pair.first, pair.second);
         }
 
-        root_node = build_tree(segment_objects);
+        build_tree(root_node, segment_objects);
     }
 
     std::shared_ptr<Node> TreeBuilder::get_root() const {
         return root_node;
     }
 
-    std::shared_ptr<Node> TreeBuilder::split_space(const std::vector<Segment>& segments) {
-        // This function should implement the logic to split the space based on the segments
-        // For simplicity, we will just create a node with the first segment as the partition
-        if (segments.empty()) {
-            return nullptr;
-        }
+    std::pair<std::shared_ptr<Node>, std::shared_ptr<Node>> TreeBuilder::split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
+        const Segment& splitter = segments[0]; // For simplicity, we use the first segment as the partitioning plane
 
-        auto node = std::make_shared<Node>();
-        node->partition = segments[0];
-
-        // In a complete implementation, you would recursively split the remaining segments
-        // into front and back lists and call split_space on them
-
-        return node;
+        node->set_splitter(splitter);
     }
 
-    std::shared_ptr<Node> TreeBuilder::build_tree(const std::vector<Segment>& segments) {
+    void TreeBuilder::build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
         if (segments.empty()) {
-            return nullptr;
+            return; // Base case: no segments to partition
         }
 
-        // Split the space using the first segment as the partition
-        auto node = split_space(segments);
+        auto partition_segments = split_space(node, segments);
 
-        // In a complete implementation, you would recursively build the front and back subtrees
-        // using the remaining segments
+        if (partition_segments.first) {
+            build_tree(partition_segments.first, segments); // Recursively build the front node
+        }
 
-        return node;
+        if (partition_segments.second) {
+            build_tree(partition_segments.second, segments); // Recursively build the back node
+        }
     }
 }

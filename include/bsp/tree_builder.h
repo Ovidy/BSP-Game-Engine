@@ -1,14 +1,13 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <bsp/data_types.h>
+#include <memory>
 
 namespace bsp {
-    class Node;
-    class Segment;
-
     class TreeBuilder {
     public:
-        TreeBuilder() = default;
+        TreeBuilder();
         ~TreeBuilder() = default;
 
         void build(const std::vector<Segment>& segments);
@@ -17,8 +16,8 @@ namespace bsp {
         std::shared_ptr<Node> get_root() const;
 
     private:
-        std::shared_ptr<Node> split_space(const std::vector<Segment>& segments);
-        std::shared_ptr<Node> build_tree(const std::vector<Segment>& segments);
+        std::pair<std::shared_ptr<Node>, std::shared_ptr<Node>> split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
+        void build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
 
         std::shared_ptr<Node> root_node;
     };
