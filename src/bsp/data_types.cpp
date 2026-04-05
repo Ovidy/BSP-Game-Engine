@@ -16,4 +16,19 @@ namespace bsp {
     const glm::vec2 Segment::get_direction() const {
         return end - start;
     }
+
+    // BSPNode class implementation
+    BSPNode::BSPNode() : front(nullptr), back(nullptr), partition({{0.0f, 0.0f}, {0.0f, 0.0f}}) {}
+
+    const std::shared_ptr<BSPNode>& BSPNode::get_front() const {
+        return front;
+    }
+
+    const std::shared_ptr<BSPNode>& BSPNode::get_back() const {
+        return back;
+    }
+
+    const Segment& BSPNode::get_partition() const {
+        return partition;
+    }
 }

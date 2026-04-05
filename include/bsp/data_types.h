@@ -22,7 +22,11 @@ namespace bsp {
     public:
         BSPNode();
         ~BSPNode() = default;
-        
+
+        const std::shared_ptr<BSPNode>& get_front() const;
+        const std::shared_ptr<BSPNode>& get_back() const;
+        const Segment& get_partition() const;
+    private:
         std::shared_ptr<BSPNode> front;
         std::shared_ptr<BSPNode> back;
         Segment partition;
