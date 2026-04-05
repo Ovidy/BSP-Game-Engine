@@ -9,6 +9,10 @@ namespace bsp {
         // destructor code here
     }
 
+    void Renderer::update() {
+        tree_traverser.update();
+    }
+
     void Renderer::render() {
         // drawing
         BeginDrawing();
@@ -19,8 +23,6 @@ namespace bsp {
         // render 2D and 3D content
         render_2d();
         render_3d();
-
-        tree_traverser.update();
         
         // end the frame and get ready for the next one  (display frame, poll input, etc...)
         EndDrawing();

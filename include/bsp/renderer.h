@@ -11,6 +11,7 @@ namespace bsp {
         Renderer();
         ~Renderer();
 
+        void update();
         void render();
 
         void load_level(const std::vector<Segment>& segments);
