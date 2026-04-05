@@ -3,16 +3,11 @@
 namespace bsp {
     TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0) {}
 
-    void TreeBuilder::build(const std::vector<Segment>& segments) {
-        if (segments.empty()) {
-            std::cout<< "No segments to build tree with." << std::endl;
-            return;
-        }
-        
+    void TreeBuilder::load_segments(const std::vector<Segment>& segments) {
         build_tree(root_node, segments);
     }
 
-    void TreeBuilder::build(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
+    void TreeBuilder::load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
         std::vector<Segment> segment_objects;
         segment_objects.reserve(segments.size());
 

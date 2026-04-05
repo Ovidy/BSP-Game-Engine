@@ -12,8 +12,8 @@ namespace bsp {
         TreeBuilder();
         ~TreeBuilder() = default;
 
-        void build(const std::vector<Segment>& segments);
-        void build(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments);
+        void load_segments(const std::vector<Segment>& segments);
+        void load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments);
 
         std::shared_ptr<Node> get_root() const;
         const std::vector<Segment>& get_segments() const;
