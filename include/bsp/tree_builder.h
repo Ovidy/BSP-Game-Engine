@@ -1,8 +1,10 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <bsp/data_types.h>
 #include <memory>
+#include <glm/glm.hpp>
+
+#include <bsp/utils.h>
+#include <bsp/data_types.h>
 
 namespace bsp {
     class TreeBuilder {
@@ -16,9 +18,11 @@ namespace bsp {
         std::shared_ptr<Node> get_root() const;
 
     private:
-        std::pair<std::shared_ptr<Node>, std::shared_ptr<Node>> split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
+        std::pair<std::vector<Segment>, std::vector<Segment>> split_space(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
         void build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments);
 
         std::shared_ptr<Node> root_node;
+        std::vector<Segment> segments; // Store segments for potential use in rendering or debugging
+        glm::int32_t segment_id;
     };
 }
