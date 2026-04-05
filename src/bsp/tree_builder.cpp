@@ -1,10 +1,18 @@
 #include <bsp/tree_builder.h>
 
 namespace bsp {
-    TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0) {}
+    TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0), num_front_segments(0), num_back_segments(0), num_split_segments(0) {}
+
+    void TreeBuilder::print_number_of_segments() const {
+        std::cout << "Total segments: " << segments.size() << std::endl;
+        std::cout << "Front segments: " << num_front_segments << std::endl;
+        std::cout << "Back segments: " << num_back_segments << std::endl;
+        std::cout << "Split segments: " << num_split_segments << std::endl;
+    }
 
     void TreeBuilder::load_segments(const std::vector<Segment>& input_segments) {
         build_tree(root_node, input_segments);
+        print_number_of_segments();
     }
 
     void TreeBuilder::load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& input_segments) {
@@ -16,6 +24,7 @@ namespace bsp {
         }
 
         build_tree(root_node, segment_objects);
+        print_number_of_segments();
     }
 
     std::shared_ptr<Node> TreeBuilder::get_root() const {
@@ -56,6 +65,7 @@ namespace bsp {
                 glm::float32_t t = numinator / denominator;
 
                 if (t > 0.0f && t < 1.0f) {
+                    num_split_segments++;
                     glm::vec2 intersection_point = segment.get_start() + t * dir_segment;
 
                     Segment front_part(segment.get_start(), intersection_point);
@@ -96,11 +106,13 @@ namespace bsp {
         auto partition_segments = split_space(node, input_segments);
 
         if (!partition_segments.first.empty()) {
+            num_front_segments++;
             node->set_front(std::make_shared<Node>()); // Create a new node for the front space
             build_tree(node->get_front(), partition_segments.first); // Recursively build the front node
         }
 
         if (!partition_segments.second.empty()) {
+            num_back_segments++;
             node->set_back(std::make_shared<Node>()); // Create a new node for the back space
             build_tree(node->get_back(), partition_segments.second); // Recursively build the back node
         }
