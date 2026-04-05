@@ -3,15 +3,15 @@
 namespace bsp {
     TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0) {}
 
-    void TreeBuilder::load_segments(const std::vector<Segment>& segments) {
-        build_tree(root_node, segments);
+    void TreeBuilder::load_segments(const std::vector<Segment>& input_segments) {
+        build_tree(root_node, input_segments);
     }
 
-    void TreeBuilder::load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& segments) {
+    void TreeBuilder::load_segments(const std::vector<std::pair<glm::vec2, glm::vec2>>& input_segments) {
         std::vector<Segment> segment_objects;
-        segment_objects.reserve(segments.size());
+        segment_objects.reserve(input_segments.size());
 
-        for (const auto& pair : segments) {
+        for (const auto& pair : input_segments) {
             segment_objects.emplace_back(pair.first, pair.second);
         }
 
@@ -50,7 +50,7 @@ namespace bsp {
             glm::vec2 dir_splitter = splitter.get_direction();
             glm::vec2 dir_segment = segment.get_direction();
 
-            glm::float32_t numinator = bsp::cross(dir_segment, dir_splitter);
+            glm::float32_t numinator = bsp::cross(segment.get_start() - splitter.get_start(), dir_splitter);
             glm::float32_t denominator = bsp::cross(dir_splitter, dir_segment);
 
             bool denominator_zero = std::abs(denominator) < EPSILON;
@@ -93,12 +93,12 @@ namespace bsp {
         return {front_segments, back_segments};
     }
 
-    void TreeBuilder::build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& segments) {
-        if (segments.empty()) {
+    void TreeBuilder::build_tree(std::shared_ptr<Node> node, const std::vector<Segment>& input_segments) {
+        if (input_segments.empty()) {
             return; // Base case: no segments to partition
         }
 
-        auto partition_segments = split_space(node, segments);
+        auto partition_segments = split_space(node, input_segments);
 
         if (!partition_segments.first.empty()) {
             node->set_back(std::make_shared<Node>()); // Create a new node for the front space
