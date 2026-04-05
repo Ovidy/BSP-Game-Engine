@@ -19,6 +19,7 @@ namespace bsp {
 
     void MapRenderer::render(const glm::vec2& camera_position) {
         draw_segments();
+        draw_tree_segments();
         draw_normals();
         draw_player(camera_position);
     }
@@ -36,6 +37,13 @@ namespace bsp {
             // Draw circles at the start and end points of the segment
             DrawCircleV(Vector2({segment.get_start().x, segment.get_start().y}), 5, DARKGRAY);
             DrawCircleV(Vector2({segment.get_end().x, segment.get_end().y}), 5, DARKGRAY);
+        }
+    }
+
+    void MapRenderer::draw_tree_segments() {
+        std::cout << "Segment count: " << tree_segments.size() << std::endl;
+        for (const auto& segment : tree_segments) {
+            DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), RED);
         }
     }
 

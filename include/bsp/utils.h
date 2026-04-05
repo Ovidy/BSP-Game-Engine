@@ -12,3 +12,7 @@
 #define MAP_HEIGHT WINDOW_HEIGHT - MAP_OFFSET
 
 #define EPSILON 0.00001f
+
+namespace bsp {
+    float32_t cross(const glm::vec2& a, const glm::vec2& b);
+}

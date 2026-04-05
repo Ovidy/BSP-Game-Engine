@@ -1,7 +1,7 @@
 #include <bsp/tree_traverser.h>
 
 namespace bsp {
-    TreeTraverser::TreeTraverser() : root_node(nullptr), camera_position(5.0f, 6.0f) {}
+    TreeTraverser::TreeTraverser() : root_node(nullptr), camera_position(4.0f, 7.0f) {}
 
     void TreeTraverser::set_root(const std::shared_ptr<Node>& root) {
         root_node = root;
