@@ -15,4 +15,7 @@
 
 namespace bsp {
     glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
+
+    bool is_on_front(const glm::vec2& a, const glm::vec2& b);
+    bool is_on_back(const glm::vec2& a, const glm::vec2& b);
 }

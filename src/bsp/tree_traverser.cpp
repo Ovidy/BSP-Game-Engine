@@ -27,7 +27,6 @@ namespace bsp {
 
     void TreeTraverser::update() {
         segment_ids_to_render.clear();
-        segments.clear();
         traverse(root_node);
     }
 
