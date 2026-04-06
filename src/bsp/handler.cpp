@@ -18,4 +18,12 @@ namespace bsp {
         tree_builder.load_segments(TreeBuilder::find_best_seed_modern(segments), segments);
         tree_traverser.set_root(tree_builder.get_root());
     }
+
+    const std::vector<glm::int32_t>& Handler::get_segment_ids_to_render() const {
+        return tree_traverser.get_segment_ids_to_render();
+    }
+
+    const std::vector<Segment>& Handler::get_segments() const {
+        return tree_builder.get_segments();
+    }
 }

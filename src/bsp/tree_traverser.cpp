@@ -28,7 +28,7 @@ namespace bsp {
         traverse(root_node, camera_position);
     }
 
-    std::vector<glm::int32_t> TreeTraverser::get_segment_ids_to_render() const {
+    const std::vector<glm::int32_t>& TreeTraverser::get_segment_ids_to_render() const {
         return segment_ids_to_render;
     }
 }

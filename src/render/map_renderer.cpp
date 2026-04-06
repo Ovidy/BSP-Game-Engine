@@ -1,26 +1,28 @@
-#include <bsp/map_renderer.h>
+#include <render/map_renderer.h>
 
-namespace bsp {
-    void MapRenderer::load_level_data(const LevelData& level_data, const TreeBuilder& tree_builder) {
+using namespace bsp;
+
+namespace render {
+    void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, const std::vector<Segment>& input_tree_segments) {
         // Initialize min and max based on the level data
         min = glm::vec2(std::numeric_limits<float>::max());
         max = glm::vec2(std::numeric_limits<float>::lowest());
 
-        for (const auto& segment : level_data.segments) {
+        for (const auto& segment : segments) {
             min = glm::min(min, segment.get_start());
             min = glm::min(min, segment.get_end());
             max = glm::max(max, segment.get_start());
             max = glm::max(max, segment.get_end());
         }
 
-        segments = remap_segments(level_data.segments);
-        tree_segments = remap_segments(tree_builder.get_root() ? tree_builder.get_segments() : std::vector<Segment>{});
+        segments = remap_segments(input_segments);
+        tree_segments = remap_segments(input_tree_segments);
     }
 
-    void MapRenderer::render(const TreeTraverser& tree_traverser, const glm::vec2& camera_position) {
+    void MapRenderer::render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position) {
         if (is_enabled()) {
             draw_segments();
-            draw_tree_segments(tree_traverser, camera_position);
+            draw_tree_segments(segment_ids, camera_position);
             draw_normals();
             draw_player(camera_position);
         }
@@ -55,8 +57,7 @@ namespace bsp {
         }
     }
 
-    void MapRenderer::draw_tree_segments(const TreeTraverser& tree_traverser, const glm::vec2& camera_position) {
-        std::vector<glm::int32_t> segment_ids = tree_traverser.get_segment_ids_to_render();
+    void MapRenderer::draw_tree_segments(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position) {
         glm::vec2 current_camera_pos = camera_position;
 
         // 1. Reset the animation if the camera moves to demonstrate the new calculation

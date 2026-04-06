@@ -1,11 +1,13 @@
-#include <bsp/input_handler.h>
+#include <input/handler.h>
 
-namespace bsp {
+using namespace render;
+
+namespace input {
     
     // Default constructor implementation moved to CPP
-    InputHandler::InputHandler() = default;
+    Handler::Handler() = default;
 
-    void InputHandler::update(Camera& camera, MapRenderer& map_renderer, ViewRenderer& view_renderer) {
+    void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer) {
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
             camera.step_forward();

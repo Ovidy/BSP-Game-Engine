@@ -1,7 +1,8 @@
-#include <bsp/view_renderer.h>
+#include <render/view_renderer.h>
 
-namespace bsp {
-    
+using namespace bsp;
+
+namespace render {
     ViewRenderer::~ViewRenderer() {
         // We must manually free Raylib memory when this class is destroyed
         for (auto& model : wall_models) {

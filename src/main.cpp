@@ -9,11 +9,9 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 #include <iostream>
 
-#include <bsp/renderer.h>
-#include <bsp/map_renderer.h>
-#include <bsp/tree_builder.h>
-#include <bsp/tree_traverser.h>
-#include <bsp/utils.h>
+#include <bsp/handler.h>
+#include <render/handler.h>
+#include <input/handler.h>
 #include <test/level.h>
 
 #include "raylib.h"
@@ -38,9 +36,14 @@ int main ()
 	glm::float32_t deltaTime = 0.0f;
 
 	// create our renderer and load the test level segments into it
-	Renderer renderer;
-	renderer.load_level(bsp::test_level_segments);
+	bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);
+	bsp::Handler bsp_handler;
+	render::Handler render_handler;
+	input::Handler input_handler;
 
+	bsp_handler.load_level(bsp::test_level_segments);
+	render_handler.load_segments(bsp::test_level_segments, bsp_handler.get_segments());
+	
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
 
@@ -50,9 +53,15 @@ int main ()
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
+		// Update:
 		deltaTime = GetFrameTime();
-		renderer.update(deltaTime);
-		renderer.render();
+		camera.pre_update(deltaTime);
+		input_handler.update(camera, render_handler.get_map_renderer());
+		camera.update(deltaTime);
+		bsp_handler.update(camera.get_pos_2d());
+
+		// Render:
+		render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
 	}
 
 	// cleanup
