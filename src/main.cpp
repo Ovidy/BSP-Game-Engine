@@ -49,7 +49,7 @@ int main ()
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		deltaTime = GetFrameTime();
-		renderer.update();
+		renderer.update(deltaTime);
 		renderer.render();
 	}
 

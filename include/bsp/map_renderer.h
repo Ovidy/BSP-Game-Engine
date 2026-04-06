@@ -17,14 +17,14 @@ namespace bsp {
         MapRenderer& operator=(const MapRenderer&) = default;
         ~MapRenderer() = default;
 
-        void render(const TreeTraverser& tree_traverser);
+        void render(const TreeTraverser& tree_traverser, const glm::vec2& camera_position);
 
         void load_level_data(const LevelData& level_data, const TreeBuilder& tree_builder);
 
     private:
         void draw_player(const glm::vec2& camera_position);
         void draw_segments();
-        void draw_tree_segments(const TreeTraverser& tree_traverser);
+        void draw_tree_segments(const TreeTraverser& tree_traverser, const glm::vec2& camera_position);
         void draw_normals();
 
         std::vector<Segment> get_normalized_segments() const;

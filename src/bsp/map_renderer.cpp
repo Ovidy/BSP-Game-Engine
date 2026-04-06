@@ -17,14 +17,15 @@ namespace bsp {
         tree_segments = remap_segments(tree_builder.get_root() ? tree_builder.get_segments() : std::vector<Segment>{});
     }
 
-    void MapRenderer::render(const TreeTraverser& tree_traverser) {
+    void MapRenderer::render(const TreeTraverser& tree_traverser, const glm::vec2& camera_position) {
         draw_segments();
-        draw_tree_segments(tree_traverser);
+        draw_tree_segments(tree_traverser, camera_position);
         draw_normals();
-        draw_player(tree_traverser.get_camera_position());
+        draw_player(camera_position);
     }
 
     void MapRenderer::draw_player(const glm::vec2& camera_position) {
+        std::cout << "Drawing player at camera position: (" << camera_position.x << ", " << camera_position.y << ")\n";
         glm::vec2 player_pos = remap_vec2(camera_position);
         DrawCircleV(Vector2({player_pos.x, player_pos.y}), 10, GREEN);
     }
@@ -40,9 +41,9 @@ namespace bsp {
         }
     }
 
-    void MapRenderer::draw_tree_segments(const TreeTraverser& tree_traverser) {
+    void MapRenderer::draw_tree_segments(const TreeTraverser& tree_traverser, const glm::vec2& camera_position) {
         std::vector<glm::int32_t> segment_ids = tree_traverser.get_segment_ids_to_render();
-        glm::vec2 current_camera_pos = tree_traverser.get_camera_position();
+        glm::vec2 current_camera_pos = camera_position;
 
         // 1. Reset the animation if the camera moves to demonstrate the new calculation
         if (current_camera_pos != last_camera_pos) {

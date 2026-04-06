@@ -11,18 +11,15 @@ namespace bsp {
 
         void set_root(const std::shared_ptr<Node>& root);
 
-        void traverse(const std::shared_ptr<Node>& node);
+        void traverse(const std::shared_ptr<Node>& node, const glm::vec2& camera_position);
 
-        void update();
+        void update(const glm::vec2& camera_position);
 
         std::vector<glm::int32_t> get_segment_ids_to_render() const;
-
-        const glm::vec2 get_camera_position() const;
 
     private:
         std::shared_ptr<Node> root_node;
         std::vector<Segment> segments;
         std::vector<glm::int32_t> segment_ids_to_render;
-        glm::vec2 camera_position;
     };
 }

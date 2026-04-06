@@ -4,6 +4,7 @@
 #include <bsp/tree_builder.h>
 #include <bsp/tree_traverser.h>
 #include <bsp/camera.h>
+#include <bsp/input_handler.h>
 #include <raylib.h>
 
 namespace bsp {
@@ -12,7 +13,7 @@ namespace bsp {
         Renderer();
         ~Renderer();
 
-        void update();
+        void update(const glm::float32_t& dt);
         void render();
 
         void load_level(const std::vector<Segment>& segments);
@@ -27,5 +28,6 @@ namespace bsp {
         TreeBuilder tree_builder;
         TreeTraverser tree_traverser;
         Camera camera;
+        InputHandler input_handler;
     };
 }

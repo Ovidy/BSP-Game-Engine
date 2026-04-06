@@ -13,6 +13,11 @@
 
 #define EPSILON 0.00001f
 
+#define CAM_HEIGHT 0.6
+#define CAM_SPEED 6.2
+#define CAM_ROT_SPEED 3.0
+#define CAM_DIAG_MOVE_CORR 1 / pow(2, 0.5)
+
 namespace bsp {
     glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
 

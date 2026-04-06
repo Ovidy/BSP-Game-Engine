@@ -1,7 +1,7 @@
 #include <bsp/renderer.h>
 
 namespace bsp {
-    Renderer::Renderer() {
+    Renderer::Renderer() : camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f) {
         // constructor code here
     }
 
@@ -9,8 +9,11 @@ namespace bsp {
         // destructor code here
     }
 
-    void Renderer::update() {
-        tree_traverser.update();
+    void Renderer::update(const glm::float32_t& dt) {
+        camera.pre_update(dt);
+        input_handler.update(camera, map_renderer);
+        camera.update(dt);
+        tree_traverser.update(camera.get_pos_2d());
     }
 
     void Renderer::render() {
@@ -33,11 +36,11 @@ namespace bsp {
     }
 
     void Renderer::render_2d() {
-        map_renderer.render(tree_traverser);
+        map_renderer.render(tree_traverser, camera.get_pos_2d());
     }
 
     void Renderer::render_3d() {
-        BeginMode3D(camera.get_camera());
+        BeginMode3D(camera.get_raylib_camera());
 
         DrawGrid(32, 1.0f);
 

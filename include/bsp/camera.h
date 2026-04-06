@@ -2,6 +2,8 @@
 
 #include <raylib.h>
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 #include <bsp/utils.h>
 
 namespace bsp {

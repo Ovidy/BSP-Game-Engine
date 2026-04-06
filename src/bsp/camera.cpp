@@ -1,5 +1,4 @@
 #include <bsp/camera.h>
-#include <glm/gtx/rotate_vector.hpp>
 
 namespace bsp {
 
