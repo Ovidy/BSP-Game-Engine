@@ -44,7 +44,7 @@ namespace bsp {
         glm::vec2 max;
         float animation_timer = 0.0f;
         size_t current_draw_count = 0;
-        float render_delay = 0.5f; // Seconds to wait between drawing each segment
+        float render_delay = 0.1f; // Seconds to wait between drawing each segment
         glm::vec2 last_camera_pos = glm::vec2(-999.0f, -999.0f); // Used to detect movement
         bool enabled = false;
     };

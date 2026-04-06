@@ -37,6 +37,7 @@ namespace bsp {
 
     void Renderer::render_2d() {
         map_renderer.render(tree_traverser, camera.get_pos_2d());
+        DrawFPS(10, 10);
     }
 
     void Renderer::render_3d() {
