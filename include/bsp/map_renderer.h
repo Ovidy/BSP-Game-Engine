@@ -21,6 +21,11 @@ namespace bsp {
 
         void load_level_data(const LevelData& level_data, const TreeBuilder& tree_builder);
 
+        void enable_render();
+        void disable_render();
+
+        bool is_enabled() const;
+
     private:
         void draw_player(const glm::vec2& camera_position);
         void draw_segments();
@@ -41,5 +46,6 @@ namespace bsp {
         size_t current_draw_count = 0;
         float render_delay = 0.5f; // Seconds to wait between drawing each segment
         glm::vec2 last_camera_pos = glm::vec2(-999.0f, -999.0f); // Used to detect movement
+        bool enabled = false;
     };
 }

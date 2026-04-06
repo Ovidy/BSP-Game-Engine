@@ -18,10 +18,24 @@ namespace bsp {
     }
 
     void MapRenderer::render(const TreeTraverser& tree_traverser, const glm::vec2& camera_position) {
-        draw_segments();
-        draw_tree_segments(tree_traverser, camera_position);
-        draw_normals();
-        draw_player(camera_position);
+        if (is_enabled()) {
+            draw_segments();
+            draw_tree_segments(tree_traverser, camera_position);
+            draw_normals();
+            draw_player(camera_position);
+        }
+    }
+
+    void MapRenderer::enable_render() {
+        enabled = true;
+    }
+
+    void MapRenderer::disable_render() {
+        enabled = false;
+    }
+
+    bool MapRenderer::is_enabled() const {
+        return enabled;
     }
 
     void MapRenderer::draw_player(const glm::vec2& camera_position) {

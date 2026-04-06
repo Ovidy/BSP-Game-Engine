@@ -11,7 +11,7 @@ namespace bsp {
 
     void Renderer::update(const glm::float32_t& dt) {
         camera.pre_update(dt);
-        input_handler.update(camera, map_renderer);
+        input_handler.update(camera, map_renderer, view_renderer);
         camera.update(dt);
         tree_traverser.update(camera.get_pos_2d());
     }
@@ -42,6 +42,8 @@ namespace bsp {
     void Renderer::render_3d() {
         BeginMode3D(camera.get_raylib_camera());
 
+        view_renderer.draw(tree_traverser.get_segment_ids_to_render(), map_renderer.is_enabled());
+
         DrawGrid(32, 1.0f);
 
         EndMode3D();
@@ -52,5 +54,6 @@ namespace bsp {
         tree_builder.load_segments(TreeBuilder::find_best_seed_modern(segments), segments);
         tree_traverser.set_root(tree_builder.get_root());
         map_renderer.load_level_data(level_data, tree_builder);
+        view_renderer.load_models(tree_builder.get_segments());
     }
 }

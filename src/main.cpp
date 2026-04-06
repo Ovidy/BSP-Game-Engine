@@ -33,6 +33,8 @@ int main ()
 	// Set the target FPS to 60 so that our game loop runs at a consistent speed
 	SetTargetFPS(60);
 
+	DisableCursor();
+
 	glm::float32_t deltaTime = 0.0f;
 
 	// create our renderer and load the test level segments into it

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bsp/map_renderer.h>
+#include <bsp/view_renderer.h>
 #include <bsp/tree_builder.h>
 #include <bsp/tree_traverser.h>
 #include <bsp/camera.h>
@@ -25,6 +26,7 @@ namespace bsp {
 
         LevelData level_data;
         MapRenderer map_renderer;
+        ViewRenderer view_renderer;
         TreeBuilder tree_builder;
         TreeTraverser tree_traverser;
         Camera camera;

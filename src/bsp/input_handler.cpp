@@ -5,7 +5,7 @@ namespace bsp {
     // Default constructor implementation moved to CPP
     InputHandler::InputHandler() = default;
 
-    void InputHandler::update(Camera& camera, MapRenderer& map_renderer/*, ViewRenderer& view_renderer*/) {
+    void InputHandler::update(Camera& camera, MapRenderer& map_renderer, ViewRenderer& view_renderer) {
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
             camera.step_forward();
@@ -22,9 +22,12 @@ namespace bsp {
         }
         // -------------------------------------- //
 
-        // if (IsKeyPressed(KEY_M)) {
-        //     map_renderer.is_draw_map = !map_renderer.is_draw_map;
-        //     view_renderer.update_screen_tint();
-        // }
+        if (IsKeyPressed(KEY_M)) {
+            if (map_renderer.is_enabled()) {
+                map_renderer.disable_render();
+            } else {
+                map_renderer.enable_render();
+            }
+        }
     }
 }
