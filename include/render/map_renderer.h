@@ -17,7 +17,7 @@ namespace render {
         MapRenderer& operator=(const MapRenderer&) = default;
         ~MapRenderer() = default;
 
-        void render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position);
+        void render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position, const glm::vec2& camera_forward);
 
         void load_level_data(const std::vector<bsp::Segment>& segments,  const std::vector<bsp::Segment>& tree_segments);
 
@@ -27,7 +27,7 @@ namespace render {
         bool is_enabled() const;
 
     private:
-        void draw_player(const glm::vec2& camera_position);
+        void draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward);
         void draw_segments();
         void draw_tree_segments(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position);
         void draw_normals();

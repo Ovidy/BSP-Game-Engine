@@ -45,12 +45,12 @@ namespace render {
         tree_segments = remap_segments(input_tree_segments);
     }
 
-    void MapRenderer::render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position) {
+    void MapRenderer::render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position, const glm::vec2& camera_forward) {
         if (is_enabled()) {
             draw_segments();
             draw_tree_segments(segment_ids, camera_position);
             draw_normals();
-            draw_player(camera_position);
+            draw_player(camera_position, camera_forward);
         }
     }
 
@@ -66,10 +66,23 @@ namespace render {
         return enabled;
     }
 
-    void MapRenderer::draw_player(const glm::vec2& camera_position) {
-        std::cout << "Drawing player at camera position: (" << camera_position.x << ", " << camera_position.y << ")\n";
+    void MapRenderer::draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward) {
         glm::vec2 player_pos = remap_vec2(camera_position);
+        
+        // Draw the player circle
         DrawCircleV(Vector2({player_pos.x, player_pos.y}), 10, GREEN);
+
+        // Calculate where the tip of the directional pointer should be (20 pixels long)
+        float pointer_length = 20.0f;
+        glm::vec2 pointer_end = player_pos + (camera_forward * pointer_length);
+
+        // Draw a thick line indicating the direction
+        DrawLineEx(
+            Vector2({player_pos.x, player_pos.y}), 
+            Vector2({pointer_end.x, pointer_end.y}), 
+            4.0f, 
+            DARKGREEN
+        );
     }
 
     void MapRenderer::draw_segments() {

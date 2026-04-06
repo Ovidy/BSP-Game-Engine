@@ -16,7 +16,7 @@ namespace render {
 
         MapRenderer& get_map_renderer();
     private:
-        void render_2d(const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
+        void render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
         void render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids);
 
         MapRenderer map_renderer;
