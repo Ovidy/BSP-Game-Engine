@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 600
 #define WINDOW_RESOLUTION glm::vec2(WINDOW_WIDTH, WINDOW_HEIGHT)
 
