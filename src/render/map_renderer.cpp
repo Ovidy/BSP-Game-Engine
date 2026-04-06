@@ -8,7 +8,7 @@ namespace render {
         min = glm::vec2(std::numeric_limits<float>::max());
         max = glm::vec2(std::numeric_limits<float>::lowest());
 
-        for (const auto& segment : segments) {
+        for (const auto& segment : input_segments) {
             min = glm::min(min, segment.get_start());
             min = glm::min(min, segment.get_end());
             max = glm::max(max, segment.get_start());
