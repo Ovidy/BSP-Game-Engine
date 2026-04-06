@@ -15,6 +15,32 @@ namespace render {
             max = glm::max(max, segment.get_end());
         }
 
+        float width = max.x - min.x;
+        float height = max.y - min.y;
+        
+        // Assuming your window is 800x600 (Change these if your resolution is different!)
+        float screen_aspect = 800.0f / 600.0f; 
+        float map_aspect = width / height;
+
+        if (map_aspect > screen_aspect) {
+            // Map is wider than the screen. Expand the Y boundaries to compensate.
+            float new_height = width / screen_aspect;
+            float diff = new_height - height;
+            min.y -= diff / 2.0f;
+            max.y += diff / 2.0f;
+        } else {
+            // Map is taller than the screen. Expand the X boundaries to compensate.
+            float new_width = height * screen_aspect;
+            float diff = new_width - width;
+            min.x -= diff / 2.0f;
+            max.x += diff / 2.0f;
+        }
+        // ------------------------------------
+
+        // Padding so it doesn't touch the screen edges
+        min -= glm::vec2(1.0f, 1.0f);
+        max += glm::vec2(1.0f, 1.0f);
+
         segments = remap_segments(input_segments);
         tree_segments = remap_segments(input_tree_segments);
     }
