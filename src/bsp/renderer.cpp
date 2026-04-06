@@ -33,12 +33,15 @@ namespace bsp {
     }
 
     void Renderer::render_2d() {
-        // 2D rendering code here
         map_renderer.render(tree_traverser);
     }
 
     void Renderer::render_3d() {
-        // 3D rendering code here
+        BeginMode3D(camera.get_camera());
+
+        DrawGrid(32, 1.0f);
+
+        EndMode3D();
     }
 
     void Renderer::load_level(const std::vector<Segment>& segments) {
