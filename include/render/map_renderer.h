@@ -35,8 +35,8 @@ namespace render {
         std::vector<bsp::Segment> get_normalized_segments() const;
         std::vector<bsp::Segment> remap_segments(const std::vector<bsp::Segment>& segments) const;
         glm::vec2 remap_vec2(const glm::vec2& vec) const;
-        glm::int32_t remap_x(const glm::int32_t& x, const glm::int32_t& out_min=MAP_OFFSET, const glm::int32_t& out_max=MAP_WIDTH) const;
-        glm::int32_t remap_y(const glm::int32_t& y, const glm::int32_t& out_min=MAP_OFFSET, const glm::int32_t& out_max=MAP_HEIGHT) const;
+        glm::float32_t remap_x(const glm::float32_t& x, const glm::float32_t& out_min=MAP_OFFSET, const glm::float32_t& out_max=MAP_WIDTH) const;
+        glm::float32_t remap_y(const glm::float32_t& y, const glm::float32_t& out_min=MAP_OFFSET, const glm::float32_t& out_max=MAP_HEIGHT) const;
 
         std::vector<bsp::Segment> segments;
         std::vector<bsp::Segment> tree_segments;

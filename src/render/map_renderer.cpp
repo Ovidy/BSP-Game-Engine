@@ -142,14 +142,14 @@ namespace render {
     }
 
     glm::vec2 MapRenderer::remap_vec2(const glm::vec2& vec) const {
-        return glm::vec2(remap_x(static_cast<glm::int32_t>(vec.x)), remap_y(static_cast<glm::int32_t>(vec.y)));
+        return glm::vec2(remap_x(static_cast<glm::float32_t>(vec.x)), remap_y(static_cast<glm::float32_t>(vec.y)));
     }
 
-    glm::int32_t MapRenderer::remap_x(const glm::int32_t& x, const glm::int32_t& out_min, const glm::int32_t& out_max) const {
-        return static_cast<glm::int32_t>((x - min.x) / (max.x - min.x) * (out_max - out_min) + out_min);
+    glm::float32_t MapRenderer::remap_x(const glm::float32_t& x, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
+        return static_cast<glm::float32_t>((x - min.x) / (max.x - min.x) * (out_max - out_min) + out_min);
     }
 
-    glm::int32_t MapRenderer::remap_y(const glm::int32_t& y, const glm::int32_t& out_min, const glm::int32_t& out_max) const {
-        return static_cast<glm::int32_t>((y - min.y) / (max.y - min.y) * (out_max - out_min) + out_min);
+    glm::float32_t MapRenderer::remap_y(const glm::float32_t& y, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
+        return static_cast<glm::float32_t>((y - min.y) / (max.y - min.y) * (out_max - out_min) + out_min);
     }
 }
