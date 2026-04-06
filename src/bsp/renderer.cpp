@@ -24,8 +24,8 @@ namespace bsp {
         ClearBackground(BLACK);
 
         // render 2D and 3D content
-        render_2d();
         render_3d();
+        render_2d();
         
         // end the frame and get ready for the next one  (display frame, poll input, etc...)
         EndDrawing();
