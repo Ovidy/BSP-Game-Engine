@@ -8,22 +8,17 @@ namespace render {
         for (auto& model : wall_models) {
             UnloadModel(model);
         }
-        for (auto& texture : textures) {
-            UnloadTexture(texture);
-        }
     }
 
-    void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments) {
+    void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments, TextureManager& texture_manager) {
         // Clear previous level data if loading a new level
         for (auto& model : wall_models) UnloadModel(model);
-        for (auto& texture : textures) UnloadTexture(texture);
         wall_models.clear();
-        textures.clear();
 
         wall_models.reserve(bsp_segments.size());
 
         for (const auto& seg : bsp_segments) {
-            wall_models.push_back(generate_wall_model(seg));
+            wall_models.push_back(generate_wall_model(seg, texture_manager));
         }
     }
 
@@ -38,12 +33,12 @@ namespace render {
         }
     }
 
-    Model ViewRenderer::generate_wall_model(const Segment& segment) {
+    Model ViewRenderer::generate_wall_model(const Segment& segment, TextureManager& texture_manager) {
         Mesh mesh = get_quad_mesh(segment);
         Model model = LoadModelFromMesh(mesh);
         
-        Texture2D texture = get_random_texture();
-        textures.push_back(texture); // Save it so we can Unload it later
+        // Get the texture from the handler using the segment's ID
+        Texture2D texture = texture_manager.get_texture(segment.get_texture_id());
 
         model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
         return model;
@@ -107,12 +102,5 @@ namespace render {
             (unsigned char)GetRandomValue(50, 255), 
             255 
         };
-    }
-
-    Texture2D ViewRenderer::get_random_texture() {
-        Image image = GenImageChecked(10, 10, 1, 1, get_random_color(), WHITE);
-        Texture2D texture = LoadTextureFromImage(image);
-        UnloadImage(image);
-        return texture;
     }
 }

@@ -55,7 +55,11 @@ namespace render {
         segments = input_segments;
         tree_segments = input_tree_segments;
         map_renderer.load_level_data(segments, tree_segments);
-        view_renderer.load_models(tree_segments);
+        view_renderer.load_models(tree_segments, texture_manager);
+    }
+
+    void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
+        texture_manager.load_texture(id, file_path);
     }
 
     MapRenderer& Handler::get_map_renderer() {

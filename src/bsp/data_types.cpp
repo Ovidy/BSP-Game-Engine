@@ -2,8 +2,8 @@
 
 namespace bsp {
     // Segement class implementation
-    Segment::Segment(const glm::vec2& start, const glm::vec2& end)
-        : start(start), end(end) {}
+    Segment::Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id = -1)
+        : start(start), end(end), texture_id(texture_id) {}
 
     const glm::vec2& Segment::get_start() const {
         return start;
@@ -15,6 +15,10 @@ namespace bsp {
 
     const glm::vec2 Segment::get_direction() const {
         return end - start;
+    }
+
+    const glm::int32_t& Segment::get_texture_id() const {
+        return texture_id;
     }
 
     // BSPNode class implementation
