@@ -58,6 +58,10 @@ namespace render {
         view_renderer.load_models(tree_segments, texture_manager);
     }
 
+    void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
+        texture_manager.load_texture(id, file_path);
+    }
+
     MapRenderer& Handler::get_map_renderer() {
         return map_renderer;
     }
