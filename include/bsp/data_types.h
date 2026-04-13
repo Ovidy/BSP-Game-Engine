@@ -6,16 +6,19 @@
 namespace bsp {
     class Segment {
     public:
-        Segment(const glm::vec2& start, const glm::vec2& end);
+        Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id = -1);
         ~Segment() = default;
 
         const glm::vec2& get_start() const;
         const glm::vec2& get_end() const;
         const glm::vec2 get_direction() const;
 
+        const glm::int32_t& get_texture_id() const;
+
     private:
         glm::vec2 start;
         glm::vec2 end;
+        glm::int32_t texture_id;
     };
 
     class Node {
