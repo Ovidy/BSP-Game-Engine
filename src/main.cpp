@@ -41,14 +41,12 @@ int main ()
 	render::Handler render_handler;
 	input::Handler input_handler;
 
-	bsp_handler.load_level(bsp::test_level_segments);
-	render_handler.load_segments(bsp::test_level_segments, bsp_handler.get_segments());
-	
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
+	render_handler.load_texture(1, "wall_texture.png");
 
-	// Load a texture from the resources directory
-	//Texture wabbit = LoadTexture("wabbit_alpha.png");
+	bsp_handler.load_level(bsp::test_level_segments);
+	render_handler.load_segments(bsp::test_level_segments, bsp_handler.get_segments());
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
