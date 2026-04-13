@@ -172,8 +172,8 @@ namespace bsp {
                     num_split_segments++;
                     glm::vec2 intersection_point = segment.get_start() + t * dir_segment;
 
-                    Segment front_part(segment.get_start(), intersection_point);
-                    Segment back_part(intersection_point, segment.get_end());
+                    Segment front_part(segment.get_start(), intersection_point, segment.get_texture_id());
+                    Segment back_part(intersection_point, segment.get_end(), segment.get_texture_id());
 
                     if (numinator > 0) {
                         std::swap(front_part, back_part);
