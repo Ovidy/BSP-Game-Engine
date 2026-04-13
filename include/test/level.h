@@ -33,10 +33,13 @@ namespace bsp {
     
     // Segments:
     std::vector<bsp::Segment> test_level_segments = {
-        { points[4], points[5] }, { points[5], points[6] }, { points[6], points[7] }, { points[7], points[4] },
-        { points[0], points[1] }, { points[1], points[2] }, { points[2], points[3] }, { points[3], points[0] },
-        { points[8], points[9] }, { points[9], points[10] }, { points[10], points[11] }, { points[11], points[8] },
-        { points[12], points[13] }, { points[13], points[14] }, { points[14], points[15] }, { points[15], points[12] },
-        { points[16], points[17] }, { points[17], points[18] }, { points[18], points[16] },
+        // Example: Using texture ID 1 for this specific square (assuming you load it in main.cpp)
+        { points[4], points[5], 1 }, { points[5], points[6], 1 }, { points[6], points[7], 1 }, { points[7], points[4], 1 },
+
+        // The rest of the level using -1 as the placeholder (generates a random texture)
+        { points[0], points[1], -1 }, { points[1], points[2], -1 }, { points[2], points[3], -1 }, { points[3], points[0], -1 },
+        { points[8], points[9], -1 }, { points[9], points[10], -1 }, { points[10], points[11], -1 }, { points[11], points[8], -1 },
+        { points[12], points[13], -1 }, { points[13], points[14], -1 }, { points[14], points[15], -1 }, { points[15], points[12], -1 },
+        { points[16], points[17], -1 }, { points[17], points[18], -1 }, { points[18], points[16], -1 },
     };
 }

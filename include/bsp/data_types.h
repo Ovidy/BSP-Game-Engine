@@ -6,7 +6,7 @@
 namespace bsp {
     class Segment {
     public:
-        Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id = -1);
+        Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id);
         ~Segment() = default;
 
         const glm::vec2& get_start() const;
