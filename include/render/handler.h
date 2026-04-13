@@ -2,7 +2,7 @@
 
 #include <render/map_renderer.h>
 #include <render/view_renderer.h>
-
+#include <render/texture_manager.h>
 
 namespace render {
     class Handler {
@@ -21,6 +21,7 @@ namespace render {
 
         MapRenderer map_renderer;
         ViewRenderer view_renderer;
+        TextureManager texture_manager;
         std::vector<bsp::Segment> segments;
         std::vector<bsp::Segment> tree_segments;
     };
