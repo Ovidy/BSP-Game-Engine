@@ -88,14 +88,12 @@ namespace render {
         }
     }
 
-    void ViewRenderer::draw(const std::vector<glm::int32_t>& segment_ids_to_draw, bool is_map_drawn) {
-        // Determine the tint strictly during the draw call, no state variables needed!
+    void ViewRenderer::draw(bool is_map_drawn) {
         Color screen_tint = is_map_drawn ? DARKGRAY : WHITE;
 
-        for (glm::int32_t id : segment_ids_to_draw) {
-            if (id >= 0 && id < wall_models.size()) {
-                DrawModel(wall_models[id], Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
-            }
+        // Instead of drawing 100 individual walls, we just draw the few batched chunks!
+        for (const auto& pair : batched_models) {
+            DrawModel(pair.second, Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
         }
     }
 
