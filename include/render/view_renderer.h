@@ -21,9 +21,5 @@ namespace render {
 
     private:
         std::unordered_map<glm::int32_t, Model> batched_models;
-
-        Model generate_wall_model(const bsp::Segment& segment, TextureManager& texture_manager);
-        Mesh get_quad_mesh(const bsp::Segment& segment) const;
-        Color get_random_color() const;
     };
 }
