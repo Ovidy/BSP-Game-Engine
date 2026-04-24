@@ -13,9 +13,20 @@ namespace bsp {
         tree_traverser.update(camera_position);
     }
 
-    void Handler::load_level(const std::vector<Segment>& segments) {
-        LevelData level_data = LevelData(segments);
-        tree_builder.load_segments(TreeBuilder::find_best_seed_modern(segments), segments);
+    void Handler::load_level(const std::vector<Sector>& input_sectors) {
+        std::vector<Segment> flat_segments;
+
+        // Flatten the hierarchy and auto-link IDs
+        // Note: Using 'auto' instead of 'const auto&' for the sector so we can modify the wall's sector_id safely
+        for (auto sector : input_sectors) {
+            for (auto& wall : sector.walls) {
+                wall.set_sector_id(sector.id); // Guarantee the wall knows its parent
+                flat_segments.push_back(wall);
+            }
+        }
+
+        // Feed the flattened segments into your BSP engine
+        tree_builder.load_segments(TreeBuilder::find_best_seed_modern(flat_segments), flat_segments);
         tree_traverser.set_root(tree_builder.get_root());
     }
 

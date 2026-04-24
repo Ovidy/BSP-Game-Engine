@@ -14,12 +14,13 @@ namespace render {
         ~ViewRenderer(); // Required to safely unload Raylib models/textures from VRAM
 
         // Pass the generated BSP tree segments here once during level load
-        void load_models(const std::vector<bsp::Segment>& bsp_segments, TextureManager& texture_manager);
+        void load_models(const std::vector<bsp::Segment>& bsp_segments, const std::vector<bsp::Sector>& level_sectors, TextureManager& texture_manager);
 
         // Call this every frame in render_3d. Screen tint is calculated on the fly.
         void draw(bool is_map_drawn);
 
     private:
-        std::unordered_map<glm::int32_t, Model> batched_models;
+        std::unordered_map<glm::int32_t, Model> batched_models;       // For vertical walls
+        std::unordered_map<glm::int32_t, Model> batched_plane_models; // For horizontal floors/ceilings    
     };
 }
