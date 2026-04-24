@@ -22,6 +22,13 @@ namespace input {
         else if (IsKeyDown(KEY_A)) {
             camera.step_left();
         }
+
+        if (IsKeyDown(KEY_SPACE)) {
+            camera.fly_up();
+        }
+        else if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            camera.fly_down();
+        }
         // ----------- camera rotation ---------- //
         if (IsKeyDown(KEY_UP)) {
             camera.tilt_up();
