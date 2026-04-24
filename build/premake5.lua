@@ -259,6 +259,7 @@ if (downloadRaylib) then
         includedirs { "../src" }
         includedirs { "../include" }
         includedirs { "external/glm" }
+        includedirs { "external/earcut/include" }
 
         links {"raylib"}
 
