@@ -44,18 +44,23 @@ namespace render {
     void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
         BeginMode3D(raylib_camera);
 
-        view_renderer.draw(current_segment_ids, map_renderer.is_enabled());
+        // Just tell the view renderer to draw its batched models
+        view_renderer.draw(map_renderer.is_enabled());
 
         DrawGrid(32, 1.0f);
 
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments) {
+    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors) {
         segments = input_segments;
         tree_segments = input_tree_segments;
+        
+        // MapRenderer only needs the 2D lines
         map_renderer.load_level_data(segments, tree_segments);
-        view_renderer.load_models(tree_segments, texture_manager);
+        
+        // ViewRenderer needs the 3D walls AND the sectors to generate triangulated floors
+        view_renderer.load_models(tree_segments, level_sectors, texture_manager);
     }
 
     void Handler::load_texture(glm::int32_t id, const std::string& file_path) {

@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/build/external/glm"
+                "${workspaceFolder}/build/external/glm",
+                "${workspaceFolder}/build/external/earcut/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

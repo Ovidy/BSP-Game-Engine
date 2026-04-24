@@ -159,7 +159,7 @@ namespace render {
             glm::vec2 direction = segment.get_end() - segment.get_start();
             glm::vec2 normal = glm::normalize(glm::vec2(-direction.y, direction.x)) * 20.0f; // Scale for normal length
             glm::vec2 midpoint = (segment.get_start() + segment.get_end()) * 0.5f;
-            normalized_segments.push_back({midpoint, midpoint + normal, -1});
+            normalized_segments.push_back({midpoint, midpoint + normal, -1, segment.get_sector_id()});
         }
 
         return normalized_segments;
@@ -174,7 +174,7 @@ namespace render {
         }
 
         for (const auto& segment : segments_) {
-            remapped_segments.push_back({remap_vec2(segment.get_start()), remap_vec2(segment.get_end()), segment.get_texture_id()});
+            remapped_segments.push_back({remap_vec2(segment.get_start()), remap_vec2(segment.get_end()), segment.get_texture_id(), segment.get_sector_id()});
         }
 
         return remapped_segments;

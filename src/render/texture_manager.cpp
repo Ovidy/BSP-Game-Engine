@@ -45,11 +45,25 @@ namespace render {
     }
 
     Color TextureManager::get_random_color() const {
-        return Color{ 
-            (unsigned char)GetRandomValue(50, 255), 
-            (unsigned char)GetRandomValue(50, 255), 
-            (unsigned char)GetRandomValue(50, 255), 
-            255 
-        };
+        // 1. Setup a static, hardware-seeded Mersenne Twister.
+        // Making it 'static' ensures it only initializes once and keeps its state.
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+
+        // 2. Define our distribution ranges
+        // Hue controls the actual color (0 to 360 degrees on the color wheel)
+        std::uniform_real_distribution<float> hue_dist(0.0f, 360.0f);
+        
+        // Keep Saturation (color intensity) and Value (brightness) high to avoid mud!
+        std::uniform_real_distribution<float> sat_dist(0.6f, 1.0f); // 60% to 100% saturation
+        std::uniform_real_distribution<float> val_dist(0.8f, 1.0f); // 80% to 100% brightness
+
+        // 3. Generate the random HSV values
+        float h = hue_dist(gen);
+        float s = sat_dist(gen);
+        float v = val_dist(gen);
+
+        // 4. Let Raylib handle the complex math of converting HSV back to an RGB Color struct
+        return ColorFromHSV(h, s, v);
     }
 }

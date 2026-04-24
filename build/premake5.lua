@@ -93,10 +93,34 @@ function check_glm()
     os.chdir("../")
 end
 
+function check_earcut()
+    os.chdir("external")
+    if(os.isdir("earcut") == false) then
+        if(not os.isfile("earcut.zip")) then
+            print("Earcut not found, downloading from github...")
+            local result_str, response_code = http.download("https://github.com/mapbox/earcut.hpp/archive/refs/heads/master.zip", "earcut.zip", {
+                progress = download_progress,
+                headers = { "From: Premake", "Referer: Premake" }
+            })
+        end
+        print("Unzipping Earcut...")
+        zip.extract("earcut.zip", os.getcwd())
+        
+        -- The github zip extracts to a folder named 'earcut.hpp-master'
+        if (os.isdir("earcut.hpp-master")) then
+            os.rename("earcut.hpp-master", "earcut")
+        end
+        
+        os.remove("earcut.zip")
+    end
+    os.chdir("../")
+end
+
 function build_externals()
      print("calling externals")
      check_raylib()
      check_glm()
+     check_earcut()
 end
 
 function platform_defines()
@@ -235,6 +259,7 @@ if (downloadRaylib) then
         includedirs { "../src" }
         includedirs { "../include" }
         includedirs { "external/glm" }
+        includedirs { "external/earcut/include" }
 
         links {"raylib"}
 

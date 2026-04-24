@@ -6,7 +6,7 @@
 namespace bsp {
     class Segment {
     public:
-        Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id);
+        Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id, const glm::int32_t& sector_id);
         ~Segment() = default;
 
         const glm::vec2& get_start() const;
@@ -14,11 +14,26 @@ namespace bsp {
         const glm::vec2 get_direction() const;
 
         const glm::int32_t& get_texture_id() const;
+        const glm::int32_t& get_sector_id() const;
+
+        void set_sector_id(glm::int32_t id);
 
     private:
         glm::vec2 start;
         glm::vec2 end;
         glm::int32_t texture_id;
+        glm::int32_t sector_id;
+    };
+
+    struct Sector {
+        glm::int32_t id;
+        float floor_height;
+        float ceiling_height;
+        glm::int32_t floor_texture_id;
+        glm::int32_t ceiling_texture_id;
+        
+        // The sector owns the walls that make up its perimeter
+        std::vector<Segment> walls; 
     };
 
     class Node {
