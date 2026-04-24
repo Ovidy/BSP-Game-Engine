@@ -3,6 +3,7 @@
 #include <mapbox/earcut.hpp>
 #include <array>
 #include <cstring> // For memcpy
+#include <rlgl.h>
 
 using namespace bsp;
 using Point = std::array<float, 2>;
@@ -149,12 +150,7 @@ namespace render {
             }
             
             for (size_t i = 0; i < indices.size(); i += 3) {
-                // Side A
-                f_mesh.indices.push_back(f_v_offset + indices[i]);
-                f_mesh.indices.push_back(f_v_offset + indices[i + 1]); 
-                f_mesh.indices.push_back(f_v_offset + indices[i + 2]);
-                
-                // Side B (Reversed order)
+                // Floors point UP. We reverse Earcut's default winding so they are visible from above.
                 f_mesh.indices.push_back(f_v_offset + indices[i]);
                 f_mesh.indices.push_back(f_v_offset + indices[i + 2]); 
                 f_mesh.indices.push_back(f_v_offset + indices[i + 1]);
@@ -182,15 +178,10 @@ namespace render {
             }
 
             for (size_t i = 0; i < indices.size(); i += 3) {
-                // Side A
-                f_mesh.indices.push_back(f_v_offset + indices[i]);
-                f_mesh.indices.push_back(f_v_offset + indices[i + 1]); 
-                f_mesh.indices.push_back(f_v_offset + indices[i + 2]);
-                
-                // Side B (Reversed order)
-                f_mesh.indices.push_back(f_v_offset + indices[i]);
-                f_mesh.indices.push_back(f_v_offset + indices[i + 2]); 
-                f_mesh.indices.push_back(f_v_offset + indices[i + 1]);
+                // Ceilings point DOWN. Default winding makes them visible from below.
+                c_mesh.indices.push_back(c_v_offset + indices[i]);
+                c_mesh.indices.push_back(c_v_offset + indices[i + 1]);
+                c_mesh.indices.push_back(c_v_offset + indices[i + 2]);
             }
         }
 
@@ -232,9 +223,13 @@ namespace render {
             DrawModel(pair.second, Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
         }
 
+        rlDisableBackfaceCulling();
+
         // Draw Batched Floors and Ceilings
         for (const auto& pair : batched_plane_models) {
             DrawModel(pair.second, Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
         }
+
+        rlEnableBackfaceCulling();
     }
 }
