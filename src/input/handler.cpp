@@ -8,6 +8,11 @@ namespace input {
     Handler::Handler() = default;
 
     void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer) {
+        // ----------- mouse look --------------- //
+        Vector2 mouse_delta = GetMouseDelta();
+        if (mouse_delta.x != 0.0f) {
+            camera.add_yaw(mouse_delta.x);
+        }
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
             camera.step_forward();
@@ -21,6 +26,13 @@ namespace input {
         } 
         else if (IsKeyDown(KEY_A)) {
             camera.step_left();
+        }
+
+        if (IsKeyDown(KEY_RIGHT)) {
+            camera.add_yaw(1.0f);
+        } 
+        else if (IsKeyDown(KEY_LEFT)) {
+            camera.add_yaw(-1.0f);
         }
 
         if (IsKeyDown(KEY_SPACE)) {

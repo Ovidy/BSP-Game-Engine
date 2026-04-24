@@ -25,6 +25,8 @@ namespace bsp {
         void fly_up();
         void fly_down();
 
+        void add_yaw(float dx);
+
         // Declarations only
         const Camera3D& get_raylib_camera() const;
         glm::vec2 get_pos_2d() const;
@@ -37,6 +39,7 @@ namespace bsp {
 
         float speed;
         float pitch_dir;
+        float yaw_delta;
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;

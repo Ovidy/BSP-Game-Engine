@@ -19,11 +19,16 @@ namespace bsp {
     }
 
     void Camera::set_yaw(float dt) {
-        Vector2 mouse_delta = GetMouseDelta();
-        float delta_yaw = -mouse_delta.x * CAM_ROT_SPEED * dt;
+        if (yaw_delta != 0.0f) {
+            // Use the stored yaw_delta instead of GetMouseDelta()
+            float delta_yaw = -yaw_delta * CAM_ROT_SPEED * dt;
 
-        glm::vec3 new_target_pos = glm::rotateY(forward, delta_yaw);
-        update_target(new_target_pos);
+            glm::vec3 new_target_pos = glm::rotateY(forward, delta_yaw);
+            update_target(new_target_pos);
+            
+            // Update the forward vector immediately just like we do in pitch
+            forward = glm::normalize(new_target_pos);
+        }
     }
 
     void Camera::set_pitch(float dt) {
@@ -39,6 +44,10 @@ namespace bsp {
                 forward = glm::normalize(new_target_pos); 
             }
         }
+    }
+
+    void Camera::add_yaw(float dx) {
+        yaw_delta += dx;
     }
 
     void Camera::update_target(const glm::vec3& new_target_pos) {
@@ -78,6 +87,7 @@ namespace bsp {
         speed = CAM_SPEED * dt;
         cam_step = glm::vec3(0.0f);
         pitch_dir = 0.0f;
+        yaw_delta = 0.0f;
     }
 
     void Camera::step_forward() {
