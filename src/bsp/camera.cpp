@@ -104,6 +104,14 @@ namespace bsp {
         pitch_dir -= 1.0f;
     }
 
+    void Camera::fly_up() {
+        cam_step.y += speed; 
+    }
+
+    void Camera::fly_down() {
+        cam_step.y -= speed; 
+    }
+
     void Camera::check_cam_step() {
         if (cam_step.x != 0.0f && cam_step.z != 0.0f) {
             cam_step *= CAM_DIAG_MOVE_CORR;
@@ -112,12 +120,18 @@ namespace bsp {
 
     void Camera::move() {
         move_x(cam_step.x);
+        move_y(cam_step.y);
         move_z(cam_step.z);
     }
 
     void Camera::move_x(float dx) {
         m_cam.position.x += dx;
         m_cam.target.x += dx;
+    }
+
+    void Camera::move_y(float dy) {
+        m_cam.position.y += dy;
+        m_cam.target.y += dy;
     }
 
     void Camera::move_z(float dz) {

@@ -22,6 +22,9 @@ namespace bsp {
         void tilt_up();
         void tilt_down();
 
+        void fly_up();
+        void fly_down();
+
         // Declarations only
         const Camera3D& get_raylib_camera() const;
         glm::vec2 get_pos_2d() const;
@@ -47,6 +50,7 @@ namespace bsp {
         void check_cam_step();
         void move();
         void move_x(float dx);
+        void move_y(float dy);
         void move_z(float dz);
         void update_pos_2d();
     };
