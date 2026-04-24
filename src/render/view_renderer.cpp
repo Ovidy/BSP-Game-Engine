@@ -44,23 +44,30 @@ namespace render {
             for (const auto& segment : grouped_segments) {
                 glm::vec2 p0 = segment.get_start();
                 glm::vec2 p1 = segment.get_end();
-                float bottom = 0.0f, top = 1.0f;
+                
+                // Get the heights dynamically from the sector
+                float bottom = segment.get_floor();
+                float top = segment.get_ceiling();
 
                 glm::vec3 delta = glm::vec3(p1.x - p0.x, 0.0f, p1.y - p0.y);
                 glm::vec3 normal = glm::normalize(glm::vec3(-delta.z, 0.0f, delta.x));
+                
+                // Calculate physical dimensions for UV tiling
                 float width = glm::length(delta);
+                float height = top - bottom; 
 
-                // Insert Vertices
+                // Insert Vertices using dynamic 'bottom' and 'top'
                 mesh.vertices[v_offset * 3 + 0] = p0.x; mesh.vertices[v_offset * 3 + 1] = bottom; mesh.vertices[v_offset * 3 + 2] = p0.y;
                 mesh.vertices[v_offset * 3 + 3] = p1.x; mesh.vertices[v_offset * 3 + 4] = bottom; mesh.vertices[v_offset * 3 + 5] = p1.y;
                 mesh.vertices[v_offset * 3 + 6] = p1.x; mesh.vertices[v_offset * 3 + 7] = top;    mesh.vertices[v_offset * 3 + 8] = p1.y;
                 mesh.vertices[v_offset * 3 + 9] = p0.x; mesh.vertices[v_offset * 3 + 10] = top;   mesh.vertices[v_offset * 3 + 11] = p0.y;
 
-                // Insert Texcoords
-                mesh.texcoords[v_offset * 2 + 0] = 0.0f;  mesh.texcoords[v_offset * 2 + 1] = bottom;
-                mesh.texcoords[v_offset * 2 + 2] = width; mesh.texcoords[v_offset * 2 + 3] = bottom;
-                mesh.texcoords[v_offset * 2 + 4] = width; mesh.texcoords[v_offset * 2 + 5] = top;
-                mesh.texcoords[v_offset * 2 + 6] = 0.0f;  mesh.texcoords[v_offset * 2 + 7] = top;
+                // Insert Texcoords (UVs)
+                // We set Y to 'height' so the texture repeats cleanly top-to-bottom
+                mesh.texcoords[v_offset * 2 + 0] = 0.0f;  mesh.texcoords[v_offset * 2 + 1] = height; // Bottom-Left
+                mesh.texcoords[v_offset * 2 + 2] = width; mesh.texcoords[v_offset * 2 + 3] = height; // Bottom-Right
+                mesh.texcoords[v_offset * 2 + 4] = width; mesh.texcoords[v_offset * 2 + 5] = 0.0f;   // Top-Right
+                mesh.texcoords[v_offset * 2 + 6] = 0.0f;  mesh.texcoords[v_offset * 2 + 7] = 0.0f;   // Top-Left
 
                 // Insert Normals
                 for (int n = 0; n < 4; n++) {
