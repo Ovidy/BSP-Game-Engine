@@ -44,7 +44,8 @@ namespace render {
     void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
         BeginMode3D(raylib_camera);
 
-        view_renderer.draw(current_segment_ids, map_renderer.is_enabled());
+        // Just tell the view renderer to draw its batched models
+        view_renderer.draw(map_renderer.is_enabled());
 
         DrawGrid(32, 1.0f);
 

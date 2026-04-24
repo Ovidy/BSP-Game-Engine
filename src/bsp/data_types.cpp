@@ -40,16 +40,16 @@ namespace bsp {
         return segment_id;
     }
 
-    void Node::set_front(const std::shared_ptr<Node>& front) {
-        this->front = front;
+    void Node::set_front(const std::shared_ptr<Node>& input_front) {
+        this->front = input_front;
     }
 
-    void Node::set_back(const std::shared_ptr<Node>& back) {
-        this->back = back;
+    void Node::set_back(const std::shared_ptr<Node>& input_back) {
+        this->back = input_back;
     }
 
-    void Node::set_splitter(const Segment& splitter) {
-        this->splitter = splitter;
+    void Node::set_splitter(const Segment& input_splitter) {
+        this->splitter = input_splitter;
     }
 
     void Node::set_segment_id(const glm::int32_t& id) {
