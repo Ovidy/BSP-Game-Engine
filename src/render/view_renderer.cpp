@@ -149,8 +149,12 @@ namespace render {
             }
             
             for (size_t i = 0; i < indices.size(); i += 3) {
-                // Earcut winds counter-clockwise. For floors pointing up, we might need to flip it
-                // so it doesn't render upside down (culling).
+                // Side A
+                f_mesh.indices.push_back(f_v_offset + indices[i]);
+                f_mesh.indices.push_back(f_v_offset + indices[i + 1]); 
+                f_mesh.indices.push_back(f_v_offset + indices[i + 2]);
+                
+                // Side B (Reversed order)
                 f_mesh.indices.push_back(f_v_offset + indices[i]);
                 f_mesh.indices.push_back(f_v_offset + indices[i + 2]); 
                 f_mesh.indices.push_back(f_v_offset + indices[i + 1]);
@@ -178,10 +182,15 @@ namespace render {
             }
 
             for (size_t i = 0; i < indices.size(); i += 3) {
-                // Ceilings use standard Earcut winding so they are visible from underneath
-                c_mesh.indices.push_back(c_v_offset + indices[i]);
-                c_mesh.indices.push_back(c_v_offset + indices[i + 1]);
-                c_mesh.indices.push_back(c_v_offset + indices[i + 2]);
+                // Side A
+                f_mesh.indices.push_back(f_v_offset + indices[i]);
+                f_mesh.indices.push_back(f_v_offset + indices[i + 1]); 
+                f_mesh.indices.push_back(f_v_offset + indices[i + 2]);
+                
+                // Side B (Reversed order)
+                f_mesh.indices.push_back(f_v_offset + indices[i]);
+                f_mesh.indices.push_back(f_v_offset + indices[i + 2]); 
+                f_mesh.indices.push_back(f_v_offset + indices[i + 1]);
             }
         }
 
