@@ -1,6 +1,10 @@
 #include <render/view_renderer.h>
 
+#include <mapbox/earcut.hpp>
+#include <array>
+
 using namespace bsp;
+using Point = std::array<float, 2>;
 
 namespace render {
     ViewRenderer::~ViewRenderer() {
