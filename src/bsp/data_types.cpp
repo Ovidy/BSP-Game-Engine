@@ -2,8 +2,8 @@
 
 namespace bsp {
     // Segement class implementation
-    Segment::Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id = -1, const Sector& sector = {})
-        : start(start), end(end), texture_id(texture_id), sector(sector) {}
+    Segment::Segment(const glm::vec2& start, const glm::vec2& end, const glm::int32_t& texture_id = -1, const glm::int32_t& sector_id = -1)
+        : start(start), end(end), texture_id(texture_id), sector_id(sector_id) {}
 
     const glm::vec2& Segment::get_start() const {
         return start;
@@ -21,16 +21,12 @@ namespace bsp {
         return texture_id;
     }
 
-    const Sector& Segment::get_sector() const {
-        return sector;
+    const glm::int32_t& Segment::get_sector_id() const {
+        return sector_id;
     }
 
-    float Segment::get_floor() const {
-        return sector.floor_height;
-    }
-
-    float Segment::get_ceiling() const {
-        return sector.ceiling_height;
+    void Segment::set_sector_id(glm::int32_t id) {
+        sector_id = id;
     }
 
     // BSPNode class implementation
