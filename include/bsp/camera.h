@@ -19,6 +19,9 @@ namespace bsp {
         void step_left();
         void step_right();
 
+        void tilt_up();
+        void tilt_down();
+
         // Declarations only
         const Camera3D& get_raylib_camera() const;
         glm::vec2 get_pos_2d() const;
@@ -30,11 +33,13 @@ namespace bsp {
         glm::vec2 pos_2d;
 
         float speed;
+        float pitch_dir;
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;
 
         void set_yaw(float dt);
+        void set_pitch(float dt);
         void update_target(const glm::vec3& new_target_pos);
         void update_vectors();
         glm::vec3 get_forward() const;

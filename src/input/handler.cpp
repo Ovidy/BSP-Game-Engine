@@ -22,8 +22,14 @@ namespace input {
         else if (IsKeyDown(KEY_A)) {
             camera.step_left();
         }
+        // ----------- camera rotation ---------- //
+        if (IsKeyDown(KEY_UP)) {
+            camera.tilt_up();
+        }
+        else if (IsKeyDown(KEY_DOWN)) {
+            camera.tilt_down();
+        }
         // -------------------------------------- //
-
         if (IsKeyPressed(KEY_M)) {
             if (map_renderer.is_enabled()) {
                 map_renderer.disable_render();
