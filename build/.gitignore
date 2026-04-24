@@ -1,5 +1,6 @@
 external/glm/
 external/raylib-master/
+external/earcut/
 bin/
 obj/
 *.zip

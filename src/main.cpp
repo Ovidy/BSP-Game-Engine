@@ -45,8 +45,8 @@ int main ()
 	SearchAndSetResourceDir("resources");
 	render_handler.load_texture(1, "wall_texture.png");
 
-	bsp_handler.load_level(bsp::test_level_segments);
-	render_handler.load_segments(bsp::test_level_segments, bsp_handler.get_segments());
+	bsp_handler.load_level(bsp::test_level_sectors);
+	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors);
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
