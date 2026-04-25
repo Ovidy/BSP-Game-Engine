@@ -61,7 +61,7 @@ namespace bsp {
     struct Sprite {
         glm::vec3 position;       // X, Y (height), Z in the 3D world
         glm::int32_t texture_id;  // The image to draw
-        glm::vec2 scale = { 1.0f, 1.0f };       // Size multiplier
+        float scale = 1.0f;       // Size multiplier
         Color tint = WHITE;       // For lighting or damage flashes
     };
 }

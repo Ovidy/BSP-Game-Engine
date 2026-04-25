@@ -215,21 +215,60 @@ namespace render {
         }
     }
 
-    void ViewRenderer::draw(bool is_map_drawn) {
+    void ViewRenderer::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
+        this->sprites = level_sprites;
+    }
+
+    void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager) {
         Color screen_tint = is_map_drawn ? DARKGRAY : WHITE;
 
-        // Draw Batched Walls
+        // 1. Draw solid geometry first (Walls, Floors, Ceilings)
         for (const auto& pair : batched_models) {
             DrawModel(pair.second, Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
         }
 
-        rlDisableBackfaceCulling();
-
-        // Draw Batched Floors and Ceilings
+        rlDisableBackfaceCulling(); 
         for (const auto& pair : batched_plane_models) {
             DrawModel(pair.second, Vector3{ 0.0f, 0.0f, 0.0f }, 1.0f, screen_tint);
         }
-
         rlEnableBackfaceCulling();
+
+        // ==========================================
+        // 2. SORT AND DRAW SPRITES
+        // ==========================================
+        if (!sprites.empty()) {
+            glm::vec3 cam_pos(camera.position.x, camera.position.y, camera.position.z);
+
+            // Create a temporary list of pointers/indices so we can sort without modifying the original array
+            std::vector<std::pair<float, const bsp::Sprite*>> sorted_sprites;
+            sorted_sprites.reserve(sprites.size());
+
+            for (const auto& sprite : sprites) {
+                // Calculate squared distance (faster than actual distance, perfectly fine for sorting)
+                glm::vec3 diff = sprite.position - cam_pos;
+                float dist_sq = glm::dot(diff, diff);
+                sorted_sprites.push_back({ dist_sq, &sprite });
+            }
+
+            // Sort from furthest to closest (Painter's Algorithm)
+            std::sort(sorted_sprites.begin(), sorted_sprites.end(), 
+                [](const auto& a, const auto& b) {
+                    return a.first > b.first; 
+                });
+
+            // Draw the sorted sprites
+            for (const auto& pair : sorted_sprites) {
+                const bsp::Sprite* sprite = pair.second;
+                
+                // Get the actual texture from the manager
+                Texture2D tex = texture_manager.get_texture(sprite->texture_id);
+                
+                Vector3 raylib_pos = { sprite->position.x, sprite->position.y, sprite->position.z };
+                
+                // DrawBillboard is Raylib's magic function that automatically calculates 
+                // the quad vertices so they perfectly face the camera!
+                DrawBillboard(camera, tex, raylib_pos, sprite->scale, sprite->tint);
+            }
+        }
     }
 }
