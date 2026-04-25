@@ -20,6 +20,8 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 using namespace bsp;
 
+void prevent_dt_clamp(glm::float32_t& deltaTime);
+
 int main ()
 {
 	// Tell the window to use vsync and work on high DPI displays
@@ -56,6 +58,7 @@ int main ()
 	{
 		// Update:
 		deltaTime = GetFrameTime();
+		prevent_dt_clamp(deltaTime);
 		camera.pre_update(deltaTime);
 		input_handler.update(camera, render_handler.get_map_renderer());
 		camera.update(deltaTime);
@@ -72,4 +75,10 @@ int main ()
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
+}
+
+void prevent_dt_clamp(glm::float32_t& deltaTime) {
+	if (deltaTime > 0.05f) {
+		deltaTime = 0.0166f; 
+	}
 }
