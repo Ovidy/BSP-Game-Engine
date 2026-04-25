@@ -45,16 +45,25 @@ namespace physics {
         VerticalBounds best_bounds;
         
         for (const auto& sector : level_sectors) {
-            // If our 2D coordinates are inside this room's walls
+            // If our 2D coordinates are inside this room's footprint
             if (is_point_in_sector(player_pos_2d, sector)) {
                 
-                // Find the highest floor that is strictly below (or equal to) our feet
-                // (+0.1f buffers against floating point precision when perfectly grounded)
+                // --- CHECK 1: The Sector's Floor ---
+                // Does it act as ground below our feet?
                 if (sector.floor_height <= feet_y + 0.1f && sector.floor_height > best_bounds.floor_height) {
                     best_bounds.floor_height = sector.floor_height;
                 }
+                // Does it act as a ceiling above our head? (Standing underneath a floating block)
+                if (sector.floor_height >= head_y - 0.1f && sector.floor_height < best_bounds.ceiling_height) {
+                    best_bounds.ceiling_height = sector.floor_height;
+                }
 
-                // Find the lowest ceiling that is strictly above our head
+                // --- CHECK 2: The Sector's Ceiling ---
+                // Does it act as ground below our feet? (Standing ON TOP of a block)
+                if (sector.ceiling_height <= feet_y + 0.1f && sector.ceiling_height > best_bounds.floor_height) {
+                    best_bounds.floor_height = sector.ceiling_height;
+                }
+                // Does it act as a normal ceiling above our head?
                 if (sector.ceiling_height >= head_y - 0.1f && sector.ceiling_height < best_bounds.ceiling_height) {
                     best_bounds.ceiling_height = sector.ceiling_height;
                 }
