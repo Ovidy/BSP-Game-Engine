@@ -12,11 +12,26 @@ namespace input {
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
         }
+        
+        if (IsKeyPressed(KEY_C)) {
+            camera.toggle_noclip();
+        }
+
+        if (IsKeyPressed(KEY_F)) {
+            camera.toggle_free_view();
+        }
         // ----------- mouse look --------------- //
         Vector2 mouse_delta = GetMouseDelta();
         if (mouse_delta.x != 0.0f) {
             camera.add_yaw(mouse_delta.x);
         }
+
+        if (camera.is_free_view()) {
+            if (mouse_delta.y != 0.0f) {
+                camera.add_pitch(mouse_delta.y);
+            }
+        }
+
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
             camera.step_forward();
@@ -39,18 +54,26 @@ namespace input {
             camera.add_yaw(-1.0f);
         }
 
-        if (IsKeyDown(KEY_SPACE)) {
-            camera.fly_up();
-        }
-        else if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.fly_down();
+        if (camera.is_noclip()) {
+            if (IsKeyDown(KEY_SPACE)) {
+                camera.fly_up();
+            }
+            else if (IsKeyDown(KEY_LEFT_SHIFT)) {
+                camera.fly_down();
+            }
+        } else {
+            if (IsKeyDown(KEY_SPACE)) {
+                camera.jump();
+            }
         }
         // ----------- camera rotation ---------- //
-        if (IsKeyDown(KEY_UP)) {
-            camera.tilt_up();
-        }
-        else if (IsKeyDown(KEY_DOWN)) {
-            camera.tilt_down();
+        if (camera.is_free_view()) {
+            if (IsKeyDown(KEY_UP)) {
+                camera.tilt_up();
+            }
+            else if (IsKeyDown(KEY_DOWN)) {
+                camera.tilt_down();
+            }
         }
         // -------------------------------------- //
         if (IsKeyPressed(KEY_M)) {
