@@ -48,7 +48,7 @@ int main ()
 	render_handler.load_texture(3, "wabbit_alpha.png");
 
 	bsp_handler.load_level(bsp::test_level_sectors);
-	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors);
+	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
 	render_handler.load_sprites(bsp::test_level_sprites);
 	
 	// game loop

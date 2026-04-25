@@ -52,12 +52,12 @@ namespace render {
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors) {
+    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
         segments = input_segments;
         tree_segments = input_tree_segments;
         
         // MapRenderer only needs the 2D lines
-        map_renderer.load_level_data(segments, tree_segments);
+        map_renderer.load_level_data(segments, tree_segments, window_size);
         
         // ViewRenderer needs the 3D walls AND the sectors to generate triangulated floors
         view_renderer.load_models(tree_segments, level_sectors, texture_manager);
