@@ -23,7 +23,7 @@ namespace bsp {
         }
     }
 
-    void TreeTraverser::get_collision_candidates(const std::shared_ptr<Node>& node, const glm::vec2& pos, float radius, std::unordered_set<glm::int32_t>& out_sector_ids) const {
+    void TreeTraverser::get_collision_candidates(const std::shared_ptr<Node>& node, const glm::vec2& pos, const glm::float32_t& radius, std::unordered_set<glm::int32_t>& out_sector_ids) const {
         if (!node) return;
 
         const Segment& splitter = node->get_splitter();

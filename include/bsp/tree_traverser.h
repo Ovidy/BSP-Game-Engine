@@ -18,7 +18,7 @@ namespace bsp {
         void get_collision_candidates(
             const std::shared_ptr<Node>& node, 
             const glm::vec2& pos, 
-            float radius, 
+            const glm::float32_t& radius, 
             std::unordered_set<glm::int32_t>& out_sector_ids
         ) const;
 
