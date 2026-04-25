@@ -61,7 +61,14 @@ int main ()
 		prevent_dt_clamp(deltaTime);
 		camera.pre_update(deltaTime);
 		input_handler.update(camera, render_handler.get_map_renderer());
-		camera.update(deltaTime, bsp::test_level_sectors);
+		
+		// Ask the BSP tree what is nearby
+    	std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(
+			camera.get_pos_2d(), 
+			camera.get_player_radius()
+		);
+
+		camera.update(deltaTime, nearby_sectors);
 		bsp_handler.update(camera.get_pos_2d());
 
 		// Render:
