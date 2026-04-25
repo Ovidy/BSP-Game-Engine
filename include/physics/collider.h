@@ -5,7 +5,6 @@
 #include <vector>
 
 namespace physics {
-
     // The result of our detection phase
     struct CollisionResult {
         bool is_colliding = false;
