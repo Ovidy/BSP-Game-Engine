@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <raylib.h>
 #include <memory>
 
 namespace bsp {
@@ -55,5 +56,12 @@ namespace bsp {
         std::shared_ptr<Node> back;
         Segment splitter;
         glm::int32_t segment_id;
+    };
+
+    struct Sprite {
+        glm::vec3 position;       // X, Y (height), Z in the 3D world
+        glm::int32_t texture_id;  // The image to draw
+        glm::vec2 scale = { 1.0f, 1.0f };       // Size multiplier
+        Color tint = WHITE;       // For lighting or damage flashes
     };
 }
