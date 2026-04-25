@@ -139,25 +139,31 @@ namespace bsp {
     void Camera::move(const std::vector<bsp::Sector>& level_sectors) {
         glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
         glm::vec2 intended_vel = { cam_step.x, cam_step.z };
-        glm::vec2 final_vel = intended_vel;
+        
+        // This is where we want to go
+        glm::vec2 intended_pos = current_pos_2d + intended_vel;
 
         if (!noclip_enabled) {
-            glm::vec2 intended_pos = current_pos_2d + intended_vel;
-            
-            // 1. Detection Phase
+            // Check if our intended position puts our radius inside a wall
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
-                current_pos_2d, intended_pos, 
+                intended_pos, player_radius, 
                 m_cam.position.y, player_height, 
                 level_sectors
             );
 
-            // 2. Prevention Phase
-            final_vel = physics::Collider::resolve_movement(intended_vel, hit);
+            if (hit.is_colliding) {
+                // The physics engine pushes us directly out of the geometry!
+                intended_pos += hit.push_vector;
+            }
         }
 
-        move_x(final_vel.x);
-        move_y(cam_step.y);
-        move_z(final_vel.y);
+        // Calculate the safe step we are actually allowed to take
+        glm::vec2 actual_step = intended_pos - current_pos_2d;
+
+        // Apply it using your existing helpers (which preserves the camera target logic)
+        move_x(actual_step.x);
+        move_y(cam_step.y); // Y is still handled by gravity/flying separately
+        move_z(actual_step.y);
     }
 
     void Camera::move_x(float dx) {

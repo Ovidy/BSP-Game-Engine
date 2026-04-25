@@ -46,6 +46,7 @@ namespace bsp {
         float pitch_dir;
         float yaw_delta;
         float player_height = 0.8f; // How tall the camera is
+        float player_radius = 0.25f;
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;

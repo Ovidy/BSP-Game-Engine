@@ -8,18 +8,17 @@ namespace physics {
     // The result of our detection phase
     struct CollisionResult {
         bool is_colliding = false;
-        glm::vec2 hit_normal = glm::vec2(0.0f); // Which way the wall is facing
-        float distance = 0.0f;                  // How close we got
+        glm::vec2 push_vector = glm::vec2(0.0f); // Accumulates forces to push the player out
     };
 
     class Collider {
     public:
         // Checks math, returns data, DOES NOT alter the player
         static CollisionResult detect_wall_collision(
-            const glm::vec2& start_pos, 
             const glm::vec2& intended_pos, 
-            float player_y,             // Current height
-            float player_height,        // How tall the player is
+            float player_radius,
+            float player_y,             
+            float player_height,        
             const std::vector<bsp::Sector>& level_sectors
         );
 
@@ -30,11 +29,11 @@ namespace physics {
         );
 
     private:
-        // Standard 2D line intersection math
-        static bool line_intersects(
-            const glm::vec2& p1, const glm::vec2& p2, 
-            const glm::vec2& p3, const glm::vec2& p4, 
-            glm::vec2& out_intersection
+        // Finds the mathematically closest point on a line segment to the player
+        static glm::vec2 closest_point_on_segment(
+            const glm::vec2& p, 
+            const glm::vec2& a, 
+            const glm::vec2& b
         );
     };
 }
