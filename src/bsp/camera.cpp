@@ -262,4 +262,8 @@ namespace bsp {
     glm::vec3 Camera::get_pos_3d() const { 
         return glm::vec3(m_cam.position.x, m_cam.position.y, m_cam.position.z); 
     }
+
+    float Camera::get_player_radius() const {
+        return player_radius;
+    }
 }
