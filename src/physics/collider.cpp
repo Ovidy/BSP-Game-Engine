@@ -16,10 +16,14 @@ namespace physics {
             
             // HEIGHT CHECK: Are we completely above or below this sector?
             // If our feet are above the ceiling, we fly right over it!
-            if (player_bottom >= sector.ceiling_height) continue; 
+            if (player_bottom >= sector.ceiling_height) {
+                continue; 
+            }
             
             // If our head is below the floor, we are underneath it!
-            if (player_top <= sector.floor_height) continue;
+            if (player_top <= sector.floor_height) {
+                continue;
+            }
 
             // If we are within the height bounds, check the 2D walls
             for (const auto& wall : sector.walls) {
@@ -40,7 +44,9 @@ namespace physics {
     }
 
     glm::vec2 Collider::resolve_movement(const glm::vec2& intended_vel, const CollisionResult& hit) {
-        if (!hit.is_colliding) return intended_vel;
+        if (!hit.is_colliding) {
+            return intended_vel;
+        }
 
         // Movement Prevention: Slide along the wall
         // We remove the part of the velocity that goes INTO the wall, keeping the part that slides ALONG it.
@@ -66,6 +72,7 @@ namespace physics {
             out_intersection.y = p1.y + (u_a * (p2.y - p1.y));
             return true;
         }
+        
         return false;
     }
 }
