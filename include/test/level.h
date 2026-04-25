@@ -11,6 +11,7 @@ namespace bsp {
         { 1.8f, 1.8f }, { 1.8f, 4.2f }, { 3.5f, 4.2f }, { 3.5f, 1.8f },     // 8-11: First Rect
         { 1.5f, 5.5f }, { 1.5f, 6.5f }, { 2.0f, 6.5f }, { 2.0f, 5.5f },     // 12-15: Second Rect
         { 3.25f, 4.8f }, { 2.7f, 7.1f }, { 3.8f, 7.1f },                    // 16-18: Triangle
+        { 3.25f+5.0f, 4.8f+5.0f }, { 2.7f+5.0f, 7.1f+5.0f }, { 3.8f+5.0f, 7.1f+5.0f },                    // 16-18: Triangle
     };
     
     // Sectors with Extreme Height Variations
@@ -67,6 +68,16 @@ namespace bsp {
                 bsp::Segment(points[16], points[17], -1, -1), 
                 bsp::Segment(points[17], points[18], -1, -1), 
                 bsp::Segment(points[18], points[16], -1, -1)
+            }
+        },
+
+        // Sector 5: The Triangle (Far away)
+        {
+            5, 0.0f, 6.0f, -1, -1, // Touching the massive main ceiling
+            std::vector<bsp::Segment>{
+                bsp::Segment(points[19], points[20], -1, -1), 
+                bsp::Segment(points[20], points[21], -1, -1), 
+                bsp::Segment(points[21], points[19], -1, -1)
             }
         }
     };
