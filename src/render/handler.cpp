@@ -79,7 +79,7 @@ namespace render {
         DrawText("MOUSE - Look Around", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
 
-        DrawText("UP/DOWN - Pitch Camera", x_pos, y_pos, small_font, LIGHTGRAY);
+        DrawText("UP/DOWN/LEFT/RIGHT - Look Around", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
 
         DrawText("M - Toggle Map", x_pos, y_pos, small_font, LIGHTGRAY);
