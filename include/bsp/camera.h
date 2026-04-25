@@ -43,6 +43,7 @@ namespace bsp {
         const Camera3D& get_raylib_camera() const;
         glm::vec2 get_pos_2d() const;
         glm::vec3 get_pos_3d() const;
+        float get_player_radius() const;
 
     private:
         Camera3D m_cam;
