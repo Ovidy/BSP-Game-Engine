@@ -56,17 +56,17 @@ namespace bsp {
         m_cam.target.z = m_cam.position.z + new_target_pos.z;
     }
 
-    void Camera::pre_update(float dt) {
+    void Camera::pre_update(const glm::float32_t& dt) {
         init_cam_step(dt);
         update_vectors();
     }
 
-    void Camera::update(float dt) {
+    void Camera::update(const glm::float32_t& dt, const std::vector<bsp::Sector>& level_sectors) {
         check_cam_step();
         update_pos_2d();
         set_yaw(dt);
         set_pitch(dt);
-        move();
+        move(level_sectors);
     }
 
     void Camera::update_vectors() {
@@ -122,13 +122,39 @@ namespace bsp {
         cam_step.y -= speed; 
     }
 
+    void Camera::toggle_noclip() {
+        noclip_enabled = !noclip_enabled;
+    }
+    
+    bool Camera::is_noclip() const {
+        return noclip_enabled;
+    }
+
     void Camera::check_cam_step() {
         if (cam_step.x != 0.0f && cam_step.z != 0.0f) {
             cam_step *= CAM_DIAG_MOVE_CORR;
         }
     }
 
-    void Camera::move() {
+    void Camera::move(const std::vector<bsp::Sector>& level_sectors) {
+        glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
+        glm::vec2 intended_vel = { cam_step.x, cam_step.z };
+        glm::vec2 final_vel = intended_vel;
+
+        if (!noclip_enabled) {
+            glm::vec2 intended_pos = current_pos_2d + intended_vel;
+            
+            // 1. Detection Phase
+            physics::CollisionResult hit = physics::Collider::detect_wall_collision(
+                current_pos_2d, intended_pos, 
+                m_cam.position.y, player_height, 
+                level_sectors
+            );
+
+            // 2. Prevention Phase
+            final_vel = physics::Collider::resolve_movement(intended_vel, hit);
+        }
+
         move_x(cam_step.x);
         move_y(cam_step.y);
         move_z(cam_step.z);

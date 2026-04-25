@@ -5,14 +5,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 #include <bsp/utils.h>
+#include <physics/collider.h>
 
 namespace bsp {
     class Camera {
     public:
         Camera(const glm::vec3& start_pos, const glm::vec3& start_target, float fov_y);
 
-        void pre_update(float dt);
-        void update(float dt);
+        void pre_update(const glm::float32_t& deltaTime);
+        void update(const glm::float32_t& deltaTime, const std::vector<bsp::Sector>& level_sectors);
 
         void step_forward();
         void step_back();
@@ -24,6 +25,9 @@ namespace bsp {
 
         void fly_up();
         void fly_down();
+
+        void toggle_noclip();
+        bool is_noclip() const;
 
         void add_yaw(float dx);
 
@@ -40,9 +44,11 @@ namespace bsp {
         float speed;
         float pitch_dir;
         float yaw_delta;
+        float player_height = 0.8f; // How tall the camera is
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;
+        bool noclip_enabled = true; // Start floating freely for debugging
 
         void set_yaw(float dt);
         void set_pitch(float dt);
@@ -51,7 +57,7 @@ namespace bsp {
         glm::vec3 get_forward() const;
         void init_cam_step(float dt);
         void check_cam_step();
-        void move();
+        void move(const std::vector<bsp::Sector>& level_sectors);
         void move_x(float dx);
         void move_y(float dy);
         void move_z(float dz);
