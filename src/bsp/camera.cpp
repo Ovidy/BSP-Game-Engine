@@ -122,6 +122,13 @@ namespace bsp {
         cam_step.y -= speed; 
     }
 
+    void Camera::jump() {
+        if (is_grounded || noclip_enabled) {
+            velocity_y = JUMP_FORCE;
+            is_grounded = false;
+        }
+    }
+
     void Camera::toggle_noclip() {
         noclip_enabled = !noclip_enabled;
     }
@@ -136,45 +143,53 @@ namespace bsp {
         }
     }
 
-    void Camera::move(const std::vector<bsp::Sector>& level_sectors, const glm::float32_t dt) {
+    void Camera::move(const std::vector<bsp::Sector>& level_sectors, float dt) {
         glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
         glm::vec2 intended_vel = { cam_step.x, cam_step.z };
         glm::vec2 intended_pos = current_pos_2d + intended_vel;
 
         if (!noclip_enabled) {
-            // --- 1. HORIZONTAL COLLISION (Walls) ---
+            // Calculate where our body parts are relative to our "Eyes" (position.y)
+            float head_y = m_cam.position.y + 0.2f;          // Head is slightly above eyes
+            float feet_y = m_cam.position.y - player_height; // Feet are way below eyes
+
+            // --- 1. HORIZONTAL COLLISION ---
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
-                intended_pos, player_radius, 
-                m_cam.position.y, player_height, level_sectors
+                intended_pos, player_radius, feet_y, head_y, level_sectors
             );
 
             if (hit.is_colliding) {
                 intended_pos += hit.push_vector;
             }
             
-            // --- 2. VERTICAL COLLISION (Gravity, Floors, Ceilings) ---
-            // Get the limits of the room we are standing in right now
-            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, level_sectors);
+            // --- 2. VERTICAL COLLISION ---
+            // Ask the physics engine for the limits at our intended position
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, feet_y, head_y, level_sectors);
             
-            // Apply Gravity
+            // Apply Gravity to the camera
             velocity_y -= GRAVITY * dt;
             m_cam.position.y += velocity_y * dt;
 
+            // Re-calculate feet position after gravity pulled us down
+            feet_y = m_cam.position.y - player_height;
+
             // Floor Collision
-            if (m_cam.position.y <= bounds.floor_height) {
-                m_cam.position.y = bounds.floor_height;
+            if (feet_y <= bounds.floor_height) {
+                // We hit the floor! Snap the EYES to the correct height ABOVE the floor
+                m_cam.position.y = bounds.floor_height + player_height; 
                 velocity_y = 0.0f;
                 is_grounded = true;
             } else {
                 is_grounded = false;
             }
 
-            // Ceiling Collision (Bonk head)
-            if (m_cam.position.y + player_height >= bounds.ceiling_height) {
-                m_cam.position.y = bounds.ceiling_height - player_height;
+            // Ceiling Collision
+            head_y = m_cam.position.y + 0.2f;
+            if (head_y >= bounds.ceiling_height) {
+                // Bonked our head, snap eyes below the ceiling
+                m_cam.position.y = bounds.ceiling_height - 0.2f;
                 if (velocity_y > 0.0f) velocity_y = 0.0f; // Stop moving upward
             }
-
         } else {
             // NOCLIP FLYING BEHAVIOR
             m_cam.position.y += cam_step.y; 
@@ -186,7 +201,6 @@ namespace bsp {
         move_x(actual_step.x);
         move_z(actual_step.y); 
         
-        // Make sure the target stays aligned with the new Y position
         m_cam.target.y = m_cam.position.y + forward.y;
     }
 

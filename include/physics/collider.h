@@ -13,24 +13,23 @@ namespace physics {
 
     // Struct to hold the vertical limits of wherever the player is standing
     struct VerticalBounds {
-        float floor_height = 0.0f;
-        float ceiling_height = 100.0f; // Default high ceiling
+        float floor_height = -9999.0f; // Start infinitely low
+        float ceiling_height = 9999.0f; // Start infinitely high
     };
 
     class Collider {
     public:
         // Checks math, returns data, DOES NOT alter the player
         static CollisionResult detect_wall_collision(
-            const glm::vec2& intended_pos, 
-            float player_radius,
-            float player_y,             
-            float player_height,        
+            const glm::vec2& intended_pos, float player_radius,        
+            float feet_y, float head_y,        
             const std::vector<bsp::Sector>& level_sectors
         );
 
         // Finds which sector the player is in, and returns its heights
         static VerticalBounds get_sector_bounds(
             const glm::vec2& player_pos_2d, 
+            float feet_y, float head_y,
             const std::vector<bsp::Sector>& level_sectors
         );
 

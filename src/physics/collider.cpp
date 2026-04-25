@@ -6,41 +6,31 @@ namespace physics {
 
     CollisionResult Collider::detect_wall_collision(
         const glm::vec2& intended_pos, float player_radius, 
-        float player_y, float player_height, 
+        float feet_y, float head_y, 
         const std::vector<bsp::Sector>& level_sectors) 
     {
         CollisionResult result;
-        float player_top = player_y + player_height;
-        float player_bottom = player_y;
 
         for (const auto& sector : level_sectors) {
-            
-            // Height check (Allows flying over/under walls)
-            if (player_bottom >= sector.ceiling_height) continue; 
-            if (player_top <= sector.floor_height) continue;
+            // Height check: Are we flying over or walking under this wall?
+            if (feet_y >= sector.ceiling_height) continue; 
+            if (head_y <= sector.floor_height) continue;
 
+            // ... (Keep the rest of your wall collision logic exactly the same) ...
             for (const auto& wall : sector.walls) {
-                // Find exactly where on the wall we are hitting
                 glm::vec2 closest = closest_point_on_segment(intended_pos, wall.get_start(), wall.get_end());
-                
                 glm::vec2 diff = intended_pos - closest;
                 float dist_sq = glm::dot(diff, diff);
                 float radius_sq = player_radius * player_radius;
 
-                // If the distance is smaller than our radius, we have penetrated the wall!
                 if (dist_sq < radius_sq) {
                     result.is_colliding = true;
-                    
                     if (dist_sq > 0.0f) {
                         float dist = std::sqrt(dist_sq);
                         float penetration_depth = player_radius - dist;
-                        
-                        // Push away from the wall
                         glm::vec2 push_dir = diff / dist; 
                         result.push_vector += push_dir * penetration_depth;
                     } else {
-                        // Edge case: Player's exact dead-center is ON the wall.
-                        // Push them out using the wall's normal.
                         glm::vec2 wall_dir = glm::normalize(wall.get_end() - wall.get_start());
                         glm::vec2 normal(-wall_dir.y, wall_dir.x);
                         result.push_vector += normal * player_radius;
@@ -51,20 +41,27 @@ namespace physics {
         return result;
     }
 
-    VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, const std::vector<bsp::Sector>& level_sectors) {
-        VerticalBounds bounds;
+    VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
+        VerticalBounds best_bounds;
         
-        // Find which sector the player is currently standing in
         for (const auto& sector : level_sectors) {
+            // If our 2D coordinates are inside this room's walls
             if (is_point_in_sector(player_pos_2d, sector)) {
-                bounds.floor_height = sector.floor_height;
-                bounds.ceiling_height = sector.ceiling_height;
-                return bounds; // Found the room!
+                
+                // Find the highest floor that is strictly below (or equal to) our feet
+                // (+0.1f buffers against floating point precision when perfectly grounded)
+                if (sector.floor_height <= feet_y + 0.1f && sector.floor_height > best_bounds.floor_height) {
+                    best_bounds.floor_height = sector.floor_height;
+                }
+
+                // Find the lowest ceiling that is strictly above our head
+                if (sector.ceiling_height >= head_y - 0.1f && sector.ceiling_height < best_bounds.ceiling_height) {
+                    best_bounds.ceiling_height = sector.ceiling_height;
+                }
             }
         }
         
-        // If the player steps out of bounds, return default safe values
-        return bounds; 
+        return best_bounds;
     }
 
     glm::vec2 Collider::closest_point_on_segment(const glm::vec2& p, const glm::vec2& a, const glm::vec2& b) {

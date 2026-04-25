@@ -42,11 +42,17 @@ namespace input {
             camera.add_yaw(-1.0f);
         }
 
-        if (IsKeyDown(KEY_SPACE)) {
-            camera.fly_up();
-        }
-        else if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            camera.fly_down();
+        if (camera.is_noclip()) {
+            if (IsKeyDown(KEY_SPACE)) {
+                camera.fly_up();
+            }
+            else if (IsKeyDown(KEY_LEFT_SHIFT)) {
+                camera.fly_down();
+            }
+        } else {
+            if (IsKeyDown(KEY_SPACE)) {
+                camera.jump();
+            }
         }
         // ----------- camera rotation ---------- //
         if (IsKeyDown(KEY_UP)) {
