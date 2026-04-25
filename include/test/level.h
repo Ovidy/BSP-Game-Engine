@@ -11,6 +11,7 @@ namespace bsp {
         { 1.8f, 1.8f }, { 1.8f, 4.2f }, { 3.5f, 4.2f }, { 3.5f, 1.8f },     // 8-11: First Rect
         { 1.5f, 5.5f }, { 1.5f, 6.5f }, { 2.0f, 6.5f }, { 2.0f, 5.5f },     // 12-15: Second Rect
         { 3.25f, 4.8f }, { 2.7f, 7.1f }, { 3.8f, 7.1f },                    // 16-18: Triangle
+        { 3.25f+5.0f, 4.8f+5.0f }, { 2.7f+5.0f, 7.1f+5.0f }, { 3.8f+5.0f, 7.1f+5.0f },                    // 16-18: Triangle
     };
     
     // Sectors with Extreme Height Variations
@@ -68,6 +69,24 @@ namespace bsp {
                 bsp::Segment(points[17], points[18], -1, -1), 
                 bsp::Segment(points[18], points[16], -1, -1)
             }
+        },
+
+        // Sector 5: The Triangle (Far away)
+        {
+            5, 0.0f, 6.0f, -1, -1, // Touching the massive main ceiling
+            std::vector<bsp::Segment>{
+                bsp::Segment(points[19], points[20], -1, -1), 
+                bsp::Segment(points[20], points[21], -1, -1), 
+                bsp::Segment(points[21], points[19], -1, -1)
+            }
         }
+    };
+
+    std::vector<bsp::Sprite> test_level_sprites = {
+        // Place a sprite in the middle of the giant main hall (Floor is 0.0f)
+        { glm::vec3(2.0f, 0.5f, 2.0f), 2, 1.0f, WHITE }, // Assuming texture ID 2 is a monster/item
+
+        // Place a sprite up on the floating triangle platform (Floor is 4.0f)
+        { glm::vec3(5.2f, 4.5f, 4.5f), 3, 1.5f, WHITE } // Tinted red, slightly larger
     };
 }

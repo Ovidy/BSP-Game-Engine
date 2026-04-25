@@ -39,25 +39,78 @@ namespace render {
         // Pass the forward vector into the map renderer
         map_renderer.render(current_segment_ids, camera_position, forward);
         DrawFPS(10, 10);
+
+        draw_controls_overlay();
+    }
+
+    void Handler::draw_controls_overlay() {
+        // ==========================================
+        // DRAW CONTROLS OVERLAY
+        // ==========================================
+        int font_size = 20;
+        int small_font = 16;
+        int padding = 20;
+        int line_spacing = 22;
+
+        // Position it on the top right side of the screen
+        int x_pos = GetScreenWidth() - 260; 
+        int y_pos = padding;
+
+        // Draw a subtle semi-transparent background box so the text is readable against bright walls
+        DrawRectangle(x_pos - 10, y_pos - 10, 260, 260, Color{ 0, 0, 0, 150 });
+
+        // Draw the Title
+        DrawText("CONTROLS:", x_pos, y_pos, font_size, RAYWHITE);
+        y_pos += line_spacing + 5;
+
+        // Draw the list of keys
+        DrawText("W/A/S/D - Move", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("SPACE - Jump", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("L-SHIFT - Fly Down", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("TAB - Toggle Mouse Lock", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("MOUSE - Look Around", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("UP/DOWN/LEFT/RIGHT - Look Around", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("M - Toggle Map", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("C - Toggle Creative Mode", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("F - Free View Mode", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("F11 - Fullscreen", x_pos, y_pos, small_font, LIGHTGRAY);
     }
 
     void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
-        view_renderer.draw(map_renderer.is_enabled());
+        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager);
 
         DrawGrid(32, 1.0f);
 
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors) {
+    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
         segments = input_segments;
         tree_segments = input_tree_segments;
         
         // MapRenderer only needs the 2D lines
-        map_renderer.load_level_data(segments, tree_segments);
+        map_renderer.load_level_data(segments, tree_segments, window_size);
         
         // ViewRenderer needs the 3D walls AND the sectors to generate triangulated floors
         view_renderer.load_models(tree_segments, level_sectors, texture_manager);
@@ -65,6 +118,10 @@ namespace render {
 
     void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
         texture_manager.load_texture(id, file_path);
+    }
+
+    void Handler::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
+        view_renderer.load_sprites(level_sprites);
     }
 
     MapRenderer& Handler::get_map_renderer() {

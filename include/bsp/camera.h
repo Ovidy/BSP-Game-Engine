@@ -5,14 +5,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 #include <bsp/utils.h>
+#include <physics/collider.h>
 
 namespace bsp {
     class Camera {
     public:
         Camera(const glm::vec3& start_pos, const glm::vec3& start_target, float fov_y);
 
-        void pre_update(float dt);
-        void update(float dt);
+        void pre_update(const glm::float32_t& deltaTime);
+        void update(const glm::float32_t& deltaTime, const std::vector<bsp::Sector>& level_sectors);
 
         void step_forward();
         void step_back();
@@ -25,7 +26,18 @@ namespace bsp {
         void fly_up();
         void fly_down();
 
+        void jump();
+
+        // Enables or disables collision
+        void toggle_noclip();
+        bool is_noclip() const;
+
+        // Enables or disables free view
+        void toggle_free_view();
+        bool is_free_view() const;
+
         void add_yaw(float dx);
+        void add_pitch(float dy);
 
         // Declarations only
         const Camera3D& get_raylib_camera() const;
@@ -40,9 +52,20 @@ namespace bsp {
         float speed;
         float pitch_dir;
         float yaw_delta;
+        float pitch_delta;
+        float player_height = 0.8f; // How tall the camera is
+        float player_radius = 0.25f;
+        float velocity_y = 0.0f;
+        bool is_grounded = false;
+        
+        const float GRAVITY = 15.0f;     // How fast we fall
+        const float JUMP_FORCE = 6.0f;   // How high we jump
+
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;
+        bool noclip_enabled = false;
+        bool free_view = true; // Look everywhere with mouse
 
         void set_yaw(float dt);
         void set_pitch(float dt);
@@ -51,7 +74,7 @@ namespace bsp {
         glm::vec3 get_forward() const;
         void init_cam_step(float dt);
         void check_cam_step();
-        void move();
+        void move(const std::vector<bsp::Sector>& level_sectors, const glm::float32_t deltaTime);
         void move_x(float dx);
         void move_y(float dy);
         void move_z(float dz);

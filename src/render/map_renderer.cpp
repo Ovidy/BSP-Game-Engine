@@ -3,7 +3,7 @@
 using namespace bsp;
 
 namespace render {
-    void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, const std::vector<Segment>& input_tree_segments) {
+    void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, const std::vector<Segment>& input_tree_segments, const glm::vec2& window_size) {
         // Initialize min and max based on the level data
         min = glm::vec2(std::numeric_limits<float>::max());
         max = glm::vec2(std::numeric_limits<float>::lowest());
@@ -17,9 +17,8 @@ namespace render {
 
         float width = max.x - min.x;
         float height = max.y - min.y;
-        
-        // Assuming your window is 800x600 (Change these if your resolution is different!)
-        float screen_aspect = 800.0f / 600.0f; 
+    
+        float screen_aspect = (glm::float32_t)window_size.x / (glm::float32_t)window_size.y; 
         float map_aspect = width / height;
 
         if (map_aspect > screen_aspect) {

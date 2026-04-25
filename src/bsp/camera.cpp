@@ -32,11 +32,23 @@ namespace bsp {
     }
 
     void Camera::set_pitch(float dt) {
+        float total_pitch_movement = 0.0f;
+
+        // Add keyboard input (if any)
         if (pitch_dir != 0.0f) {
-            // Calculate delta based on the input handler's direction
-            float delta_pitch = pitch_dir * CAM_ROT_SPEED * dt;
-            
-            glm::vec3 new_target_pos = glm::rotate(forward, delta_pitch, right);
+            total_pitch_movement += pitch_dir * CAM_ROT_SPEED * dt;
+        }
+
+        // Add mouse input (if any)
+        if (pitch_delta != 0.0f) {
+            // We subtract the pitch_delta because screen Y coordinates go down, 
+            // but we want the camera angle to pitch UP when we push the mouse forward!
+            total_pitch_movement -= pitch_delta * CAM_ROT_SPEED * dt; 
+        }
+
+        // Apply the rotation if there was any movement
+        if (total_pitch_movement != 0.0f) {
+            glm::vec3 new_target_pos = glm::rotate(forward, total_pitch_movement, right);
 
             // Clamp the rotation so the camera doesn't flip completely upside down
             if (new_target_pos.y < 0.99f && new_target_pos.y > -0.99f) {
@@ -50,23 +62,27 @@ namespace bsp {
         yaw_delta += dx;
     }
 
+    void Camera::add_pitch(float dy) {
+        pitch_delta += dy;
+    }
+
     void Camera::update_target(const glm::vec3& new_target_pos) {
         m_cam.target.x = m_cam.position.x + new_target_pos.x;
         m_cam.target.y = m_cam.position.y + new_target_pos.y;
         m_cam.target.z = m_cam.position.z + new_target_pos.z;
     }
 
-    void Camera::pre_update(float dt) {
+    void Camera::pre_update(const glm::float32_t& dt) {
         init_cam_step(dt);
         update_vectors();
     }
 
-    void Camera::update(float dt) {
+    void Camera::update(const glm::float32_t& dt, const std::vector<bsp::Sector>& level_sectors) {
         check_cam_step();
         update_pos_2d();
         set_yaw(dt);
         set_pitch(dt);
-        move();
+        move(level_sectors, dt);
     }
 
     void Camera::update_vectors() {
@@ -88,6 +104,7 @@ namespace bsp {
         cam_step = glm::vec3(0.0f);
         pitch_dir = 0.0f;
         yaw_delta = 0.0f;
+        pitch_delta = 0.0f;
     }
 
     void Camera::step_forward() {
@@ -122,16 +139,94 @@ namespace bsp {
         cam_step.y -= speed; 
     }
 
+    void Camera::jump() {
+        if (is_grounded || noclip_enabled) {
+            velocity_y = JUMP_FORCE;
+            is_grounded = false;
+        }
+    }
+
+    void Camera::toggle_noclip() {
+        noclip_enabled = !noclip_enabled;
+    }
+    
+    bool Camera::is_noclip() const {
+        return noclip_enabled;
+    }
+
+    void Camera::toggle_free_view() {
+        free_view = !free_view;
+    }
+
+    bool Camera::is_free_view() const {
+        return free_view;
+    }
+
     void Camera::check_cam_step() {
         if (cam_step.x != 0.0f && cam_step.z != 0.0f) {
             cam_step *= CAM_DIAG_MOVE_CORR;
         }
     }
 
-    void Camera::move() {
-        move_x(cam_step.x);
-        move_y(cam_step.y);
-        move_z(cam_step.z);
+    void Camera::move(const std::vector<bsp::Sector>& level_sectors, float dt) {
+        glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
+        glm::vec2 intended_vel = { cam_step.x, cam_step.z };
+        glm::vec2 intended_pos = current_pos_2d + intended_vel;
+
+        if (!noclip_enabled) {
+            // Calculate where our body parts are relative to our "Eyes" (position.y)
+            float head_y = m_cam.position.y + 0.2f;          // Head is slightly above eyes
+            float feet_y = m_cam.position.y - player_height; // Feet are way below eyes
+
+            // --- 1. HORIZONTAL COLLISION ---
+            physics::CollisionResult hit = physics::Collider::detect_wall_collision(
+                intended_pos, player_radius, feet_y, head_y, level_sectors
+            );
+
+            if (hit.is_colliding) {
+                intended_pos += hit.push_vector;
+            }
+            
+            // --- 2. VERTICAL COLLISION ---
+            // Ask the physics engine for the limits at our intended position
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, feet_y, head_y, level_sectors);
+            
+            // Apply Gravity to the camera
+            velocity_y -= GRAVITY * dt;
+            m_cam.position.y += velocity_y * dt;
+
+            // Re-calculate feet position after gravity pulled us down
+            feet_y = m_cam.position.y - player_height;
+
+            // Floor Collision
+            if (feet_y <= bounds.floor_height) {
+                // We hit the floor! Snap the EYES to the correct height ABOVE the floor
+                m_cam.position.y = bounds.floor_height + player_height; 
+                velocity_y = 0.0f;
+                is_grounded = true;
+            } else {
+                is_grounded = false;
+            }
+
+            // Ceiling Collision
+            head_y = m_cam.position.y + 0.2f;
+            if (head_y >= bounds.ceiling_height) {
+                // Bonked our head, snap eyes below the ceiling
+                m_cam.position.y = bounds.ceiling_height - 0.2f;
+                if (velocity_y > 0.0f) velocity_y = 0.0f; // Stop moving upward
+            }
+        } else {
+            // NOCLIP FLYING BEHAVIOR
+            m_cam.position.y += cam_step.y; 
+            velocity_y = 0.0f; 
+        }
+
+        // Apply Horizontal movement
+        glm::vec2 actual_step = intended_pos - current_pos_2d;
+        move_x(actual_step.x);
+        move_z(actual_step.y); 
+        
+        m_cam.target.y = m_cam.position.y + forward.y;
     }
 
     void Camera::move_x(float dx) {
