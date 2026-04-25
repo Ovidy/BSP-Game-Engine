@@ -11,6 +11,12 @@ namespace physics {
         glm::vec2 push_vector = glm::vec2(0.0f); // Accumulates forces to push the player out
     };
 
+    // Struct to hold the vertical limits of wherever the player is standing
+    struct VerticalBounds {
+        float floor_height = 0.0f;
+        float ceiling_height = 100.0f; // Default high ceiling
+    };
+
     class Collider {
     public:
         // Checks math, returns data, DOES NOT alter the player
@@ -19,6 +25,12 @@ namespace physics {
             float player_radius,
             float player_y,             
             float player_height,        
+            const std::vector<bsp::Sector>& level_sectors
+        );
+
+        // Finds which sector the player is in, and returns its heights
+        static VerticalBounds get_sector_bounds(
+            const glm::vec2& player_pos_2d, 
             const std::vector<bsp::Sector>& level_sectors
         );
 
@@ -35,5 +47,8 @@ namespace physics {
             const glm::vec2& a, 
             const glm::vec2& b
         );
+
+        // Math helper to check if a point is inside a polygon
+        static bool is_point_in_sector(const glm::vec2& point, const bsp::Sector& sector);
     };
 }
