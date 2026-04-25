@@ -66,7 +66,7 @@ namespace bsp {
         update_pos_2d();
         set_yaw(dt);
         set_pitch(dt);
-        move(level_sectors);
+        move(level_sectors, dt);
     }
 
     void Camera::update_vectors() {
@@ -136,34 +136,58 @@ namespace bsp {
         }
     }
 
-    void Camera::move(const std::vector<bsp::Sector>& level_sectors) {
+    void Camera::move(const std::vector<bsp::Sector>& level_sectors, const glm::float32_t dt) {
         glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
         glm::vec2 intended_vel = { cam_step.x, cam_step.z };
-        
-        // This is where we want to go
         glm::vec2 intended_pos = current_pos_2d + intended_vel;
 
         if (!noclip_enabled) {
-            // Check if our intended position puts our radius inside a wall
+            // --- 1. HORIZONTAL COLLISION (Walls) ---
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
                 intended_pos, player_radius, 
-                m_cam.position.y, player_height, 
-                level_sectors
+                m_cam.position.y, player_height, level_sectors
             );
 
             if (hit.is_colliding) {
-                // The physics engine pushes us directly out of the geometry!
                 intended_pos += hit.push_vector;
             }
+            
+            // --- 2. VERTICAL COLLISION (Gravity, Floors, Ceilings) ---
+            // Get the limits of the room we are standing in right now
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, level_sectors);
+            
+            // Apply Gravity
+            velocity_y -= GRAVITY * dt;
+            m_cam.position.y += velocity_y * dt;
+
+            // Floor Collision
+            if (m_cam.position.y <= bounds.floor_height) {
+                m_cam.position.y = bounds.floor_height;
+                velocity_y = 0.0f;
+                is_grounded = true;
+            } else {
+                is_grounded = false;
+            }
+
+            // Ceiling Collision (Bonk head)
+            if (m_cam.position.y + player_height >= bounds.ceiling_height) {
+                m_cam.position.y = bounds.ceiling_height - player_height;
+                if (velocity_y > 0.0f) velocity_y = 0.0f; // Stop moving upward
+            }
+
+        } else {
+            // NOCLIP FLYING BEHAVIOR
+            m_cam.position.y += cam_step.y; 
+            velocity_y = 0.0f; 
         }
 
-        // Calculate the safe step we are actually allowed to take
+        // Apply Horizontal movement
         glm::vec2 actual_step = intended_pos - current_pos_2d;
-
-        // Apply it using your existing helpers (which preserves the camera target logic)
         move_x(actual_step.x);
-        move_y(cam_step.y); // Y is still handled by gravity/flying separately
-        move_z(actual_step.y);
+        move_z(actual_step.y); 
+        
+        // Make sure the target stays aligned with the new Y position
+        m_cam.target.y = m_cam.position.y + forward.y;
     }
 
     void Camera::move_x(float dx) {
