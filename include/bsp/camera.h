@@ -32,7 +32,12 @@ namespace bsp {
         void toggle_noclip();
         bool is_noclip() const;
 
+        // Enables or disables free view
+        void toggle_free_view();
+        bool is_free_view() const;
+
         void add_yaw(float dx);
+        void add_pitch(float dy);
 
         // Declarations only
         const Camera3D& get_raylib_camera() const;
@@ -47,6 +52,7 @@ namespace bsp {
         float speed;
         float pitch_dir;
         float yaw_delta;
+        float pitch_delta;
         float player_height = 0.8f; // How tall the camera is
         float player_radius = 0.25f;
         float velocity_y = 0.0f;
@@ -59,6 +65,7 @@ namespace bsp {
         glm::vec3 forward;
         glm::vec3 right;
         bool noclip_enabled = true; // Start floating freely for debugging
+        bool free_view = true; // Look everywhere with mouse
 
         void set_yaw(float dt);
         void set_pitch(float dt);

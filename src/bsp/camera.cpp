@@ -32,11 +32,23 @@ namespace bsp {
     }
 
     void Camera::set_pitch(float dt) {
+        float total_pitch_movement = 0.0f;
+
+        // Add keyboard input (if any)
         if (pitch_dir != 0.0f) {
-            // Calculate delta based on the input handler's direction
-            float delta_pitch = pitch_dir * CAM_ROT_SPEED * dt;
-            
-            glm::vec3 new_target_pos = glm::rotate(forward, delta_pitch, right);
+            total_pitch_movement += pitch_dir * CAM_ROT_SPEED * dt;
+        }
+
+        // Add mouse input (if any)
+        if (pitch_delta != 0.0f) {
+            // We subtract the pitch_delta because screen Y coordinates go down, 
+            // but we want the camera angle to pitch UP when we push the mouse forward!
+            total_pitch_movement -= pitch_delta * CAM_ROT_SPEED * dt; 
+        }
+
+        // Apply the rotation if there was any movement
+        if (total_pitch_movement != 0.0f) {
+            glm::vec3 new_target_pos = glm::rotate(forward, total_pitch_movement, right);
 
             // Clamp the rotation so the camera doesn't flip completely upside down
             if (new_target_pos.y < 0.99f && new_target_pos.y > -0.99f) {
@@ -48,6 +60,10 @@ namespace bsp {
 
     void Camera::add_yaw(float dx) {
         yaw_delta += dx;
+    }
+
+    void Camera::add_pitch(float dy) {
+        pitch_delta += dy;
     }
 
     void Camera::update_target(const glm::vec3& new_target_pos) {
@@ -88,6 +104,7 @@ namespace bsp {
         cam_step = glm::vec3(0.0f);
         pitch_dir = 0.0f;
         yaw_delta = 0.0f;
+        pitch_delta = 0.0f;
     }
 
     void Camera::step_forward() {
@@ -135,6 +152,14 @@ namespace bsp {
     
     bool Camera::is_noclip() const {
         return noclip_enabled;
+    }
+
+    void Camera::toggle_free_view() {
+        free_view = !free_view;
+    }
+
+    bool Camera::is_free_view() const {
+        return free_view;
     }
 
     void Camera::check_cam_step() {
