@@ -26,6 +26,7 @@ namespace bsp {
         void fly_up();
         void fly_down();
 
+        // Enables or disables collision
         void toggle_noclip();
         bool is_noclip() const;
 

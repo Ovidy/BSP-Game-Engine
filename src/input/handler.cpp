@@ -12,6 +12,9 @@ namespace input {
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
         }
+        if (IsKeyPressed(KEY_C)) {
+            camera.toggle_noclip();
+        }
         // ----------- mouse look --------------- //
         Vector2 mouse_delta = GetMouseDelta();
         if (mouse_delta.x != 0.0f) {
