@@ -27,31 +27,28 @@ namespace bsp {
         if (!node) return;
 
         const Segment& splitter = node->get_splitter();
-        glm::vec2 start = splitter.get_start();
         
-        // We MUST normalize the direction to get true Euclidean distance
+        // 1. Ask your engine exactly which side of the line we are on
+        bool on_front = is_on_front(pos - splitter.get_start(), splitter.get_direction());
+        
+        // 2. Calculate purely the ABSOLUTE distance to the line
         glm::vec2 dir = glm::normalize(splitter.get_direction());
-        
-        // Calculate signed perpendicular distance from the player to the line
-        float distance = bsp::cross(pos - start, dir);
+        float abs_distance = std::abs(bsp::cross(pos - splitter.get_start(), dir));
 
-        // Add the sector of this node to our candidates list. 
-        // Because we use a std::unordered_set, duplicate IDs are automatically ignored!
+        // 3. We visited this wall, so its sector is nearby. Add it!
         out_sector_ids.insert(splitter.get_sector_id());
 
-        // Check where the collision circle sits relative to the line
-        if (distance > radius) {
-            // Circle is completely on one side
+        // 4. Traverse safely
+        if (abs_distance <= radius) {
+            // The player's fat cylinder is touching the splitting line!
+            // We MUST check both rooms to prevent clipping through doorways.
             get_collision_candidates(node->get_front(), pos, radius, out_sector_ids);
-        } 
-        else if (distance < -radius) {
-            // Circle is completely on the other side
             get_collision_candidates(node->get_back(), pos, radius, out_sector_ids);
-        } 
-        else {
-            // The distance is SMALLER than the radius! We are touching the line.
-            // We must traverse BOTH spaces to ensure we don't clip through walls.
+        } else if (on_front) {
+            // Player is safely, completely in front of the line
             get_collision_candidates(node->get_front(), pos, radius, out_sector_ids);
+        } else {
+            // Player is safely, completely behind the line
             get_collision_candidates(node->get_back(), pos, radius, out_sector_ids);
         }
     }
