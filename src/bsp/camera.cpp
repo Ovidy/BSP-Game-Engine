@@ -155,9 +155,9 @@ namespace bsp {
             final_vel = physics::Collider::resolve_movement(intended_vel, hit);
         }
 
-        move_x(cam_step.x);
+        move_x(final_vel.x);
         move_y(cam_step.y);
-        move_z(cam_step.z);
+        move_z(final_vel.y);
     }
 
     void Camera::move_x(float dx) {
