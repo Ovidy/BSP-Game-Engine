@@ -47,6 +47,7 @@ int main ()
 
 	bsp_handler.load_level(bsp::test_level_sectors);
 	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors);
+	render_handler.load_sprites(bsp::test_level_sprites);
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window

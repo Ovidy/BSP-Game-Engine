@@ -70,4 +70,12 @@ namespace bsp {
             }
         }
     };
+
+    std::vector<bsp::Sprite> test_level_sprites = {
+        // Place a sprite in the middle of the giant main hall (Floor is 0.0f)
+        { glm::vec3(4.0f, 0.5f, 4.0f), 2, 1.0f, WHITE }, // Assuming texture ID 2 is a monster/item
+
+        // Place a sprite up on the floating triangle platform (Floor is 4.0f)
+        { glm::vec3(3.2f, 4.5f, 6.5f), 3, 1.5f, RED } // Tinted red, slightly larger
+    };
 }
