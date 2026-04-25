@@ -45,19 +45,19 @@ namespace render {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
-        view_renderer.draw(map_renderer.is_enabled());
+        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager);
 
         DrawGrid(32, 1.0f);
 
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors) {
+    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
         segments = input_segments;
         tree_segments = input_tree_segments;
         
         // MapRenderer only needs the 2D lines
-        map_renderer.load_level_data(segments, tree_segments);
+        map_renderer.load_level_data(segments, tree_segments, window_size);
         
         // ViewRenderer needs the 3D walls AND the sectors to generate triangulated floors
         view_renderer.load_models(tree_segments, level_sectors, texture_manager);
@@ -65,6 +65,10 @@ namespace render {
 
     void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
         texture_manager.load_texture(id, file_path);
+    }
+
+    void Handler::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
+        view_renderer.load_sprites(level_sprites);
     }
 
     MapRenderer& Handler::get_map_renderer() {

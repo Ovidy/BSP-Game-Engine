@@ -20,6 +20,8 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 using namespace bsp;
 
+void prevent_dt_clamp(glm::float32_t& deltaTime);
+
 int main ()
 {
 	// Tell the window to use vsync and work on high DPI displays
@@ -43,16 +45,20 @@ int main ()
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
-	render_handler.load_texture(1, "wall_texture.png");
+	render_handler.load_texture(1, "Wall1.png");
+	render_handler.load_texture(2, "Monster1-north.png");
+	render_handler.load_texture(3, "wabbit_alpha.png");
 
 	bsp_handler.load_level(bsp::test_level_sectors);
-	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors);
+	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
+	render_handler.load_sprites(bsp::test_level_sprites);
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		// Update:
 		deltaTime = GetFrameTime();
+		prevent_dt_clamp(deltaTime);
 		camera.pre_update(deltaTime);
 		input_handler.update(camera, render_handler.get_map_renderer());
 		camera.update(deltaTime);
@@ -69,4 +75,10 @@ int main ()
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
+}
+
+void prevent_dt_clamp(glm::float32_t& deltaTime) {
+	if (deltaTime > 0.05f) {
+		deltaTime = 0.0166f; 
+	}
 }

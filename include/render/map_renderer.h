@@ -19,7 +19,7 @@ namespace render {
 
         void render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position, const glm::vec2& camera_forward);
 
-        void load_level_data(const std::vector<bsp::Segment>& segments,  const std::vector<bsp::Segment>& tree_segments);
+        void load_level_data(const std::vector<bsp::Segment>& segments,  const std::vector<bsp::Segment>& tree_segments, const glm::vec2& window_size);
 
         void enable_render();
         void disable_render();
