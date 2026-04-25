@@ -45,7 +45,7 @@ namespace render {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
-        view_renderer.draw(map_renderer.is_enabled());
+        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager);
 
         DrawGrid(32, 1.0f);
 
@@ -65,6 +65,10 @@ namespace render {
 
     void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
         texture_manager.load_texture(id, file_path);
+    }
+
+    void Handler::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
+        view_renderer.load_sprites(level_sprites);
     }
 
     MapRenderer& Handler::get_map_renderer() {

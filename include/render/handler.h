@@ -16,6 +16,8 @@ namespace render {
 
         void load_texture(glm::int32_t id, const std::string& file_path);
 
+        void load_sprites(const std::vector<bsp::Sprite>& level_sprites);
+        
         MapRenderer& get_map_renderer();
     private:
         void render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
