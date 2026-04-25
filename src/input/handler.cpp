@@ -8,6 +8,10 @@ namespace input {
     Handler::Handler() = default;
 
     void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer) {
+        // ----------- system controls ----------- //
+        if (IsKeyPressed(KEY_F11)) {
+            ToggleFullscreen();
+        }
         // ----------- mouse look --------------- //
         Vector2 mouse_delta = GetMouseDelta();
         if (mouse_delta.x != 0.0f) {
