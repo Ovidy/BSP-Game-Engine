@@ -39,6 +39,59 @@ namespace render {
         // Pass the forward vector into the map renderer
         map_renderer.render(current_segment_ids, camera_position, forward);
         DrawFPS(10, 10);
+
+        draw_controls_overlay();
+    }
+
+    void Handler::draw_controls_overlay() {
+        // ==========================================
+        // DRAW CONTROLS OVERLAY
+        // ==========================================
+        int font_size = 20;
+        int small_font = 16;
+        int padding = 20;
+        int line_spacing = 22;
+
+        // Position it on the top right side of the screen
+        int x_pos = GetScreenWidth() - 260; 
+        int y_pos = padding;
+
+        // Draw a subtle semi-transparent background box so the text is readable against bright walls
+        DrawRectangle(x_pos - 10, y_pos - 10, 260, 260, Color{ 0, 0, 0, 150 });
+
+        // Draw the Title
+        DrawText("CONTROLS:", x_pos, y_pos, font_size, RAYWHITE);
+        y_pos += line_spacing + 5;
+
+        // Draw the list of keys
+        DrawText("W/A/S/D - Move", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("SPACE - Jump", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("L-SHIFT - Fly Down", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+        
+        DrawText("TAB - Toggle Mouse Lock", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("MOUSE - Look Around", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("UP/DOWN - Pitch Camera", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("M - Toggle Map", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("C - Toggle Creative Mode", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("F - Free View Mode", x_pos, y_pos, small_font, LIGHTGRAY);
+        y_pos += line_spacing;
+
+        DrawText("F11 - Fullscreen", x_pos, y_pos, small_font, LIGHTGRAY);
     }
 
     void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {

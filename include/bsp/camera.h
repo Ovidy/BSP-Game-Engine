@@ -64,7 +64,7 @@ namespace bsp {
         glm::vec3 cam_step;
         glm::vec3 forward;
         glm::vec3 right;
-        bool noclip_enabled = true; // Start floating freely for debugging
+        bool noclip_enabled = false;
         bool free_view = true; // Look everywhere with mouse
 
         void set_yaw(float dt);
