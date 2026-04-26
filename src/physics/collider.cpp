@@ -12,11 +12,15 @@ namespace physics {
         CollisionResult result;
 
         for (const auto& sector : level_sectors) {
-            // Height check: Are we flying over or walking under this wall?
-            if (feet_y >= sector.ceiling_height) continue; 
-            if (head_y <= sector.floor_height) continue;
+            // NEW: Calculate the exact floor and ceiling height at the player's INTENDED 2D position!
+            // (Note: intended_pos.y represents the 3D Z-axis here)
+            float dynamic_floor_y = sector.floor.get_height_at(intended_pos.x, intended_pos.y);
+            float dynamic_ceiling_y = sector.ceiling.get_height_at(intended_pos.x, intended_pos.y);
 
-            // ... (Keep the rest of your wall collision logic exactly the same) ...
+            // Height check: Are we flying over or walking under this wall?
+            if (feet_y >= dynamic_ceiling_y) continue; 
+            if (head_y <= dynamic_floor_y) continue;
+
             for (const auto& wall : sector.walls) {
                 glm::vec2 closest = closest_point_on_segment(intended_pos, wall.get_start(), wall.get_end());
                 glm::vec2 diff = intended_pos - closest;
@@ -45,27 +49,30 @@ namespace physics {
         VerticalBounds best_bounds;
         
         for (const auto& sector : level_sectors) {
-            // If our 2D coordinates are inside this room's footprint
             if (is_point_in_sector(player_pos_2d, sector)) {
                 
-                // --- CHECK 1: The Sector's Floor ---
+                // NEW: Calculate the exact floor and ceiling height at the player's CURRENT 2D position!
+                float dynamic_floor_y = sector.floor.get_height_at(player_pos_2d.x, player_pos_2d.y);
+                float dynamic_ceiling_y = sector.ceiling.get_height_at(player_pos_2d.x, player_pos_2d.y);
+
+                // --- CHECK 1: The Sector's Floor Plane ---
                 // Does it act as ground below our feet?
-                if (sector.floor_height <= feet_y + 0.1f && sector.floor_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.floor_height;
+                if (dynamic_floor_y <= feet_y + 0.1f && dynamic_floor_y > best_bounds.floor_height) {
+                    best_bounds.floor_height = dynamic_floor_y;
                 }
-                // Does it act as a ceiling above our head? (Standing underneath a floating block)
-                if (sector.floor_height >= head_y - 0.1f && sector.floor_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.floor_height;
+                // Does it act as a ceiling above our head? (Standing underneath a sloped overlapping sector)
+                if (dynamic_floor_y >= head_y - 0.1f && dynamic_floor_y < best_bounds.ceiling_height) {
+                    best_bounds.ceiling_height = dynamic_floor_y;
                 }
 
-                // --- CHECK 2: The Sector's Ceiling ---
-                // Does it act as ground below our feet? (Standing ON TOP of a block)
-                if (sector.ceiling_height <= feet_y + 0.1f && sector.ceiling_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.ceiling_height;
+                // --- CHECK 2: The Sector's Ceiling Plane ---
+                // Does it act as ground below our feet? (Standing on top of a sloped overlapping sector)
+                if (dynamic_ceiling_y <= feet_y + 0.1f && dynamic_ceiling_y > best_bounds.floor_height) {
+                    best_bounds.floor_height = dynamic_ceiling_y;
                 }
                 // Does it act as a normal ceiling above our head?
-                if (sector.ceiling_height >= head_y - 0.1f && sector.ceiling_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.ceiling_height;
+                if (dynamic_ceiling_y >= head_y - 0.1f && dynamic_ceiling_y < best_bounds.ceiling_height) {
+                    best_bounds.ceiling_height = dynamic_ceiling_y;
                 }
             }
         }
@@ -74,25 +81,23 @@ namespace physics {
     }
 
     glm::vec2 Collider::closest_point_on_segment(const glm::vec2& p, const glm::vec2& a, const glm::vec2& b) {
+        // ... (Remains exactly the same) ...
         glm::vec2 ab = b - a;
         float dot_ab = glm::dot(ab, ab);
         
-        if (dot_ab == 0.0f) return a; // Wall is just a single point (shouldn't happen, but safe)
+        if (dot_ab == 0.0f) return a; 
         
-        // Project player position onto the line to find the closest parameter 't'
         float t = glm::dot(p - a, ab) / dot_ab;
-        
-        // Clamp 't' so we don't check points beyond the physical ends of the wall
         t = std::max(0.0f, std::min(1.0f, t)); 
         
         return a + t * ab;
     }
 
     bool Collider::is_point_in_sector(const glm::vec2& pt, const bsp::Sector& sector) {
+        // ... (Remains exactly the same) ...
         bool is_inside = false;
         
         for (const auto& wall : sector.walls) {
-            // Check if the ray crosses this wall segment
             if (((wall.get_start().y > pt.y) != (wall.get_end().y > pt.y)) &&
                 (pt.x < (wall.get_end().x - wall.get_start().x) * (pt.y - wall.get_start().y) / (wall.get_end().y - wall.get_start().y) + wall.get_start().x)) {
                 is_inside = !is_inside;

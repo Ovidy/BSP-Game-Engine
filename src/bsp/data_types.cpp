@@ -29,6 +29,14 @@ namespace bsp {
         sector_id = id;
     }
 
+    // Plane struct implementation
+    float Plane::get_height_at(float target_x, float target_z) const {
+        if (normal.y == 0.0f) return anchor_point.y; // Prevent divide-by-zero on sheer cliffs
+        
+        // Standard Plane Equation: Solved for Y
+        return anchor_point.y - ((normal.x * (target_x - anchor_point.x) + normal.z * (target_z - anchor_point.z)) / normal.y);
+    }
+
     // BSPNode class implementation
     Node::Node() : front(nullptr), back(nullptr), splitter({{0.0f, 0.0f}, {0.0f, 0.0f}}) {}
 

@@ -32,12 +32,7 @@ namespace bsp {
         glm::vec3 normal;       // Which way the surface faces (Up = 0, 1, 0)
         
         // Helper to calculate the exact Y height at any given X/Z location!
-        float get_height_at(float target_x, float target_z) const {
-            if (normal.y == 0.0f) return anchor_point.y; // Prevent divide-by-zero on sheer cliffs
-            
-            // Standard Plane Equation: Solved for Y
-            return anchor_point.y - ((normal.x * (target_x - anchor_point.x) + normal.z * (target_z - anchor_point.z)) / normal.y);
-        }
+        float get_height_at(float target_x, float target_z) const;
     };
 
     struct Sector {
