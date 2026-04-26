@@ -43,11 +43,19 @@ int main ()
 	render::Handler render_handler;
 	input::Handler input_handler;
 
+	/*
+	ID 0 = Grass/Ground (Used for the Courtyard and Arena floors)
+	ID 1 = Brick/Wall (Used for the main perimeter walls and the House)
+	ID 2 = Sky (Used for the massive ceilings)
+	ID 3 = Wood (Used for the Hallway, the Raised Platform, and the House interior)
+	ID 4 = Stone/Metal (Used for the Pyramid, the Deep Pit, and the ramps)
+	*/
+
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
 	render_handler.load_texture(1, "Wall1.png");
-	render_handler.load_texture(2, "Monster1-north.png");
-	render_handler.load_texture(3, "wabbit_alpha.png");
+	render_handler.load_texture(5, "Monster1-north.png");
+	render_handler.load_texture(6, "wabbit_alpha.png");
 
 	bsp_handler.load_level(bsp::test_level_sectors);
 	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
