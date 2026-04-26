@@ -48,28 +48,33 @@ namespace physics {
     VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
         VerticalBounds best_bounds;
         
+        // NEW: How high the player can step up in a single frame.
+        // 0.6f is the industry standard (allows walking up standard stairs and steep slopes)
+        const float MAX_STEP_HEIGHT = 0.6f; 
+        
         for (const auto& sector : level_sectors) {
             if (is_point_in_sector(player_pos_2d, sector)) {
                 
-                // NEW: Calculate the exact floor and ceiling height at the player's CURRENT 2D position!
                 float dynamic_floor_y = sector.floor.get_height_at(player_pos_2d.x, player_pos_2d.y);
                 float dynamic_ceiling_y = sector.ceiling.get_height_at(player_pos_2d.x, player_pos_2d.y);
 
                 // --- CHECK 1: The Sector's Floor Plane ---
-                // Does it act as ground below our feet?
-                if (dynamic_floor_y <= feet_y + 0.1f && dynamic_floor_y > best_bounds.floor_height) {
+                // Does it act as ground below our feet? (Now using the generous Step Height!)
+                if (dynamic_floor_y <= feet_y + MAX_STEP_HEIGHT && dynamic_floor_y > best_bounds.floor_height) {
                     best_bounds.floor_height = dynamic_floor_y;
                 }
-                // Does it act as a ceiling above our head? (Standing underneath a sloped overlapping sector)
+                
+                // Does it act as a ceiling above our head?
                 if (dynamic_floor_y >= head_y - 0.1f && dynamic_floor_y < best_bounds.ceiling_height) {
                     best_bounds.ceiling_height = dynamic_floor_y;
                 }
 
                 // --- CHECK 2: The Sector's Ceiling Plane ---
-                // Does it act as ground below our feet? (Standing on top of a sloped overlapping sector)
-                if (dynamic_ceiling_y <= feet_y + 0.1f && dynamic_ceiling_y > best_bounds.floor_height) {
+                // Does it act as ground below our feet? 
+                if (dynamic_ceiling_y <= feet_y + MAX_STEP_HEIGHT && dynamic_ceiling_y > best_bounds.floor_height) {
                     best_bounds.floor_height = dynamic_ceiling_y;
                 }
+                
                 // Does it act as a normal ceiling above our head?
                 if (dynamic_ceiling_y >= head_y - 0.1f && dynamic_ceiling_y < best_bounds.ceiling_height) {
                     best_bounds.ceiling_height = dynamic_ceiling_y;
