@@ -26,10 +26,24 @@ namespace bsp {
         glm::int32_t sector_id;
     };
 
+    // Defines a sloped surface
+    struct Plane {
+        glm::vec3 anchor_point; // A physical point on the surface
+        glm::vec3 normal;       // Which way the surface faces (Up = 0, 1, 0)
+        
+        // Helper to calculate the exact Y height at any given X/Z location!
+        float get_height_at(float target_x, float target_z) const {
+            if (normal.y == 0.0f) return anchor_point.y; // Prevent divide-by-zero on sheer cliffs
+            
+            // Standard Plane Equation: Solved for Y
+            return anchor_point.y - ((normal.x * (target_x - anchor_point.x) + normal.z * (target_z - anchor_point.z)) / normal.y);
+        }
+    };
+
     struct Sector {
         glm::int32_t id;
-        float floor_height;
-        float ceiling_height;
+        Plane floor;
+        Plane ceiling;
         glm::int32_t floor_texture_id;
         glm::int32_t ceiling_texture_id;
         
