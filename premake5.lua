@@ -170,12 +170,7 @@ end
 downloadRaylib = true
 raylib_dir = "external/raylib-master"
 
-workspaceName = 'MyGame'
-baseName = path.getbasename(path.getdirectory(os.getcwd()));
-
---if (baseName ~= 'raylib-quickstart') then
-    workspaceName = baseName
---end
+workspaceName = "Game"
 
 if (os.isdir('build_files') == false) then
     os.mkdir('build_files')
@@ -186,7 +181,7 @@ if (os.isdir('external') == false) then
 end
 
 workspace (workspaceName)
-    location "../"
+    location "."
     configurations { "Debug", "Release"}
     platforms { "x64", "x86", "ARM64"}
 
@@ -337,7 +332,8 @@ if (downloadRaylib) then
 
         filter "action:vs*"
             debugdir "$(SolutionDir)"
-
+        filter {}
+        
         vpaths 
         {
             ["Header Files/*"] = { "Game/src/**.h", "Game/src/**.hpp" },
@@ -347,8 +343,8 @@ if (downloadRaylib) then
 
         -- Grab source code ONLY from the Game folder
         files {
-            "Game/src/**.c", 
-            "Game/src/**.cpp", 
+            "Game/src/**.c",
+            "Game/src/**.cpp",
             "Game/src/**.h", 
             "Game/src/**.hpp"
         }
@@ -359,7 +355,8 @@ if (downloadRaylib) then
         
         -- The Game needs to see the Engine's headers!
         includedirs { 
-            "Engine/include", 
+            "Engine/include",
+            "Game/include",
             "external/glm", 
             raylib_dir .. "/src" 
         }
