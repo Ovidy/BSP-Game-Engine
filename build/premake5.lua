@@ -219,6 +219,52 @@ if (downloadRaylib) then
 
     startproject(workspaceName)
 
+    -- ========================================================
+    -- PROJECT 1: THE ENGINE (Static Library)
+    -- ========================================================
+    project "BSPEngine"
+        kind "StaticLib"
+        language "C++"
+        location "../"
+        targetdir "../bin/%{cfg.buildcfg}"
+
+        vpaths 
+        {
+            ["Header Files/*"] = { "../include/**.h",  "../include/**.hpp", "../src/**.h", "../src/**.hpp"},
+            ["Source Files/*"] = {"../src/**.c", "../src/**.cpp"},
+        }
+        
+        -- Grab all source code for the engine...
+        files {"../src/**.c", "../src/**.cpp", "../src/**.h", "../src/**.hpp", "../include/**.h", "../include/**.hpp"}
+        
+        -- ... BUT completely exclude the production game files! "prod" folder is used for game files
+        removefiles {"../src/prod/**", "../include/prod/**"}
+
+        includedirs { "../src" }
+        includedirs { "../include" }
+        includedirs { "external/glm" }
+        includedirs { "external/earcut/include" }
+        includedirs { raylib_dir .. "/src" }
+
+        cdialect "C17"
+        cppdialect "C++17"
+
+        flags { "ShadowedVariables"}
+        platform_defines()
+
+        filter "action:vs*"
+            defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
+            characterset ("Unicode")
+            buildoptions { "/Zc:__cplusplus" }
+        filter {}
+
+
+    -- ========================================================
+    -- PROJECT 2: THE GAME (Executable)
+    -- ========================================================
+    -- ========================================================
+    -- PROJECT 2: THE GAME (Executable)
+    -- ========================================================
     project (workspaceName)
         kind "ConsoleApp"
         language "C++"
@@ -236,48 +282,46 @@ if (downloadRaylib) then
         filter "action:vs*"
             debugdir "$(SolutionDir)"
 
-        filter {"action:gmake*"} -- Uncoment if you need to force StaticLib
---          buildoptions { "-static" }
-        filter{}
-
+        -- Organize the Game project files in your IDE
         vpaths 
         {
-            ["Header Files/*"] = { "../include/**.h",  "../include/**.hpp", "../src/**.h", "../src/**.hpp"},
-            ["Source Files/*"] = {"../src/**.c", "src/**.cpp"},
-            ["Windows Resource Files/*"] = {"../src/**.rc", "../src/**.ico"},
-            ["Game Resource Files/*"] = {"../resources/**"},
+            ["Header Files/*"] = { "../include/prod/**.h", "../include/prod/**.hpp", "../src/prod/**.h", "../src/prod/**.hpp"},
+            ["Source Files/*"] = {"../src/prod/**.c", "../src/prod/**.cpp"},
         }
-        
-        files {"../src/**.c", "../src/**.cpp", "../src/**.h", "../src/**.hpp", "../include/**.h", "../include/**.hpp"}
+
+        -- Include ALL files inside the prod folders for the executable
+        files {
+            "../src/prod/**.c", 
+            "../src/prod/**.cpp", 
+            "../src/prod/**.h", 
+            "../src/prod/**.hpp", 
+            "../include/prod/**.h", 
+            "../include/prod/**.hpp"
+        }
         
         filter {"system:windows", "action:vs*"}
             files {"../src/*.rc", "../src/*.ico"}
             files {"../resources/**"}
-
         filter{}
         
-        includedirs { "../src" }
+        -- The game needs to know where the engine headers and external libs are
         includedirs { "../include" }
         includedirs { "external/glm" }
-        includedirs { "external/earcut/include" }
+        includedirs { raylib_dir .. "/src" }
 
-        links {"raylib"}
+        -- LINKING: The Game links to YOUR Engine AND Raylib
+        links {"BSPEngine", "raylib"}
 
         cdialect "C17"
         cppdialect "C++17"
-
-        includedirs {raylib_dir .. "/src" }
-
-        flags { "ShadowedVariables"}
         platform_defines()
 
         filter "action:vs*"
             defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
-            dependson {"raylib"}
-            links {"raylib.lib"}
             characterset ("Unicode")
             buildoptions { "/Zc:__cplusplus" }
 
+        -- OS SPECIFIC SYSTEM LINKS (Only the executable needs these, not the static lib)
         filter "system:windows"
             defines{"_WIN32"}
             links {"winmm", "gdi32", "opengl32"}
@@ -297,16 +341,12 @@ if (downloadRaylib) then
             buildoptions { "-stdlib=libc++" }
             links {"c++"}
             links {"OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreAudio.framework", "CoreVideo.framework", "AudioToolbox.framework"}
-filter "system:linux"
-    -- Add this to your existing links
-    links {"pthread", "m", "dl", "rt"}
-
-filter "system:macosx"
-    buildoptions { "-stdlib=libc++" }
-    links {"c++"}
         filter{}
         
 
+    -- ========================================================
+    -- PROJECT 3: RAYLIB (Static Library)
+    -- ========================================================
     project "raylib"
         kind "StaticLib"
     
@@ -316,7 +356,6 @@ filter "system:macosx"
 
         language "C"
         targetdir "../bin/%{cfg.buildcfg}"
-
 
         filter {"options:wayland=on"}
             defines {"GLFW_LINUX_ENABLE_WAYLAND=TRUE" }
