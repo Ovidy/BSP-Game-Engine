@@ -4,13 +4,17 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/build/external/glm",
-                "${workspaceFolder}/build/external/earcut/include"
+                "${workspaceFolder}/Engine/include",
+                "${workspaceFolder}/Engine/src",
+                "${workspaceFolder}/Game/src",
+                "${workspaceFolder}/external/glm",
+                "${workspaceFolder}/external/earcut/include",
+                "${workspaceFolder}/external/raylib-master/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
-            "cppStandard": "c++14",
+            "cppStandard": "c++17",
             "intelliSenseMode": "macos-clang-arm64"
         }
     ],
