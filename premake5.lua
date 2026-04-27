@@ -219,36 +219,42 @@ if (downloadRaylib) then
 
     startproject(workspaceName)
 
+    -- Define where all the generated Makefiles/Project files should go
+    location "."
+
     -- ========================================================
     -- PROJECT 1: THE ENGINE (Static Library)
     -- ========================================================
     project "BSPEngine"
         kind "StaticLib"
         language "C++"
-        location "../"
-        targetdir "../bin/%{cfg.buildcfg}"
+        targetdir "bin/%{cfg.buildcfg}"
+        objdir "obj/%{cfg.buildcfg}/Engine"
 
         vpaths 
         {
-            ["Header Files/*"] = { "../include/**.h",  "../include/**.hpp", "../src/**.h", "../src/**.hpp"},
-            ["Source Files/*"] = {"../src/**.c", "../src/**.cpp"},
+            ["Header Files/*"] = { "Engine/include/**.h", "Engine/include/**.hpp" },
+            ["Source Files/*"] = { "Engine/src/**.c", "Engine/src/**.cpp" }
         }
         
-        -- Grab all source code for the engine...
-        files {"../src/**.c", "../src/**.cpp", "../src/**.h", "../src/**.hpp", "../include/**.h", "../include/**.hpp"}
-        
-        -- ... BUT completely exclude the production game files! "prod" folder is used for game files
-        removefiles {"../src/prod/**", "../include/prod/**"}
+        -- Grab all source code ONLY from the Engine folder
+        files {
+            "Engine/src/**.c", 
+            "Engine/src/**.cpp", 
+            "Engine/include/**.h", 
+            "Engine/include/**.hpp"
+        }
 
-        includedirs { "../src" }
-        includedirs { "../include" }
-        includedirs { "external/glm" }
-        includedirs { "external/earcut/include" }
-        includedirs { raylib_dir .. "/src" }
+        includedirs { 
+            "Engine/include", 
+            "Engine/src",
+            "external/glm", 
+            "external/earcut/include",
+            raylib_dir .. "/src" 
+        }
 
         cdialect "C17"
         cppdialect "C++17"
-
         flags { "ShadowedVariables"}
         platform_defines()
 
@@ -260,16 +266,66 @@ if (downloadRaylib) then
 
 
     -- ========================================================
-    -- PROJECT 2: THE GAME (Executable)
+    -- PROJECT 2: RAYLIB (Static Library)
     -- ========================================================
+    project "raylib"
+        kind "StaticLib"
+        platform_defines()
+        language "C"
+        
+        targetdir "bin/%{cfg.buildcfg}"
+        objdir "obj/%{cfg.buildcfg}/raylib"
+
+        filter {"options:wayland=on"}
+            defines {"GLFW_LINUX_ENABLE_WAYLAND=TRUE" }
+
+        filter {"options:wayland=on", "system:linux"}
+            prebuildcommands {
+                "@echo Generating Wayland protocols...",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/wayland.xml " .. raylib_dir .. "/src/wayland-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-shell.xml " .. raylib_dir .. "/src/xdg-shell-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-decoration-unstable-v1.xml " .. raylib_dir .. "/src/xdg-decoration-unstable-v1-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/viewporter.xml " .. raylib_dir .. "/src/viewporter-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/relative-pointer-unstable-v1.xml " .. raylib_dir .. "/src/relative-pointer-unstable-v1-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/pointer-constraints-unstable-v1.xml " .. raylib_dir .. "/src/pointer-constraints-unstable-v1-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/fractional-scale-v1.xml " .. raylib_dir .. "/src/fractional-scale-v1-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-activation-v1.xml " .. raylib_dir .. "/src/xdg-activation-v1-client-protocol.h",
+                "@wayland-scanner client-header " .. raylib_dir .. "/src/external/glfw/deps/wayland/idle-inhibit-unstable-v1.xml " .. raylib_dir .. "/src/idle-inhibit-unstable-v1-client-protocol.h",
+            }
+        filter {}
+
+        filter "action:vs*"
+            defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
+            characterset ("Unicode")
+            buildoptions { "/Zc:__cplusplus" }
+        filter{}
+
+        includedirs {raylib_dir .. "/src", raylib_dir .. "/src/external/glfw/include" }
+        
+        vpaths
+        {
+            ["Header Files"] = { raylib_dir .. "/src/**.h"},
+            ["Source Files/*"] = { raylib_dir .. "/src/**.c"},
+        }
+        
+        files {raylib_dir .. "/src/*.h", raylib_dir .. "/src/*.c"}
+
+        removefiles {raylib_dir .. "/src/rcore_*.c"}
+
+        filter { "system:macosx", "files:" .. raylib_dir .. "/src/rglfw.c" }
+            compileas "Objective-C"
+
+        filter{}
+
+
     -- ========================================================
-    -- PROJECT 2: THE GAME (Executable)
+    -- PROJECT 3: THE GAME (Executable)
     -- ========================================================
     project (workspaceName)
         kind "ConsoleApp"
         language "C++"
-        location "../"
-        targetdir "../bin/%{cfg.buildcfg}"
+        targetdir "bin/%{cfg.buildcfg}"
+        objdir "obj/%{cfg.buildcfg}/Game"
 
         filter {"system:windows", "configurations:Release", "action:gmake*"}
             kind "WindowedApp"
@@ -282,34 +338,33 @@ if (downloadRaylib) then
         filter "action:vs*"
             debugdir "$(SolutionDir)"
 
-        -- Organize the Game project files in your IDE
         vpaths 
         {
-            ["Header Files/*"] = { "../include/prod/**.h", "../include/prod/**.hpp", "../src/prod/**.h", "../src/prod/**.hpp"},
-            ["Source Files/*"] = {"../src/prod/**.c", "../src/prod/**.cpp"},
+            ["Header Files/*"] = { "Game/src/**.h", "Game/src/**.hpp" },
+            ["Source Files/*"] = { "Game/src/**.c", "Game/src/**.cpp" },
+            ["Game Resource Files/*"] = { "Game/resources/**" }
         }
 
-        -- Include ALL files inside the prod folders for the executable
+        -- Grab source code ONLY from the Game folder
         files {
-            "../src/prod/**.c", 
-            "../src/prod/**.cpp", 
-            "../src/prod/**.h", 
-            "../src/prod/**.hpp", 
-            "../include/prod/**.h", 
-            "../include/prod/**.hpp"
+            "Game/src/**.c", 
+            "Game/src/**.cpp", 
+            "Game/src/**.h", 
+            "Game/src/**.hpp"
         }
         
         filter {"system:windows", "action:vs*"}
-            files {"../src/*.rc", "../src/*.ico"}
-            files {"../resources/**"}
+            files {"Game/resources/**"}
         filter{}
         
-        -- The game needs to know where the engine headers and external libs are
-        includedirs { "../include" }
-        includedirs { "external/glm" }
-        includedirs { raylib_dir .. "/src" }
+        -- The Game needs to see the Engine's headers!
+        includedirs { 
+            "Engine/include", 
+            "external/glm", 
+            raylib_dir .. "/src" 
+        }
 
-        -- LINKING: The Game links to YOUR Engine AND Raylib
+        -- LINKING: The Game links to the Engine AND Raylib
         links {"BSPEngine", "raylib"}
 
         cdialect "C17"
@@ -321,15 +376,14 @@ if (downloadRaylib) then
             characterset ("Unicode")
             buildoptions { "/Zc:__cplusplus" }
 
-        -- OS SPECIFIC SYSTEM LINKS (Only the executable needs these, not the static lib)
+        -- OS SPECIFIC SYSTEM LINKS
         filter "system:windows"
             defines{"_WIN32"}
             links {"winmm", "gdi32", "opengl32"}
-            libdirs {"../bin/%{cfg.buildcfg}"}
+            libdirs {"bin/%{cfg.buildcfg}"}
 
         filter "system:linux"
-            links {"stdc++"}
-            links {"pthread", "m", "dl", "rt"}
+            links {"stdc++", "pthread", "m", "dl", "rt"}
 
         filter {"system:linux", "options:wayland=off"}
             links {"X11"}
@@ -339,70 +393,5 @@ if (downloadRaylib) then
 
         filter "system:macosx"
             buildoptions { "-stdlib=libc++" }
-            links {"c++"}
-            links {"OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreAudio.framework", "CoreVideo.framework", "AudioToolbox.framework"}
-        filter{}
-        
-
-    -- ========================================================
-    -- PROJECT 3: RAYLIB (Static Library)
-    -- ========================================================
-    project "raylib"
-        kind "StaticLib"
-    
-        platform_defines()
-
-        location "../"
-
-        language "C"
-        targetdir "../bin/%{cfg.buildcfg}"
-
-        filter {"options:wayland=on"}
-            defines {"GLFW_LINUX_ENABLE_WAYLAND=TRUE" }
-
-        filter {"options:wayland=on", "system:linux"}
-            prebuildcommands {
-                "@echo Generating Wayland protocols...",
-                -- Core Wayland & Shell
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/wayland.xml ../" .. raylib_dir .. "/src/wayland-client-protocol.h",
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-shell.xml ../" .. raylib_dir .. "/src/xdg-shell-client-protocol.h",
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-decoration-unstable-v1.xml ../" .. raylib_dir .. "/src/xdg-decoration-unstable-v1-client-protocol.h",
-
-                -- Viewporter
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/viewporter.xml ../" .. raylib_dir .. "/src/viewporter-client-protocol.h",
-
-                -- Relative Pointer
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/relative-pointer-unstable-v1.xml ../" .. raylib_dir .. "/src/relative-pointer-unstable-v1-client-protocol.h",
-                -- Pointer Constraints
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/pointer-constraints-unstable-v1.xml ../" .. raylib_dir .. "/src/pointer-constraints-unstable-v1-client-protocol.h",
-
-                -- Fractional Scale
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/fractional-scale-v1.xml ../" .. raylib_dir .. "/src/fractional-scale-v1-client-protocol.h",
-
-                -- XDG Activation
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/xdg-activation-v1.xml ../" .. raylib_dir .. "/src/xdg-activation-v1-client-protocol.h",
-                -- Idle Inhibit
-                "@wayland-scanner client-header ../" .. raylib_dir .. "/src/external/glfw/deps/wayland/idle-inhibit-unstable-v1.xml ../" .. raylib_dir .. "/src/idle-inhibit-unstable-v1-client-protocol.h",
-            }
-        filter {}
-
-        filter "action:vs*"
-            defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
-            characterset ("Unicode")
-            buildoptions { "/Zc:__cplusplus" }
-        filter{}
-
-        includedirs {raylib_dir .. "/src", raylib_dir .. "/src/external/glfw/include" }
-        vpaths
-        {
-            ["Header Files"] = { raylib_dir .. "/src/**.h"},
-            ["Source Files/*"] = { raylib_dir .. "/src/**.c"},
-        }
-        files {raylib_dir .. "/src/*.h", raylib_dir .. "/src/*.c"}
-
-        removefiles {raylib_dir .. "/src/rcore_*.c"}
-
-        filter { "system:macosx", "files:" .. raylib_dir .. "/src/rglfw.c" }
-            compileas "Objective-C"
-
+            links {"c++", "OpenGL.framework", "Cocoa.framework", "IOKit.framework", "CoreFoundation.framework", "CoreAudio.framework", "CoreVideo.framework", "AudioToolbox.framework"}
         filter{}
