@@ -43,8 +43,12 @@ int main ()
 	render::Handler render_handler;
 	input::Handler input_handler;
 
+	std::cout << "\n--- PATH DIAGNOSTICS ---\n";
+	std::cout << "Executable Directory: " << GetApplicationDirectory() << "\n";
+	std::cout << "Working Directory: " << GetWorkingDirectory() << "\n";
+	std::cout << "------------------------\n\n";
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
-	SearchAndSetResourceDir("resources");
+	SearchAndSetResourceDir("Game/resources");
 	render_handler.load_texture(1, "Wall1.png");
 	render_handler.load_texture(2, "Monster1-north.png");
 	render_handler.load_texture(3, "wabbit_alpha.png");
