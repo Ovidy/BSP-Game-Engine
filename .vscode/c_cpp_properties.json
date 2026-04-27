@@ -16,6 +16,45 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "macos-clang-arm64"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Engine/include",
+                "${workspaceFolder}/Engine/src",
+                "${workspaceFolder}/Game/src",
+                "${workspaceFolder}/external/glm",
+                "${workspaceFolder}/external/earcut/include",
+                "${workspaceFolder}/external/raylib-master/src"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Engine/include",
+                "${workspaceFolder}/Engine/src",
+                "${workspaceFolder}/Game/src",
+                "${workspaceFolder}/external/glm",
+                "${workspaceFolder}/external/earcut/include",
+                "${workspaceFolder}/external/raylib-master/src"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "_WIN32"
+            ],
+            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
         }
     ],
     "version": 4
