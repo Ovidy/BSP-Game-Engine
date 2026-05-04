@@ -4,14 +4,23 @@
 config/mariadb/
 
 # ----------------------------------
-# BookStack Noise (Ignore everything EXCEPT uploads)
+# BookStack Noise (Properly nested exclusions)
 # ----------------------------------
-# Ignore everything in the bookstack config folder first...
+
+# 1. Ignore everything in the bookstack config folder...
 config/bookstack/*
 
-# ...but explicitly ALLOW the uploads and storage folders
-!config/bookstack/www/BookStack/public/uploads/
-!config/bookstack/www/BookStack/storage/uploads/
+# 2. ...but explicitly allow Git to step into the 'www' folder.
+!config/bookstack/www/
+
+# 3. Now ignore everything inside the 'www' folder...
+config/bookstack/www/*
+
+# 4. ...but explicitly allow the 'uploads' folder and all its contents!
+!config/bookstack/www/uploads/
+
+# (Optional: If you have a storage folder next to uploads, un-ignore it here too)
+!config/bookstack/www/storage/
 
 # ----------------------------------
 # Environment & Overrides
