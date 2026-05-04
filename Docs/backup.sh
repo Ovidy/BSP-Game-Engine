@@ -7,7 +7,7 @@ echo "📦 Starting BookStack backup process..."
 
 # 1. Create the database dump from the running MariaDB container
 echo "💾 Dumping database to bookstack_backup.sql..."
-docker exec mariadb mariadb-dump -u bookstack -pbookstack bookstack > bookstack_backup.sql
+docker exec mariadb sh -c 'mariadb-dump -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' > bookstack_backup.sql
 
 # 2. Stage all changes (the SQL file, config changes, and new image uploads)
 echo "📂 Staging files for Git..."
