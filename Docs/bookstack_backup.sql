@@ -39,7 +39,7 @@ CREATE TABLE `activities` (
   KEY `activities_key_index` (`type`),
   KEY `activities_created_at_index` (`created_at`),
   KEY `activities_ip_index` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,8 @@ INSERT INTO `activities` VALUES
 (14,'chapter_update','(4) Chapter 1: Engine Structure',1,'192.168.65.1',4,'chapter','2026-05-04 14:06:57','2026-05-04 14:06:57'),
 (15,'page_update','(5) Overview',1,'192.168.65.1',5,'page','2026-05-04 14:09:27','2026-05-04 14:09:27'),
 (16,'page_create','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:11:48','2026-05-04 14:11:48'),
-(17,'page_update','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:15:09','2026-05-04 14:15:09');
+(17,'page_update','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:15:09','2026-05-04 14:15:09'),
+(18,'settings_update','customization',1,'192.168.65.1',NULL,NULL,'2026-05-04 14:18:09','2026-05-04 14:18:09');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1514,7 +1515,30 @@ CREATE TABLE `settings` (
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` VALUES
-('instance-id','55dac44e-a5c0-4564-bf21-dc9002f02364','2026-05-04 12:52:56','2026-05-04 12:52:56','string');
+('app-color','#206ea7','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-color-dark','#195785','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-color-light','rgba(32,110,167,0.15)','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-color-light-dark','rgba(32,110,167,0.15)','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-custom-head','','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-editor','wysiwyg','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-footer-links','[]','2026-05-04 14:18:09','2026-05-04 14:18:09','array'),
+('app-homepage','','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-homepage-type','default','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-name','BSP Engine Docs','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('app-name-header','true','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('book-color','#077b70','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('book-color-dark','#389f60','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('bookshelf-color','#a94747','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('bookshelf-color-dark','#ff5454','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('chapter-color','#af4d0d','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('chapter-color-dark','#ee7a2d','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('instance-id','55dac44e-a5c0-4564-bf21-dc9002f02364','2026-05-04 12:52:56','2026-05-04 12:52:56','string'),
+('link-color','#206ea7','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('link-color-dark','#429fe3','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('page-color','#206ea7','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('page-color-dark','#429fe3','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('page-draft-color','#7e50b1','2026-05-04 14:18:09','2026-05-04 14:18:09','string'),
+('page-draft-color-dark','#a66ce8','2026-05-04 14:18:09','2026-05-04 14:18:09','string');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1857,4 +1881,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-04 14:15:12
+-- Dump completed on 2026-05-04 14:18:14
