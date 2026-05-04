@@ -1,0 +1,12 @@
+# Ignore SSL/TLS certificate files
+**.pem
+**.crt
+**.key
+**.csr
+**.pfx
+**.p12
+**.jks
+**.keystore
+**.truststore
+**.srl
+**.der
