@@ -39,7 +39,7 @@ CREATE TABLE `activities` (
   KEY `activities_key_index` (`type`),
   KEY `activities_created_at_index` (`created_at`),
   KEY `activities_ip_index` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +48,16 @@ CREATE TABLE `activities` (
 
 LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
+INSERT INTO `activities` VALUES
+(1,'auth_login','standard; (1) Admin',1,'192.168.65.1',NULL,NULL,'2026-05-04 12:56:20','2026-05-04 12:56:20'),
+(2,'bookshelf_create','(1) BSP Game Engine',1,'192.168.65.1',1,'bookshelf','2026-05-04 13:04:49','2026-05-04 13:04:49'),
+(3,'book_create','(2) Chapter 1 - Project Setup',1,'192.168.65.1',2,'book','2026-05-04 13:06:58','2026-05-04 13:06:58'),
+(4,'bookshelf_update','(1) BSP Game Engine',1,'192.168.65.1',1,'bookshelf','2026-05-04 13:06:58','2026-05-04 13:06:58'),
+(5,'bookshelf_create','(3) Engine Fundamentals',1,'192.168.65.1',3,'bookshelf','2026-05-04 13:10:56','2026-05-04 13:10:56'),
+(6,'bookshelf_delete','(1) BSP Game Engine',1,'192.168.65.1',1,'bookshelf','2026-05-04 13:11:08','2026-05-04 13:11:08'),
+(7,'book_update','(2) Project Setup',1,'192.168.65.1',2,'book','2026-05-04 13:11:26','2026-05-04 13:11:26'),
+(8,'book_update','(2) Getting Started',1,'192.168.65.1',2,'book','2026-05-04 13:12:15','2026-05-04 13:12:15'),
+(9,'book_update','(2) Getting Started',1,'192.168.65.1',2,'book','2026-05-04 13:13:13','2026-05-04 13:13:13');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,6 +148,9 @@ CREATE TABLE `bookshelves_books` (
 
 LOCK TABLES `bookshelves_books` WRITE;
 /*!40000 ALTER TABLE `bookshelves_books` DISABLE KEYS */;
+INSERT INTO `bookshelves_books` VALUES
+(1,2,1),
+(3,2,0);
 /*!40000 ALTER TABLE `bookshelves_books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +232,7 @@ CREATE TABLE `deletions` (
   KEY `deletions_deleted_by_index` (`deleted_by`),
   KEY `deletions_deletable_type_index` (`deletable_type`),
   KEY `deletions_deletable_id_index` (`deletable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,6 +241,8 @@ CREATE TABLE `deletions` (
 
 LOCK TABLES `deletions` WRITE;
 /*!40000 ALTER TABLE `deletions` DISABLE KEYS */;
+INSERT INTO `deletions` VALUES
+(1,1,'bookshelf',1,'2026-05-04 13:11:08','2026-05-04 13:11:08');
 /*!40000 ALTER TABLE `deletions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +303,7 @@ CREATE TABLE `entities` (
   KEY `entities_updated_at_index` (`updated_at`),
   KEY `entities_deleted_at_index` (`deleted_at`),
   KEY `entities_owned_by_index` (`owned_by`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,6 +312,10 @@ CREATE TABLE `entities` (
 
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
+INSERT INTO `entities` VALUES
+(1,'bookshelf','BSP Game Engine','bsp-game-engine',NULL,NULL,NULL,'2026-05-04 13:04:49','2026-05-04 13:11:08','2026-05-04 13:11:08',1,1,1),
+(2,'book','Getting Started','getting-started',NULL,NULL,NULL,'2026-05-04 13:06:58','2026-05-04 13:13:13',NULL,1,1,1),
+(3,'bookshelf','Engine Fundamentals','engine-fundamentals',NULL,NULL,NULL,'2026-05-04 13:10:56','2026-05-04 13:10:56',NULL,1,1,1);
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,6 +344,10 @@ CREATE TABLE `entity_container_data` (
 
 LOCK TABLES `entity_container_data` WRITE;
 /*!40000 ALTER TABLE `entity_container_data` DISABLE KEYS */;
+INSERT INTO `entity_container_data` VALUES
+(1,'bookshelf','This documentation aims to explain the main uses and concepts of the BSP (Binary Space Partitioning) Game Engine.','<p>This documentation aims to explain the main uses and concepts of the BSP (Binary Space Partitioning) Game Engine.<br></p>',NULL,NULL,NULL),
+(2,'book','This book describes how to set up a environment setup for the engine.\r\n','<p>This book describes how to set up a environment setup for the engine.</p><p><br></p>',NULL,NULL,NULL),
+(3,'bookshelf','This shelf describes the main fundamentals of using the game engine.\r\n','<p>This shelf describes the main fundamentals of using the game engine.</p><p><br></p>',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `entity_container_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -568,6 +591,19 @@ CREATE TABLE `joint_permissions` (
 
 LOCK TABLES `joint_permissions` WRITE;
 /*!40000 ALTER TABLE `joint_permissions` DISABLE KEYS */;
+INSERT INTO `joint_permissions` VALUES
+(1,'book',2,3,1),
+(1,'bookshelf',1,3,1),
+(1,'bookshelf',3,3,1),
+(2,'book',2,1,1),
+(2,'bookshelf',1,1,1),
+(2,'bookshelf',3,1,1),
+(3,'book',2,1,1),
+(3,'bookshelf',1,1,1),
+(3,'bookshelf',3,1,1),
+(4,'book',2,1,1),
+(4,'bookshelf',1,1,1),
+(4,'bookshelf',3,1,1);
 /*!40000 ALTER TABLE `joint_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1167,7 +1203,7 @@ CREATE TABLE `search_terms` (
   KEY `search_terms_entity_type_index` (`entity_type`),
   KEY `search_terms_entity_type_entity_id_index` (`entity_type`,`entity_id`),
   KEY `search_terms_score_index` (`score`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1176,6 +1212,58 @@ CREATE TABLE `search_terms` (
 
 LOCK TABLES `search_terms` WRITE;
 /*!40000 ALTER TABLE `search_terms` DISABLE KEYS */;
+INSERT INTO `search_terms` VALUES
+(1,'BSP','bookshelf',1,49),
+(2,'Game','bookshelf',1,49),
+(3,'Engine','bookshelf',1,49),
+(4,'This','bookshelf',1,1),
+(5,'documentation','bookshelf',1,1),
+(6,'aims','bookshelf',1,1),
+(7,'to','bookshelf',1,1),
+(8,'explain','bookshelf',1,1),
+(9,'the','bookshelf',1,2),
+(10,'main','bookshelf',1,1),
+(11,'uses','bookshelf',1,1),
+(12,'and','bookshelf',1,1),
+(13,'concepts','bookshelf',1,1),
+(14,'of','bookshelf',1,1),
+(15,'Binary','bookshelf',1,1),
+(16,'Space','bookshelf',1,1),
+(17,'Partitioning','bookshelf',1,1),
+(41,'Engine','bookshelf',3,48),
+(42,'Fundamentals','bookshelf',3,48),
+(43,'This','bookshelf',3,1),
+(44,'shelf','bookshelf',3,1),
+(45,'describes','bookshelf',3,1),
+(46,'the','bookshelf',3,2),
+(47,'main','bookshelf',3,1),
+(48,'fundamentals','bookshelf',3,1),
+(49,'of','bookshelf',3,1),
+(50,'using','bookshelf',3,1),
+(51,'game','bookshelf',3,1),
+(52,'engine','bookshelf',3,1),
+(53,'\r','bookshelf',3,1),
+(54,'engine.\r','bookshelf',3,1),
+(101,'Getting','book',2,48),
+(102,'Started','book',2,48),
+(103,'This','book',2,1),
+(104,'book','book',2,1),
+(105,'describes','book',2,1),
+(106,'how','book',2,1),
+(107,'to','book',2,1),
+(108,'set','book',2,1),
+(109,'up','book',2,1),
+(110,'a','book',2,1),
+(111,'environment','book',2,1),
+(112,'setup','book',2,6),
+(113,'for','book',2,1),
+(114,'the','book',2,1),
+(115,'engine','book',2,1),
+(116,'\r','book',2,1),
+(117,'engine.\r','book',2,1),
+(118,'chapter','book',2,3),
+(119,'category','book',2,3),
+(120,'1','book',2,5);
 /*!40000 ALTER TABLE `search_terms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1254,7 +1342,7 @@ CREATE TABLE `slug_history` (
   KEY `slug_history_sluggable_id_index` (`sluggable_id`),
   KEY `slug_history_slug_index` (`slug`),
   KEY `slug_history_parent_slug_index` (`parent_slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1263,6 +1351,9 @@ CREATE TABLE `slug_history` (
 
 LOCK TABLES `slug_history` WRITE;
 /*!40000 ALTER TABLE `slug_history` DISABLE KEYS */;
+INSERT INTO `slug_history` VALUES
+(1,'book',2,'chapter-1-project-setup',NULL,'2026-05-04 13:11:26','2026-05-04 13:11:26'),
+(2,'book',2,'project-setup',NULL,'2026-05-04 13:12:15','2026-05-04 13:12:15');
 /*!40000 ALTER TABLE `slug_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1343,7 +1434,7 @@ CREATE TABLE `tags` (
   KEY `tags_value_index` (`value`),
   KEY `tags_order_index` (`order`),
   KEY `tags_entity_id_entity_type_index` (`entity_id`,`entity_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1352,6 +1443,9 @@ CREATE TABLE `tags` (
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
+INSERT INTO `tags` VALUES
+(7,2,'book','chapter','1',0,'2026-05-04 13:13:13','2026-05-04 13:13:13'),
+(8,2,'book','category','setup',0,'2026-05-04 13:13:13','2026-05-04 13:13:13');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1418,7 +1512,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'Admin','admin@admin.com','$2y$12$mOj3ZKGgnFPGYdT7dB6Vp.ZwY2Z0x9cv.MtX/GDwgcu8SejIvItSW',NULL,'2026-05-04 12:52:56','2026-05-04 12:52:56',1,0,'',NULL,'admin'),
+(1,'Admin','admin@admin.com','$2y$12$mOj3ZKGgnFPGYdT7dB6Vp.ZwY2Z0x9cv.MtX/GDwgcu8SejIvItSW','kJbTjR8UM8E0STBtthOsVPkZHNV79ELWIBtN91hrzTbPzUaHdkOgqU3ashjU','2026-05-04 12:52:56','2026-05-04 12:52:56',1,0,'',NULL,'admin'),
 (2,'Guest','guest@example.com','',NULL,'2026-05-04 12:52:56','2026-05-04 12:52:56',1,0,'','public','guest');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1443,7 +1537,7 @@ CREATE TABLE `views` (
   KEY `views_viewable_id_index` (`viewable_id`),
   KEY `views_updated_at_index` (`updated_at`),
   KEY `views_viewable_type_index` (`viewable_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1452,6 +1546,10 @@ CREATE TABLE `views` (
 
 LOCK TABLES `views` WRITE;
 /*!40000 ALTER TABLE `views` DISABLE KEYS */;
+INSERT INTO `views` VALUES
+(1,1,1,'bookshelf',4,'2026-05-04 13:04:49','2026-05-04 13:11:02'),
+(2,1,2,'book',7,'2026-05-04 13:06:58','2026-05-04 13:13:13'),
+(3,1,3,'bookshelf',4,'2026-05-04 13:10:56','2026-05-04 13:12:02');
 /*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1556,4 +1654,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-04 12:55:45
+-- Dump completed on 2026-05-04 13:14:22
