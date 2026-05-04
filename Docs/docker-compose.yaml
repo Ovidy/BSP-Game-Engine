@@ -8,10 +8,10 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - MYSQL_ROOT_PASSWORD=bookstack
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=bookstack
       - MYSQL_USER=bookstack
-      - MYSQL_PASSWORD=bookstack
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./config/mariadb:/config
     ports:
@@ -27,13 +27,12 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - APP_URL=http://localhost:6875
-      # Generate the APP_KEY using `docker run -it --rm --entrypoint /bin/bash lscr.io/linuxserver/bookstack:latest appkey`
-      - APP_KEY=base64:hCEuj34XYLVsT/zx9lSeux6ncatxLkfeuVQRwlSXug4=
+      - APP_KEY=${APP_KEY}
       - APP_LANG=en
       - DB_HOST=mariadb
       - DB_PORT=3306
       - DB_USERNAME=bookstack
-      - DB_PASSWORD=bookstack
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=bookstack
     volumes:
       - ./config/bookstack:/config

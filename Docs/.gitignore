@@ -1,12 +1,27 @@
-# Ignore SSL/TLS certificate files
-**.pem
-**.crt
-**.key
-**.csr
-**.pfx
-**.p12
-**.jks
-**.keystore
-**.truststore
-**.srl
-**.der
+# ----------------------------------
+# MariaDB (CRITICAL: Never track live DB files)
+# ----------------------------------
+config/mariadb/
+
+# ----------------------------------
+# BookStack Noise (Ignore everything EXCEPT uploads)
+# ----------------------------------
+# Ignore everything in the bookstack config folder first...
+config/bookstack/*
+
+# ...but explicitly ALLOW the uploads and storage folders
+!config/bookstack/www/BookStack/public/uploads/
+!config/bookstack/www/BookStack/storage/uploads/
+
+# ----------------------------------
+# Environment & Overrides
+# ----------------------------------
+.env
+docker-compose.override.yml
+
+# ----------------------------------
+# Logs & OS Files
+# ----------------------------------
+*.log
+.DS_Store
+Thumbs.db
