@@ -39,7 +39,7 @@ CREATE TABLE `activities` (
   KEY `activities_key_index` (`type`),
   KEY `activities_created_at_index` (`created_at`),
   KEY `activities_ip_index` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,8 @@ INSERT INTO `activities` VALUES
 (16,'page_create','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:11:48','2026-05-04 14:11:48'),
 (17,'page_update','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:15:09','2026-05-04 14:15:09'),
 (18,'settings_update','customization',1,'192.168.65.1',NULL,NULL,'2026-05-04 14:18:09','2026-05-04 14:18:09'),
-(19,'page_update','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:29:00','2026-05-04 14:29:00');
+(19,'page_update','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:29:00','2026-05-04 14:29:00'),
+(20,'page_create','(7) Setup',1,'192.168.65.1',7,'page','2026-05-04 14:51:38','2026-05-04 14:51:38');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +314,7 @@ CREATE TABLE `entities` (
   KEY `entities_updated_at_index` (`updated_at`),
   KEY `entities_deleted_at_index` (`deleted_at`),
   KEY `entities_owned_by_index` (`owned_by`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +329,8 @@ INSERT INTO `entities` VALUES
 (3,'bookshelf','Engine Fundamentals','engine-fundamentals',NULL,NULL,NULL,'2026-05-04 13:10:56','2026-05-04 13:10:56',NULL,1,1,1),
 (4,'chapter','Chapter 1: Engine Structure','chapter-1-engine-structure',2,NULL,2,'2026-05-04 13:58:02','2026-05-04 14:06:57',NULL,1,1,1),
 (5,'page','Overview','overview',2,4,1,'2026-05-04 13:58:10','2026-05-04 14:09:27',NULL,1,1,1),
-(6,'page','Directory Structure','directory-structure',2,4,2,'2026-05-04 14:10:03','2026-05-04 14:29:00',NULL,1,1,1);
+(6,'page','Directory Structure','directory-structure',2,4,2,'2026-05-04 14:10:03','2026-05-04 14:29:00',NULL,1,1,1),
+(7,'page','Setup','setup',2,4,3,'2026-05-04 14:39:17','2026-05-04 14:51:38',NULL,1,1,1);
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +397,8 @@ LOCK TABLES `entity_page_data` WRITE;
 /*!40000 ALTER TABLE `entity_page_data` DISABLE KEYS */;
 INSERT INTO `entity_page_data` VALUES
 (5,0,0,4,'wysiwyg','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ',''),
-(6,0,0,3,'wysiwyg','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-1\">Main Directory</h4>\r\n<p id=\"bkmrk-there-are-multiple-d\">There are multiple directories that manages the whole project:</p>\r\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/352image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/352image.png\" alt=\"image.png\" width=\"233\" height=\"368\"></a></p>\r\n<ul id=\"bkmrk-docs---documentation\">\r\n<li><strong>Docs</strong> - Documentation website (the one you\'re reading in right now :) )</li>\r\n<li><strong>Engine</strong> - Game Engine\'s source code</li>\r\n<li><strong>Game&nbsp;</strong>- Game example</li>\r\n<li><strong>build</strong> - build tools for creating the project and using it (premake5 executables)</li>\r\n<li><strong>premake5.lua</strong> - PreMake project configuration</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-2\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-3\">Engine &amp; Game Example Directories</h4>\r\n<p id=\"bkmrk-the-engine-and-game-\">The engine and game example directories are managed in a similar way:</p>\r\n<p id=\"bkmrk--1\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/rFaimage.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/rFaimage.png\" alt=\"image.png\" width=\"138\" height=\"103\"></a></p>\r\n<p id=\"bkmrk--2\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/JL6image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/JL6image.png\" alt=\"image.png\" width=\"141\" height=\"86\"></a></p>\r\n<ul id=\"bkmrk-include---c%2B%2B-header\">\r\n<li><strong>include</strong> - C++ header files (can be also added to the game and will be explained later on)</li>\r\n<li><strong>src</strong> - C++ source files</li>\r\n<li><strong>resources</strong> - Game resources (such as images, fonts, and sounds)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-4\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n\nMain Directory\nThere are multiple directories that manages the whole project:\n\n\nDocs - Documentation website (the one you\'re reading in right now :) )\nEngine - Game Engine\'s source code\nGame - Game example\nbuild - build tools for creating the project and using it (premake5 executables)\npremake5.lua - PreMake project configuration\n\n\nEngine & Game Example Directories\nThe engine and game example directories are managed in a similar way:\n\n\n\ninclude - C++ header files (can be also added to the game and will be explained later on)\nsrc - C++ source files\nresources - Game resources (such as images, fonts, and sounds)\n\n ','');
+(6,0,0,3,'wysiwyg','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-1\">Main Directory</h4>\r\n<p id=\"bkmrk-there-are-multiple-d\">There are multiple directories that manages the whole project:</p>\r\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/352image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/352image.png\" alt=\"image.png\" width=\"233\" height=\"368\"></a></p>\r\n<ul id=\"bkmrk-docs---documentation\">\r\n<li><strong>Docs</strong> - Documentation website (the one you\'re reading in right now :) )</li>\r\n<li><strong>Engine</strong> - Game Engine\'s source code</li>\r\n<li><strong>Game&nbsp;</strong>- Game example</li>\r\n<li><strong>build</strong> - build tools for creating the project and using it (premake5 executables)</li>\r\n<li><strong>premake5.lua</strong> - PreMake project configuration</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-2\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-3\">Engine &amp; Game Example Directories</h4>\r\n<p id=\"bkmrk-the-engine-and-game-\">The engine and game example directories are managed in a similar way:</p>\r\n<p id=\"bkmrk--1\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/rFaimage.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/rFaimage.png\" alt=\"image.png\" width=\"138\" height=\"103\"></a></p>\r\n<p id=\"bkmrk--2\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/JL6image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/JL6image.png\" alt=\"image.png\" width=\"141\" height=\"86\"></a></p>\r\n<ul id=\"bkmrk-include---c%2B%2B-header\">\r\n<li><strong>include</strong> - C++ header files (can be also added to the game and will be explained later on)</li>\r\n<li><strong>src</strong> - C++ source files</li>\r\n<li><strong>resources</strong> - Game resources (such as images, fonts, and sounds)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-4\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n\nMain Directory\nThere are multiple directories that manages the whole project:\n\n\nDocs - Documentation website (the one you\'re reading in right now :) )\nEngine - Game Engine\'s source code\nGame - Game example\nbuild - build tools for creating the project and using it (premake5 executables)\npremake5.lua - PreMake project configuration\n\n\nEngine & Game Example Directories\nThe engine and game example directories are managed in a similar way:\n\n\n\ninclude - C++ header files (can be also added to the game and will be explained later on)\nsrc - C++ source files\nresources - Game resources (such as images, fonts, and sounds)\n\n ',''),
+(7,0,0,1,'wysiwyg','<p id=\"bkmrk-now-we%27ll-go-through\">Now we\'ll go through the setup process.</p>\r\n<p id=\"bkmrk-most-of-the-setup-is\">Most of the setup is based on <a title=\"RayLib\'s Quickstart Project\" href=\"https://github.com/raylib-extras/raylib-quickstart\" target=\"_blank\" rel=\"noopener\">RayLib\'s Quickstart Project</a></p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<h4 id=\"bkmrk-requirements\">Requirements</h4>\r\n<ul id=\"bkmrk-build-tools-%28such-as\">\r\n<li>Build Tools (Such as Make, MinGW, VS Builder, etc...)</li>\r\n<li>Premake5 (Included in&nbsp;<strong>build</strong> directory)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>\r\n<h4 id=\"bkmrk-build-environment\">Build Environment</h4>\r\n<p id=\"bkmrk-to-build-the-project\">To build the project you should use PreMake. To run PreMake for your environment, check out the build section<br>in <a title=\"RayLib\'s Build Quickstart Page\" href=\"https://github.com/raylib-extras/raylib-quickstart#:~:text=MacOS-,VSCode%20Users%20(all%20platforms),you%20are%20good%20to%20go,-Output%20files\" target=\"_blank\" rel=\"noopener\">RayLib\'s Quickstart Page</a>.</p>\r\n<p id=\"bkmrk-%C2%A0-2\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-3\">&nbsp;</p>','Now we\'ll go through the setup process.\nMost of the setup is based on RayLib\'s Quickstart Project\n \nRequirements\n\nBuild Tools (Such as Make, MinGW, VS Builder, etc...)\nPremake5 (Included in build directory)\n\n \nBuild Environment\nTo build the project you should use PreMake. To run PreMake for your environment, check out the build sectionin RayLib\'s Quickstart Page.\n \n ','');
 /*!40000 ALTER TABLE `entity_page_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,24 +622,28 @@ INSERT INTO `joint_permissions` VALUES
 (1,'chapter',4,3,1),
 (1,'page',5,3,1),
 (1,'page',6,3,1),
+(1,'page',7,3,1),
 (2,'book',2,1,1),
 (2,'bookshelf',1,1,1),
 (2,'bookshelf',3,1,1),
 (2,'chapter',4,1,1),
 (2,'page',5,1,1),
 (2,'page',6,1,1),
+(2,'page',7,1,1),
 (3,'book',2,1,1),
 (3,'bookshelf',1,1,1),
 (3,'bookshelf',3,1,1),
 (3,'chapter',4,1,1),
 (3,'page',5,1,1),
 (3,'page',6,1,1),
+(3,'page',7,1,1),
 (4,'book',2,1,1),
 (4,'bookshelf',1,1,1),
 (4,'bookshelf',3,1,1),
 (4,'chapter',4,1,1),
 (4,'page',5,1,1),
-(4,'page',6,1,1);
+(4,'page',6,1,1),
+(4,'page',7,1,1);
 /*!40000 ALTER TABLE `joint_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -853,7 +860,7 @@ CREATE TABLE `page_revisions` (
   KEY `page_revisions_book_slug_index` (`book_slug`),
   KEY `page_revisions_type_index` (`type`),
   KEY `page_revisions_revision_number_index` (`revision_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -869,7 +876,8 @@ INSERT INTO `page_revisions` VALUES
 (6,5,'Overview','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ',1,'2026-05-04 14:09:27','2026-05-04 14:09:27','overview','getting-started','version','','',4),
 (7,6,'Directory Structure','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n \n ',1,'2026-05-04 14:11:48','2026-05-04 14:11:48','directory-structure','getting-started','version','','Initial publish',1),
 (9,6,'Directory Structure','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-1\">Main Directory</h4>\r\n<p id=\"bkmrk-there-are-multiple-d\">There are multiple directories that manages the whole project:</p>\r\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/352image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/352image.png\" alt=\"image.png\" width=\"233\" height=\"368\"></a></p>\r\n<ul id=\"bkmrk-docs---documentation\">\r\n<li><strong>Docs</strong> - Documentation website (the one you\'re reading in right now :) )</li>\r\n<li><strong>Engine</strong> - Game Engine\'s source code</li>\r\n<li><strong>Game&nbsp;</strong>- Game example</li>\r\n<li><strong>build</strong> - build tools for creating the project and using it (premake5 executables)</li>\r\n<li><strong>premake5.lua</strong> - PreMake project configuration</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-2\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-3\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n\nMain Directory\nThere are multiple directories that manages the whole project:\n\n\nDocs - Documentation website (the one you\'re reading in right now :) )\nEngine - Game Engine\'s source code\nGame - Game example\nbuild - build tools for creating the project and using it (premake5 executables)\npremake5.lua - PreMake project configuration\n\n \n ',1,'2026-05-04 14:15:09','2026-05-04 14:15:09','directory-structure','getting-started','version','','',2),
-(11,6,'Directory Structure','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-1\">Main Directory</h4>\r\n<p id=\"bkmrk-there-are-multiple-d\">There are multiple directories that manages the whole project:</p>\r\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/352image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/352image.png\" alt=\"image.png\" width=\"233\" height=\"368\"></a></p>\r\n<ul id=\"bkmrk-docs---documentation\">\r\n<li><strong>Docs</strong> - Documentation website (the one you\'re reading in right now :) )</li>\r\n<li><strong>Engine</strong> - Game Engine\'s source code</li>\r\n<li><strong>Game&nbsp;</strong>- Game example</li>\r\n<li><strong>build</strong> - build tools for creating the project and using it (premake5 executables)</li>\r\n<li><strong>premake5.lua</strong> - PreMake project configuration</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-2\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-3\">Engine &amp; Game Example Directories</h4>\r\n<p id=\"bkmrk-the-engine-and-game-\">The engine and game example directories are managed in a similar way:</p>\r\n<p id=\"bkmrk--1\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/rFaimage.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/rFaimage.png\" alt=\"image.png\" width=\"138\" height=\"103\"></a></p>\r\n<p id=\"bkmrk--2\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/JL6image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/JL6image.png\" alt=\"image.png\" width=\"141\" height=\"86\"></a></p>\r\n<ul id=\"bkmrk-include---c%2B%2B-header\">\r\n<li><strong>include</strong> - C++ header files (can be also added to the game and will be explained later on)</li>\r\n<li><strong>src</strong> - C++ source files</li>\r\n<li><strong>resources</strong> - Game resources (such as images, fonts, and sounds)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-4\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n\nMain Directory\nThere are multiple directories that manages the whole project:\n\n\nDocs - Documentation website (the one you\'re reading in right now :) )\nEngine - Game Engine\'s source code\nGame - Game example\nbuild - build tools for creating the project and using it (premake5 executables)\npremake5.lua - PreMake project configuration\n\n\nEngine & Game Example Directories\nThe engine and game example directories are managed in a similar way:\n\n\n\ninclude - C++ header files (can be also added to the game and will be explained later on)\nsrc - C++ source files\nresources - Game resources (such as images, fonts, and sounds)\n\n ',1,'2026-05-04 14:29:00','2026-05-04 14:29:00','directory-structure','getting-started','version','','',3);
+(11,6,'Directory Structure','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-1\">Main Directory</h4>\r\n<p id=\"bkmrk-there-are-multiple-d\">There are multiple directories that manages the whole project:</p>\r\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/352image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/352image.png\" alt=\"image.png\" width=\"233\" height=\"368\"></a></p>\r\n<ul id=\"bkmrk-docs---documentation\">\r\n<li><strong>Docs</strong> - Documentation website (the one you\'re reading in right now :) )</li>\r\n<li><strong>Engine</strong> - Game Engine\'s source code</li>\r\n<li><strong>Game&nbsp;</strong>- Game example</li>\r\n<li><strong>build</strong> - build tools for creating the project and using it (premake5 executables)</li>\r\n<li><strong>premake5.lua</strong> - PreMake project configuration</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-2\"></p>\r\n<h4 id=\"bkmrk-%C2%A0-3\">Engine &amp; Game Example Directories</h4>\r\n<p id=\"bkmrk-the-engine-and-game-\">The engine and game example directories are managed in a similar way:</p>\r\n<p id=\"bkmrk--1\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/rFaimage.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/rFaimage.png\" alt=\"image.png\" width=\"138\" height=\"103\"></a></p>\r\n<p id=\"bkmrk--2\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/JL6image.png\" target=\"_blank\" rel=\"noopener\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/JL6image.png\" alt=\"image.png\" width=\"141\" height=\"86\"></a></p>\r\n<ul id=\"bkmrk-include---c%2B%2B-header\">\r\n<li><strong>include</strong> - C++ header files (can be also added to the game and will be explained later on)</li>\r\n<li><strong>src</strong> - C++ source files</li>\r\n<li><strong>resources</strong> - Game resources (such as images, fonts, and sounds)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-4\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n\nMain Directory\nThere are multiple directories that manages the whole project:\n\n\nDocs - Documentation website (the one you\'re reading in right now :) )\nEngine - Game Engine\'s source code\nGame - Game example\nbuild - build tools for creating the project and using it (premake5 executables)\npremake5.lua - PreMake project configuration\n\n\nEngine & Game Example Directories\nThe engine and game example directories are managed in a similar way:\n\n\n\ninclude - C++ header files (can be also added to the game and will be explained later on)\nsrc - C++ source files\nresources - Game resources (such as images, fonts, and sounds)\n\n ',1,'2026-05-04 14:29:00','2026-05-04 14:29:00','directory-structure','getting-started','version','','',3),
+(12,7,'Setup','<p id=\"bkmrk-now-we%27ll-go-through\">Now we\'ll go through the setup process.</p>\r\n<p id=\"bkmrk-most-of-the-setup-is\">Most of the setup is based on <a title=\"RayLib\'s Quickstart Project\" href=\"https://github.com/raylib-extras/raylib-quickstart\" target=\"_blank\" rel=\"noopener\">RayLib\'s Quickstart Project</a></p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<h4 id=\"bkmrk-requirements\">Requirements</h4>\r\n<ul id=\"bkmrk-build-tools-%28such-as\">\r\n<li>Build Tools (Such as Make, MinGW, VS Builder, etc...)</li>\r\n<li>Premake5 (Included in&nbsp;<strong>build</strong> directory)</li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>\r\n<h4 id=\"bkmrk-build-environment\">Build Environment</h4>\r\n<p id=\"bkmrk-to-build-the-project\">To build the project you should use PreMake. To run PreMake for your environment, check out the build section<br>in <a title=\"RayLib\'s Build Quickstart Page\" href=\"https://github.com/raylib-extras/raylib-quickstart#:~:text=MacOS-,VSCode%20Users%20(all%20platforms),you%20are%20good%20to%20go,-Output%20files\" target=\"_blank\" rel=\"noopener\">RayLib\'s Quickstart Page</a>.</p>\r\n<p id=\"bkmrk-%C2%A0-2\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-3\">&nbsp;</p>','Now we\'ll go through the setup process.\nMost of the setup is based on RayLib\'s Quickstart Project\n \nRequirements\n\nBuild Tools (Such as Make, MinGW, VS Builder, etc...)\nPremake5 (Included in build directory)\n\n \nBuild Environment\nTo build the project you should use PreMake. To run PreMake for your environment, check out the build sectionin RayLib\'s Quickstart Page.\n \n ',1,'2026-05-04 14:51:38','2026-05-04 14:51:38','setup','getting-started','version','','Initial publish',1);
 /*!40000 ALTER TABLE `page_revisions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1244,7 +1252,7 @@ CREATE TABLE `search_terms` (
   KEY `search_terms_entity_type_index` (`entity_type`),
   KEY `search_terms_entity_type_entity_id_index` (`entity_type`,`entity_id`),
   KEY `search_terms_score_index` (`score`)
-) ENGINE=InnoDB AUTO_INCREMENT=473 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=522 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1493,7 +1501,56 @@ INSERT INTO `search_terms` VALUES
 (469,'as','page',6,1),
 (470,'images','page',6,1),
 (471,'fonts','page',6,1),
-(472,'sounds','page',6,1);
+(472,'sounds','page',6,1),
+(473,'Setup','page',7,40),
+(474,'Now','page',7,1),
+(475,'we','page',7,1),
+(476,'ll','page',7,1),
+(477,'go','page',7,1),
+(478,'through','page',7,1),
+(479,'the','page',7,4),
+(480,'setup','page',7,2),
+(481,'process','page',7,1),
+(482,'Most','page',7,1),
+(483,'of','page',7,1),
+(484,'is','page',7,1),
+(485,'based','page',7,1),
+(486,'on','page',7,1),
+(487,'RayLib','page',7,2),
+(488,'s','page',7,2),
+(489,'Quickstart','page',7,2),
+(490,'Project','page',7,1),
+(491,'Requirements','page',7,3),
+(492,'Build','page',7,4),
+(493,'Tools','page',7,1),
+(494,'Such','page',7,1),
+(495,'as','page',7,1),
+(496,'Make','page',7,1),
+(497,'MinGW','page',7,1),
+(498,'VS','page',7,1),
+(499,'Builder','page',7,1),
+(500,'etc','page',7,1),
+(501,'\r','page',7,1),
+(502,'Premake5','page',7,1),
+(503,'Included','page',7,1),
+(504,'in','page',7,2),
+(505,'build','page',7,3),
+(506,'directory','page',7,1),
+(507,'Environment','page',7,3),
+(508,'To','page',7,2),
+(509,'project','page',7,1),
+(510,'you','page',7,1),
+(511,'should','page',7,1),
+(512,'use','page',7,1),
+(513,'PreMake','page',7,2),
+(514,'run','page',7,1),
+(515,'for','page',7,1),
+(516,'your','page',7,1),
+(517,'environment','page',7,1),
+(518,'check','page',7,1),
+(519,'out','page',7,1),
+(520,'section','page',7,1),
+(521,'Page','page',7,1);
 /*!40000 ALTER TABLE `search_terms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1794,7 +1851,7 @@ CREATE TABLE `views` (
   KEY `views_viewable_id_index` (`viewable_id`),
   KEY `views_updated_at_index` (`updated_at`),
   KEY `views_viewable_type_index` (`viewable_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1805,11 +1862,12 @@ LOCK TABLES `views` WRITE;
 /*!40000 ALTER TABLE `views` DISABLE KEYS */;
 INSERT INTO `views` VALUES
 (1,1,1,'bookshelf',4,'2026-05-04 13:04:49','2026-05-04 13:11:02'),
-(2,1,2,'book',20,'2026-05-04 13:06:58','2026-05-04 14:29:22'),
-(3,1,3,'bookshelf',12,'2026-05-04 13:10:56','2026-05-04 14:18:44'),
-(4,1,4,'chapter',6,'2026-05-04 13:58:02','2026-05-04 14:09:48'),
-(5,1,5,'page',7,'2026-05-04 13:58:31','2026-05-04 14:09:27'),
-(6,1,6,'page',4,'2026-05-04 14:11:48','2026-05-04 14:29:00');
+(2,1,2,'book',26,'2026-05-04 13:06:58','2026-05-04 14:38:43'),
+(3,1,3,'bookshelf',13,'2026-05-04 13:10:56','2026-05-04 14:37:43'),
+(4,1,4,'chapter',10,'2026-05-04 13:58:02','2026-05-04 14:39:12'),
+(5,1,5,'page',11,'2026-05-04 13:58:31','2026-05-04 14:39:08'),
+(6,1,6,'page',5,'2026-05-04 14:11:48','2026-05-04 14:37:34'),
+(7,1,7,'page',1,'2026-05-04 14:51:38','2026-05-04 14:51:38');
 /*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1914,4 +1972,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-04 14:29:32
+-- Dump completed on 2026-05-04 14:51:45
