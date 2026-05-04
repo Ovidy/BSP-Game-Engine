@@ -9,6 +9,7 @@ tutorial to run the documentation.
 - [`Docker Compose`](https://docs.docker.com/compose/install/)
 
 ## Hosting the Documentation
+First you *must initialize the environment variables* (example in `.env.example`). Create all of the Envs in a file called `.env` in the `Docs` directory.
 
 Run the following command:
 ```bash
