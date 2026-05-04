@@ -39,7 +39,7 @@ CREATE TABLE `activities` (
   KEY `activities_key_index` (`type`),
   KEY `activities_created_at_index` (`created_at`),
   KEY `activities_ip_index` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,11 @@ INSERT INTO `activities` VALUES
 (6,'bookshelf_delete','(1) BSP Game Engine',1,'192.168.65.1',1,'bookshelf','2026-05-04 13:11:08','2026-05-04 13:11:08'),
 (7,'book_update','(2) Project Setup',1,'192.168.65.1',2,'book','2026-05-04 13:11:26','2026-05-04 13:11:26'),
 (8,'book_update','(2) Getting Started',1,'192.168.65.1',2,'book','2026-05-04 13:12:15','2026-05-04 13:12:15'),
-(9,'book_update','(2) Getting Started',1,'192.168.65.1',2,'book','2026-05-04 13:13:13','2026-05-04 13:13:13');
+(9,'book_update','(2) Getting Started',1,'192.168.65.1',2,'book','2026-05-04 13:13:13','2026-05-04 13:13:13'),
+(10,'chapter_create','(4) Chapter 1: Project Structure',1,'192.168.65.1',4,'chapter','2026-05-04 13:58:02','2026-05-04 13:58:02'),
+(11,'page_create','(5) Technologies',1,'192.168.65.1',5,'page','2026-05-04 13:58:31','2026-05-04 13:58:31'),
+(12,'page_update','(5) Technologies',1,'192.168.65.1',5,'page','2026-05-04 14:01:01','2026-05-04 14:01:01'),
+(13,'page_update','(5) Overview',1,'192.168.65.1',5,'page','2026-05-04 14:06:21','2026-05-04 14:06:21');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +307,7 @@ CREATE TABLE `entities` (
   KEY `entities_updated_at_index` (`updated_at`),
   KEY `entities_deleted_at_index` (`deleted_at`),
   KEY `entities_owned_by_index` (`owned_by`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +319,9 @@ LOCK TABLES `entities` WRITE;
 INSERT INTO `entities` VALUES
 (1,'bookshelf','BSP Game Engine','bsp-game-engine',NULL,NULL,NULL,'2026-05-04 13:04:49','2026-05-04 13:11:08','2026-05-04 13:11:08',1,1,1),
 (2,'book','Getting Started','getting-started',NULL,NULL,NULL,'2026-05-04 13:06:58','2026-05-04 13:13:13',NULL,1,1,1),
-(3,'bookshelf','Engine Fundamentals','engine-fundamentals',NULL,NULL,NULL,'2026-05-04 13:10:56','2026-05-04 13:10:56',NULL,1,1,1);
+(3,'bookshelf','Engine Fundamentals','engine-fundamentals',NULL,NULL,NULL,'2026-05-04 13:10:56','2026-05-04 13:10:56',NULL,1,1,1),
+(4,'chapter','Chapter 1: Project Structure','chapter-1-project-structure',2,NULL,2,'2026-05-04 13:58:02','2026-05-04 13:58:02',NULL,1,1,1),
+(5,'page','Overview','overview',2,4,1,'2026-05-04 13:58:10','2026-05-04 14:06:21',NULL,1,1,1);
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +353,8 @@ LOCK TABLES `entity_container_data` WRITE;
 INSERT INTO `entity_container_data` VALUES
 (1,'bookshelf','This documentation aims to explain the main uses and concepts of the BSP (Binary Space Partitioning) Game Engine.','<p>This documentation aims to explain the main uses and concepts of the BSP (Binary Space Partitioning) Game Engine.<br></p>',NULL,NULL,NULL),
 (2,'book','This book describes how to set up a environment setup for the engine.\r\n','<p>This book describes how to set up a environment setup for the engine.</p><p><br></p>',NULL,NULL,NULL),
-(3,'bookshelf','This shelf describes the main fundamentals of using the game engine.\r\n','<p>This shelf describes the main fundamentals of using the game engine.</p><p><br></p>',NULL,NULL,NULL);
+(3,'bookshelf','This shelf describes the main fundamentals of using the game engine.\r\n','<p>This shelf describes the main fundamentals of using the game engine.</p><p><br></p>',NULL,NULL,NULL),
+(4,'chapter','This chapter explains the main project structure of the engine, main technologies, and how they are related to one another.\r\n','<p>This chapter explains the main project structure of the engine, main technologies, and how they are related to one another.</p><p><br></p>',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `entity_container_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,6 +386,8 @@ CREATE TABLE `entity_page_data` (
 
 LOCK TABLES `entity_page_data` WRITE;
 /*!40000 ALTER TABLE `entity_page_data` DISABLE KEYS */;
+INSERT INTO `entity_page_data` VALUES
+(5,0,0,3,'wysiwyg','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology:</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\n \nThere are multiple technologies included to implement this technology:\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\n\n ','');
 /*!40000 ALTER TABLE `entity_page_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -595,15 +604,23 @@ INSERT INTO `joint_permissions` VALUES
 (1,'book',2,3,1),
 (1,'bookshelf',1,3,1),
 (1,'bookshelf',3,3,1),
+(1,'chapter',4,3,1),
+(1,'page',5,3,1),
 (2,'book',2,1,1),
 (2,'bookshelf',1,1,1),
 (2,'bookshelf',3,1,1),
+(2,'chapter',4,1,1),
+(2,'page',5,1,1),
 (3,'book',2,1,1),
 (3,'bookshelf',1,1,1),
 (3,'bookshelf',3,1,1),
+(3,'chapter',4,1,1),
+(3,'page',5,1,1),
 (4,'book',2,1,1),
 (4,'bookshelf',1,1,1),
-(4,'bookshelf',3,1,1);
+(4,'bookshelf',3,1,1),
+(4,'chapter',4,1,1),
+(4,'page',5,1,1);
 /*!40000 ALTER TABLE `joint_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -820,7 +837,7 @@ CREATE TABLE `page_revisions` (
   KEY `page_revisions_book_slug_index` (`book_slug`),
   KEY `page_revisions_type_index` (`type`),
   KEY `page_revisions_revision_number_index` (`revision_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -829,6 +846,10 @@ CREATE TABLE `page_revisions` (
 
 LOCK TABLES `page_revisions` WRITE;
 /*!40000 ALTER TABLE `page_revisions` DISABLE KEYS */;
+INSERT INTO `page_revisions` VALUES
+(1,5,'Technologies','','',1,'2026-05-04 13:58:31','2026-05-04 13:58:31','technologies','getting-started','version','','Initial publish',1),
+(2,5,'Technologies','<p id=\"bkmrk-the%C2%A0\">The&nbsp;</p>','The ',1,'2026-05-04 14:01:01','2026-05-04 14:01:01','technologies','getting-started','version','','',2),
+(4,5,'Overview','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology:</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\n \nThere are multiple technologies included to implement this technology:\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\n\n ',1,'2026-05-04 14:06:21','2026-05-04 14:06:21','overview','getting-started','version','','',3);
 /*!40000 ALTER TABLE `page_revisions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1203,7 +1224,7 @@ CREATE TABLE `search_terms` (
   KEY `search_terms_entity_type_index` (`entity_type`),
   KEY `search_terms_entity_type_entity_id_index` (`entity_type`,`entity_id`),
   KEY `search_terms_score_index` (`score`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1263,7 +1284,93 @@ INSERT INTO `search_terms` VALUES
 (117,'engine.\r','book',2,1),
 (118,'chapter','book',2,3),
 (119,'category','book',2,3),
-(120,'1','book',2,5);
+(120,'1','book',2,5),
+(121,'Chapter','chapter',4,48),
+(122,'1','chapter',4,48),
+(123,'Project','chapter',4,48),
+(124,'Structure','chapter',4,48),
+(125,'This','chapter',4,1),
+(126,'chapter','chapter',4,1),
+(127,'explains','chapter',4,1),
+(128,'the','chapter',4,2),
+(129,'main','chapter',4,2),
+(130,'project','chapter',4,6),
+(131,'structure','chapter',4,6),
+(132,'of','chapter',4,1),
+(133,'engine','chapter',4,1),
+(134,'technologies','chapter',4,6),
+(135,'and','chapter',4,1),
+(136,'how','chapter',4,1),
+(137,'they','chapter',4,1),
+(138,'are','chapter',4,1),
+(139,'related','chapter',4,1),
+(140,'to','chapter',4,1),
+(141,'one','chapter',4,1),
+(142,'another','chapter',4,1),
+(143,'\r','chapter',4,1),
+(144,'another.\r','chapter',4,1),
+(145,'category','chapter',4,6),
+(146,'project-structure','chapter',4,5),
+(150,'Overview','page',5,40),
+(151,'The','page',5,1),
+(152,'project','page',5,1),
+(153,'is','page',5,1),
+(154,'a','page',5,1),
+(155,'Low','page',5,1),
+(156,'Level','page',5,1),
+(157,'Binary','page',5,1),
+(158,'Space','page',5,1),
+(159,'Partitioning','page',5,1),
+(160,'BSP','page',5,2),
+(161,'based','page',5,1),
+(162,'game','page',5,1),
+(163,'engine','page',5,1),
+(164,'There','page',5,1),
+(165,'are','page',5,1),
+(166,'multiple','page',5,1),
+(167,'technologies','page',5,1),
+(168,'included','page',5,1),
+(169,'to','page',5,1),
+(170,'implement','page',5,1),
+(171,'this','page',5,1),
+(172,'technology','page',5,1),
+(173,'C++','page',5,1),
+(174,'Main','page',5,1),
+(175,'programming','page',5,1),
+(176,'language','page',5,1),
+(177,'for','page',5,3),
+(178,'the','page',5,1),
+(179,'engine\r','page',5,1),
+(180,'RayLib','page',5,1),
+(181,'An','page',5,2),
+(182,'open','page',5,1),
+(183,'source','page',5,1),
+(184,'open-source','page',5,1),
+(185,'cross','page',5,1),
+(186,'platform','page',5,1),
+(187,'cross-platform','page',5,1),
+(188,'graphics','page',5,1),
+(189,'library','page',5,3),
+(190,'creating','page',5,1),
+(191,'games/game','page',5,1),
+(192,'engines\r','page',5,1),
+(193,'GLM','page',5,1),
+(194,'OpenGL','page',5,1),
+(195,'Mathematics','page',5,1),
+(196,'\r','page',5,1),
+(197,'EarCut','page',5,1),
+(198,'A','page',5,1),
+(199,'single','page',5,1),
+(200,'header','page',5,1),
+(201,'single-header','page',5,1),
+(202,'that','page',5,1),
+(203,'implements','page',5,1),
+(204,'Ear','page',5,1),
+(205,'Clipping','page',5,1),
+(206,'floor','page',5,1),
+(207,'&','page',5,1),
+(208,'ceiling','page',5,1),
+(209,'calculations','page',5,1);
 /*!40000 ALTER TABLE `search_terms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1342,7 +1449,7 @@ CREATE TABLE `slug_history` (
   KEY `slug_history_sluggable_id_index` (`sluggable_id`),
   KEY `slug_history_slug_index` (`slug`),
   KEY `slug_history_parent_slug_index` (`parent_slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1353,7 +1460,8 @@ LOCK TABLES `slug_history` WRITE;
 /*!40000 ALTER TABLE `slug_history` DISABLE KEYS */;
 INSERT INTO `slug_history` VALUES
 (1,'book',2,'chapter-1-project-setup',NULL,'2026-05-04 13:11:26','2026-05-04 13:11:26'),
-(2,'book',2,'project-setup',NULL,'2026-05-04 13:12:15','2026-05-04 13:12:15');
+(2,'book',2,'project-setup',NULL,'2026-05-04 13:12:15','2026-05-04 13:12:15'),
+(3,'page',5,'technologies','getting-started','2026-05-04 14:06:21','2026-05-04 14:06:21');
 /*!40000 ALTER TABLE `slug_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1434,7 +1542,7 @@ CREATE TABLE `tags` (
   KEY `tags_value_index` (`value`),
   KEY `tags_order_index` (`order`),
   KEY `tags_entity_id_entity_type_index` (`entity_id`,`entity_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1445,7 +1553,9 @@ LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
 INSERT INTO `tags` VALUES
 (7,2,'book','chapter','1',0,'2026-05-04 13:13:13','2026-05-04 13:13:13'),
-(8,2,'book','category','setup',0,'2026-05-04 13:13:13','2026-05-04 13:13:13');
+(8,2,'book','category','setup',0,'2026-05-04 13:13:13','2026-05-04 13:13:13'),
+(9,4,'chapter','category','project-structure',0,'2026-05-04 13:58:02','2026-05-04 13:58:02'),
+(10,4,'chapter','category','technologies',0,'2026-05-04 13:58:02','2026-05-04 13:58:02');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1537,7 +1647,7 @@ CREATE TABLE `views` (
   KEY `views_viewable_id_index` (`viewable_id`),
   KEY `views_updated_at_index` (`updated_at`),
   KEY `views_viewable_type_index` (`viewable_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1548,8 +1658,10 @@ LOCK TABLES `views` WRITE;
 /*!40000 ALTER TABLE `views` DISABLE KEYS */;
 INSERT INTO `views` VALUES
 (1,1,1,'bookshelf',4,'2026-05-04 13:04:49','2026-05-04 13:11:02'),
-(2,1,2,'book',15,'2026-05-04 13:06:58','2026-05-04 13:49:58'),
-(3,1,3,'bookshelf',10,'2026-05-04 13:10:56','2026-05-04 13:52:37');
+(2,1,2,'book',17,'2026-05-04 13:06:58','2026-05-04 14:01:03'),
+(3,1,3,'bookshelf',11,'2026-05-04 13:10:56','2026-05-04 13:54:49'),
+(4,1,4,'chapter',4,'2026-05-04 13:58:02','2026-05-04 14:06:28'),
+(5,1,5,'page',5,'2026-05-04 13:58:31','2026-05-04 14:06:27');
 /*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1654,4 +1766,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-04 13:54:26
+-- Dump completed on 2026-05-04 14:06:40
