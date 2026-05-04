@@ -29,3 +29,23 @@ This repository uses a hybrid backup approach. We track application configuratio
 *   **Before Pushing:** If you are collaborating, run the script immediately before you `git push` to ensure the remote repository has the absolute latest snapshot of the database. 
 
 *Note: The script requires the Docker containers to be actively running, as it extracts the data directly from the live MariaDB instance.*
+
+### 🔄 Disaster Recovery & Restoration
+
+If you are moving to a new server or need to roll back from a catastrophic failure, use the tracked `bookstack_backup.sql` file to restore your instance. Follow these steps in order:
+
+1.  **Clone & Setup:** Clone this repository and copy `.env.example` to `.env` (filling in your actual passwords and keys).
+2.  **Start the Database First:**
+    ```bash
+    docker compose up -d mariadb
+    ```
+    *(Wait 1-2 minutes for MariaDB to fully initialize for the first time).*
+3.  **Restore the Data:** Inject the backup file directly into the running database:
+    ```bash
+    docker exec -i mariadb sh -c 'mariadb -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' < bookstack_backup.sql
+    ```
+4.  **Start BookStack:**
+    ```bash
+    docker compose up -d
+    ```
+    
