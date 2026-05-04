@@ -39,7 +39,7 @@ CREATE TABLE `activities` (
   KEY `activities_key_index` (`type`),
   KEY `activities_created_at_index` (`created_at`),
   KEY `activities_ip_index` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,8 @@ INSERT INTO `activities` VALUES
 (12,'page_update','(5) Technologies',1,'192.168.65.1',5,'page','2026-05-04 14:01:01','2026-05-04 14:01:01'),
 (13,'page_update','(5) Overview',1,'192.168.65.1',5,'page','2026-05-04 14:06:21','2026-05-04 14:06:21'),
 (14,'chapter_update','(4) Chapter 1: Engine Structure',1,'192.168.65.1',4,'chapter','2026-05-04 14:06:57','2026-05-04 14:06:57'),
-(15,'page_update','(5) Overview',1,'192.168.65.1',5,'page','2026-05-04 14:09:27','2026-05-04 14:09:27');
+(15,'page_update','(5) Overview',1,'192.168.65.1',5,'page','2026-05-04 14:09:27','2026-05-04 14:09:27'),
+(16,'page_create','(6) Directory Structure',1,'192.168.65.1',6,'page','2026-05-04 14:11:48','2026-05-04 14:11:48');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +310,7 @@ CREATE TABLE `entities` (
   KEY `entities_updated_at_index` (`updated_at`),
   KEY `entities_deleted_at_index` (`deleted_at`),
   KEY `entities_owned_by_index` (`owned_by`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +324,8 @@ INSERT INTO `entities` VALUES
 (2,'book','Getting Started','getting-started',NULL,NULL,NULL,'2026-05-04 13:06:58','2026-05-04 13:13:13',NULL,1,1,1),
 (3,'bookshelf','Engine Fundamentals','engine-fundamentals',NULL,NULL,NULL,'2026-05-04 13:10:56','2026-05-04 13:10:56',NULL,1,1,1),
 (4,'chapter','Chapter 1: Engine Structure','chapter-1-engine-structure',2,NULL,2,'2026-05-04 13:58:02','2026-05-04 14:06:57',NULL,1,1,1),
-(5,'page','Overview','overview',2,4,1,'2026-05-04 13:58:10','2026-05-04 14:09:27',NULL,1,1,1);
+(5,'page','Overview','overview',2,4,1,'2026-05-04 13:58:10','2026-05-04 14:09:27',NULL,1,1,1),
+(6,'page','Directory Structure','directory-structure',2,4,2,'2026-05-04 14:10:03','2026-05-04 14:11:48',NULL,1,1,1);
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +391,8 @@ CREATE TABLE `entity_page_data` (
 LOCK TABLES `entity_page_data` WRITE;
 /*!40000 ALTER TABLE `entity_page_data` DISABLE KEYS */;
 INSERT INTO `entity_page_data` VALUES
-(5,0,0,4,'wysiwyg','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ','');
+(5,0,0,4,'wysiwyg','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ',''),
+(6,0,0,1,'wysiwyg','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n \n ','');
 /*!40000 ALTER TABLE `entity_page_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,21 +611,25 @@ INSERT INTO `joint_permissions` VALUES
 (1,'bookshelf',3,3,1),
 (1,'chapter',4,3,1),
 (1,'page',5,3,1),
+(1,'page',6,3,1),
 (2,'book',2,1,1),
 (2,'bookshelf',1,1,1),
 (2,'bookshelf',3,1,1),
 (2,'chapter',4,1,1),
 (2,'page',5,1,1),
+(2,'page',6,1,1),
 (3,'book',2,1,1),
 (3,'bookshelf',1,1,1),
 (3,'bookshelf',3,1,1),
 (3,'chapter',4,1,1),
 (3,'page',5,1,1),
+(3,'page',6,1,1),
 (4,'book',2,1,1),
 (4,'bookshelf',1,1,1),
 (4,'bookshelf',3,1,1),
 (4,'chapter',4,1,1),
-(4,'page',5,1,1);
+(4,'page',5,1,1),
+(4,'page',6,1,1);
 /*!40000 ALTER TABLE `joint_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -839,7 +846,7 @@ CREATE TABLE `page_revisions` (
   KEY `page_revisions_book_slug_index` (`book_slug`),
   KEY `page_revisions_type_index` (`type`),
   KEY `page_revisions_revision_number_index` (`revision_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -852,7 +859,8 @@ INSERT INTO `page_revisions` VALUES
 (1,5,'Technologies','','',1,'2026-05-04 13:58:31','2026-05-04 13:58:31','technologies','getting-started','version','','Initial publish',1),
 (2,5,'Technologies','<p id=\"bkmrk-the%C2%A0\">The&nbsp;</p>','The ',1,'2026-05-04 14:01:01','2026-05-04 14:01:01','technologies','getting-started','version','','',2),
 (4,5,'Overview','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology:</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n</ul>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\n \nThere are multiple technologies included to implement this technology:\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\n\n ',1,'2026-05-04 14:06:21','2026-05-04 14:06:21','overview','getting-started','version','','',3),
-(6,5,'Overview','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ',1,'2026-05-04 14:09:27','2026-05-04 14:09:27','overview','getting-started','version','','',4);
+(6,5,'Overview','<p id=\"bkmrk-the%C2%A0\">The project is a Low Level, Binary Space Partitioning (BSP) based game engine.</p>\r\n<p id=\"bkmrk-there-are-multiple-t\">There are multiple technologies included to implement this technology (development and build wise):</p>\r\n<ul id=\"bkmrk-c%2B%2B---main-programmi\">\r\n<li><strong>C++</strong> - Main programming language for the engine</li>\r\n<li><strong>RayLib</strong> - An open-source, cross-platform, graphics library for creating games/game engines</li>\r\n<li><strong>GLM</strong> - An OpenGL Mathematics library<br></li>\r\n<li><strong>EarCut</strong> - A single-header library that implements Ear Clipping for BSP floor &amp; ceiling calculations<br></li>\r\n<li><strong>PreMake</strong> - A cross-platform, project management tool used for creating the project structure on every environment<br></li>\r\n</ul>\r\n<p id=\"bkmrk-the-engine-is-mainly\">The engine is mainly compiled into a library C++ file that can be used everywhere.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>','The project is a Low Level, Binary Space Partitioning (BSP) based game engine.\nThere are multiple technologies included to implement this technology (development and build wise):\n\nC++ - Main programming language for the engine\nRayLib - An open-source, cross-platform, graphics library for creating games/game engines\nGLM - An OpenGL Mathematics library\nEarCut - A single-header library that implements Ear Clipping for BSP floor & ceiling calculations\nPreMake - A cross-platform, project management tool used for creating the project structure on every environment\n\nThe engine is mainly compiled into a library C++ file that can be used everywhere.\n ',1,'2026-05-04 14:09:27','2026-05-04 14:09:27','overview','getting-started','version','','',4),
+(7,6,'Directory Structure','<p id=\"bkmrk-you-can-find-the-sou\">You can find the source code on <a title=\"GitHub - BSP Game Engine\" href=\"https://github.com/Ovidy/BSP-Game-Engine\" target=\"_blank\" rel=\"noopener\">GitHub</a>, feel free. to look it up and play with it.</p>\r\n<p id=\"bkmrk-%C2%A0\">&nbsp;</p>\r\n<p id=\"bkmrk-%C2%A0-1\">&nbsp;</p>','You can find the source code on GitHub, feel free. to look it up and play with it.\n \n ',1,'2026-05-04 14:11:48','2026-05-04 14:11:48','directory-structure','getting-started','version','','Initial publish',1);
 /*!40000 ALTER TABLE `page_revisions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1227,7 +1235,7 @@ CREATE TABLE `search_terms` (
   KEY `search_terms_entity_type_index` (`entity_type`),
   KEY `search_terms_entity_type_entity_id_index` (`entity_type`,`entity_id`),
   KEY `search_terms_score_index` (`score`)
-) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=334 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1392,7 +1400,26 @@ INSERT INTO `search_terms` VALUES
 (311,'file','page',5,1),
 (312,'can','page',5,1),
 (313,'be','page',5,1),
-(314,'everywhere','page',5,1);
+(314,'everywhere','page',5,1),
+(315,'Directory','page',6,40),
+(316,'Structure','page',6,40),
+(317,'You','page',6,1),
+(318,'can','page',6,1),
+(319,'find','page',6,1),
+(320,'the','page',6,1),
+(321,'source','page',6,1),
+(322,'code','page',6,1),
+(323,'on','page',6,1),
+(324,'GitHub','page',6,1),
+(325,'feel','page',6,1),
+(326,'free','page',6,1),
+(327,'to','page',6,1),
+(328,'look','page',6,1),
+(329,'it','page',6,2),
+(330,'up','page',6,1),
+(331,'and','page',6,1),
+(332,'play','page',6,1),
+(333,'with','page',6,1);
 /*!40000 ALTER TABLE `search_terms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1670,7 +1697,7 @@ CREATE TABLE `views` (
   KEY `views_viewable_id_index` (`viewable_id`),
   KEY `views_updated_at_index` (`updated_at`),
   KEY `views_viewable_type_index` (`viewable_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1681,10 +1708,11 @@ LOCK TABLES `views` WRITE;
 /*!40000 ALTER TABLE `views` DISABLE KEYS */;
 INSERT INTO `views` VALUES
 (1,1,1,'bookshelf',4,'2026-05-04 13:04:49','2026-05-04 13:11:02'),
-(2,1,2,'book',17,'2026-05-04 13:06:58','2026-05-04 14:01:03'),
+(2,1,2,'book',18,'2026-05-04 13:06:58','2026-05-04 14:09:45'),
 (3,1,3,'bookshelf',11,'2026-05-04 13:10:56','2026-05-04 13:54:49'),
-(4,1,4,'chapter',5,'2026-05-04 13:58:02','2026-05-04 14:06:57'),
-(5,1,5,'page',7,'2026-05-04 13:58:31','2026-05-04 14:09:27');
+(4,1,4,'chapter',6,'2026-05-04 13:58:02','2026-05-04 14:09:48'),
+(5,1,5,'page',7,'2026-05-04 13:58:31','2026-05-04 14:09:27'),
+(6,1,6,'page',1,'2026-05-04 14:11:48','2026-05-04 14:11:48');
 /*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1789,4 +1817,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-04 14:09:36
+-- Dump completed on 2026-05-04 14:11:53
