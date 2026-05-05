@@ -1,31 +1,20 @@
-/*
-Raylib example file.
-This is an example main file for a simple raylib project.
-Use this as a starting point or replace it with your code.
-
-by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
-
-*/
-
 #include <iostream>
 
 #include <bsp/handler.h>
+#include <bsp/camera.h>
 #include <render/handler.h>
 #include <input/handler.h>
 #include <test/level.h>
 
-#include "raylib.h"
-
-#include "resource_dir.h"	// utility header for SearchAndSetResourceDir
-
-using namespace bsp;
+#include <raylib.h>
+#include <resource_dir.h>
 
 void prevent_dt_clamp(glm::float32_t& deltaTime);
 
 int main ()
 {
 	// Tell the window to use vsync and work on high DPI displays
-	SetConfigFlags(/*FLAG_VSYNC_HINT | */FLAG_WINDOW_HIGHDPI);
+	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
 
 	// Create the window and OpenGL context
 	InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, "BSP Game Engine");
@@ -78,10 +67,6 @@ int main ()
 		// Render:
 		render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
 	}
-
-	// cleanup
-	// unload our texture so it can be cleaned up
-	//UnloadTexture(wabbit);
 
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
