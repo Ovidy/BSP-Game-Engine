@@ -11,8 +11,7 @@
 
 void prevent_dt_clamp(glm::float32_t& deltaTime);
 
-int main ()
-{
+int main () {
 	// Tell the window to use vsync and work on high DPI displays
 	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
 
@@ -24,13 +23,13 @@ int main ()
 
 	DisableCursor();
 
-	glm::float32_t deltaTime = 0.0f;
+		glm::float32_t deltaTime = 0.0f;
 
-	// create our renderer and load the test level segments into it
-	bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);
-	bsp::Handler bsp_handler;
-	render::Handler render_handler;
-	input::Handler input_handler;
+		// create our renderer and load the test level segments into it
+		bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);
+		bsp::Handler bsp_handler;
+		render::Handler render_handler;
+		input::Handler input_handler;
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("Game/resources");
