@@ -2,125 +2,84 @@
 
 namespace bsp {
 
-    Camera::Camera(const glm::vec3& start_pos, const glm::vec3& start_target, float fov_y) {
-        fake_up = glm::vec3(0.0f, 1.0f, 0.0f);
+    Camera::Camera(const glm::vec3& start_pos, const float pitch, const float yaw, float fov_y) {
+        up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-        m_cam.position = { start_pos.x, start_pos.y, start_pos.z };
-        m_cam.target = { start_target.x, start_target.y, start_target.z };
-        m_cam.up = { fake_up.x, fake_up.y, fake_up.z };
+        position = start_pos;
+        m_cam.up = v3_rtg(up);
         m_cam.fovy = fov_y;
         m_cam.projection = CAMERA_PERSPECTIVE;
+        refresh_raylib();
 
-        pos_2d = glm::vec2(m_cam.position.x, m_cam.position.z);
-        cam_step = glm::vec3(0.0f);
-        forward = glm::vec3(0.0f);
-        right = glm::vec3(0.0f);
+        set_pitch(pitch);
+        set_yaw(yaw);
+
+        velocity = glm::vec3(0.0f);
         speed = CAM_SPEED;
     }
 
-    void Camera::set_yaw(float dt) {
-        if (yaw_delta != 0.0f) {
-            // Use the stored yaw_delta instead of GetMouseDelta()
-            float delta_yaw = -yaw_delta * CAM_ROT_SPEED * dt;
-
-            glm::vec3 new_target_pos = glm::rotateY(forward, delta_yaw);
-            update_target(new_target_pos);
-            
-            // Update the forward vector immediately just like we do in pitch
-            forward = glm::normalize(new_target_pos);
-        }
+    static float wrap_angle(float angle, float min, float max) {
+        float range = max - min;
+        float wrapped = std::fmod(angle - min, range);
+        if (wrapped < 0)
+            wrapped += range;
+        return wrapped + min;
     }
 
-    void Camera::set_pitch(float dt) {
-        float total_pitch_movement = 0.0f;
+    float Camera::set_pitch(float pitch, float max, bool refresh_cache) {
+        f_pitch = wrap_angle(pitch, max -  360.0f, max);
+        if (refresh_cache)
+            refresh_vec_cache();
+        return f_pitch;
+	}
 
-        // Add keyboard input (if any)
-        if (pitch_dir != 0.0f) {
-            total_pitch_movement += pitch_dir * CAM_ROT_SPEED * dt;
-        }
+    float Camera::set_yaw(float yaw, float max, bool refresh_cache) {
+        f_yaw = wrap_angle(yaw, max -  360.0f, max);
+        if (refresh_cache)
+            refresh_vec_cache();
+        return f_yaw;
+	}
 
-        // Add mouse input (if any)
-        if (pitch_delta != 0.0f) {
-            // We subtract the pitch_delta because screen Y coordinates go down, 
-            // but we want the camera angle to pitch UP when we push the mouse forward!
-            total_pitch_movement -= pitch_delta * CAM_ROT_SPEED * dt; 
-        }
+    void Camera::add_pitch(float delta, bool lock, bool refresh_cache) {
+        float desired = f_pitch + delta;
+        if (lock)
+            desired = std::clamp(desired, -89.9f, 89.9f);
+        set_pitch(desired, 180.0f,refresh_cache);
+	}
 
-        // Apply the rotation if there was any movement
-        if (total_pitch_movement != 0.0f) {
-            glm::vec3 new_target_pos = glm::rotate(forward, total_pitch_movement, right);
+    void Camera::add_yaw(float delta, bool refresh_cache) {
+        set_yaw(f_yaw + delta, 360.0f,refresh_cache);
+	}
 
-            // Clamp the rotation so the camera doesn't flip completely upside down
-            if (new_target_pos.y < 0.99f && new_target_pos.y > -0.99f) {
-                update_target(new_target_pos);
-                forward = glm::normalize(new_target_pos); 
-            }
-        }
+    void Camera::handle_mouse_delta(glm::vec2 delta, bool lock) { 
+        add_yaw( delta.x, false);
+        add_pitch( -delta.y, lock, false);
+        if (delta != glm::vec2(0.0f))
+            refresh_vec_cache();
     }
 
-    void Camera::add_yaw(float dx) {
-        yaw_delta += dx;
-    }
-
-    void Camera::add_pitch(float dy) {
-        pitch_delta += dy;
-    }
-
-    void Camera::update_target(const glm::vec3& new_target_pos) {
-        m_cam.target.x = m_cam.position.x + new_target_pos.x;
-        m_cam.target.y = m_cam.position.y + new_target_pos.y;
-        m_cam.target.z = m_cam.position.z + new_target_pos.z;
-    }
-
-    void Camera::pre_update(const glm::float32_t& dt) {
-        init_cam_step(dt);
-        update_vectors();
-    }
 
     void Camera::update(const glm::float32_t& dt, const std::vector<bsp::Sector>& level_sectors) {
-        check_cam_step();
-        update_pos_2d();
-        set_yaw(dt);
-        set_pitch(dt);
+        //TraceLog(LOG_INFO, "yaw %f pitch %f", f_yaw, f_pitch);
+        check_velocity();
         move(level_sectors, dt);
+        refresh_raylib();
     }
 
-    void Camera::update_vectors() {
-        forward = get_forward();
-        right = glm::cross(forward, fake_up);
+    void Camera::step_forward(const float& dt) {
+        velocity += speed * get_flat_forward();
     }
 
-    glm::vec3 Camera::get_forward() const {
-        glm::vec3 dir(
-            m_cam.target.x - m_cam.position.x,
-            m_cam.target.y - m_cam.position.y,
-            m_cam.target.z - m_cam.position.z
-        );
-        return glm::normalize(dir);
+    void Camera::step_back(const float& dt) {
+        velocity -= speed * get_flat_forward();
     }
 
-    void Camera::init_cam_step(float dt) {
-        speed = CAM_SPEED * dt;
-        cam_step = glm::vec3(0.0f);
-        pitch_dir = 0.0f;
-        yaw_delta = 0.0f;
-        pitch_delta = 0.0f;
+    void Camera::step_left(const float& dt) {
+        velocity -= speed * right;
     }
 
-    void Camera::step_forward() {
-        cam_step += speed * forward;
-    }
-
-    void Camera::step_back() {
-        cam_step -= speed * forward;
-    }
-
-    void Camera::step_left() {
-        cam_step -= speed * right;
-    }
-
-    void Camera::step_right() {
-        cam_step += speed * right;
+    void Camera::step_right(const float& dt) {
+        velocity += speed * right;
     }
 
     void Camera::tilt_up() {
@@ -132,16 +91,16 @@ namespace bsp {
     }
 
     void Camera::fly_up() {
-        cam_step.y += speed; 
+        velocity.y += speed; 
     }
 
     void Camera::fly_down() {
-        cam_step.y -= speed; 
+        velocity.y -= speed; 
     }
 
-    void Camera::jump() {
+    void Camera::jump(const float& dt) {
         if (is_grounded || noclip_enabled) {
-            velocity_y = JUMP_FORCE;
+            velocity.y = JUMP_FORCE;
             is_grounded = false;
         }
     }
@@ -162,21 +121,26 @@ namespace bsp {
         return free_view;
     }
 
-    void Camera::check_cam_step() {
-        if (cam_step.x != 0.0f && cam_step.z != 0.0f) {
-            cam_step *= CAM_DIAG_MOVE_CORR;
+    void Camera::check_velocity() {
+        if (velocity.x != 0.0f && velocity.z != 0.0f) {
+            velocity *= CAM_DIAG_MOVE_CORR;
         }
     }
 
     void Camera::move(const std::vector<bsp::Sector>& level_sectors, float dt) {
-        glm::vec2 current_pos_2d = { m_cam.position.x, m_cam.position.z };
-        glm::vec2 intended_vel = { cam_step.x, cam_step.z };
-        glm::vec2 intended_pos = current_pos_2d + intended_vel;
+        // Apply Gravity to the camera
+
+        glm::vec2 current_pos_2d = get_pos_2d();
+        glm::vec2 intended_vel = glm::vec2{ velocity.x, velocity.z };
+        glm::vec2 intended_pos = current_pos_2d + intended_vel * dt;
 
         if (!noclip_enabled) {
+            velocity.y -= GRAVITY * dt;
+            float y_pos = position.y + velocity.y * dt;
+
             // Calculate where our body parts are relative to our "Eyes" (position.y)
-            float head_y = m_cam.position.y + 0.2f;          // Head is slightly above eyes
-            float feet_y = m_cam.position.y - player_height; // Feet are way below eyes
+            float head_y = y_pos + 0.2f;          // Head is slightly above eyes
+            float feet_y = y_pos - player_height; // Feet are way below eyes
 
             // --- 1. HORIZONTAL COLLISION ---
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
@@ -184,70 +148,41 @@ namespace bsp {
             );
 
             if (hit.is_colliding) {
-                intended_pos += hit.push_vector;
+                velocity.x = (hit.push_vector.x <= 0.0f) ? velocity.x : 0.0f;
+                velocity.z = (hit.push_vector.y <= 0.0f) ? velocity.z : 0.0f;
             }
             
             // --- 2. VERTICAL COLLISION ---
             // Ask the physics engine for the limits at our intended position
             physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, feet_y, head_y, level_sectors);
             
-            // Apply Gravity to the camera
-            velocity_y -= GRAVITY * dt;
-            m_cam.position.y += velocity_y * dt;
-
-            // Re-calculate feet position after gravity pulled us down
-            feet_y = m_cam.position.y - player_height;
 
             // Floor Collision
             if (feet_y <= bounds.floor_height) {
                 // We hit the floor! Snap the EYES to the correct height ABOVE the floor
-                m_cam.position.y = bounds.floor_height + player_height; 
-                velocity_y = 0.0f;
+                //position.y = bounds.floor_height + player_height; 
+                velocity.y = 0.0f;
                 is_grounded = true;
             } else {
                 is_grounded = false;
             }
 
             // Ceiling Collision
-            head_y = m_cam.position.y + 0.2f;
+            head_y = y_pos + 0.2f;
             if (head_y >= bounds.ceiling_height) {
                 // Bonked our head, snap eyes below the ceiling
-                m_cam.position.y = bounds.ceiling_height - 0.2f;
-                if (velocity_y > 0.0f) velocity_y = 0.0f; // Stop moving upward
+                velocity.y = 0.0f;
             }
         } else {
             // NOCLIP FLYING BEHAVIOR
-            m_cam.position.y += cam_step.y; 
-            velocity_y = 0.0f; 
+            position += velocity;
+            return;
         }
-
-        // Apply Horizontal movement
-        glm::vec2 actual_step = intended_pos - current_pos_2d;
-        move_x(actual_step.x);
-        move_z(actual_step.y); 
         
-        m_cam.target.y = m_cam.position.y + forward.y;
+        TraceLog(LOG_INFO, "velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);
+        position += velocity * dt;
     }
 
-    void Camera::move_x(float dx) {
-        m_cam.position.x += dx;
-        m_cam.target.x += dx;
-    }
-
-    void Camera::move_y(float dy) {
-        m_cam.position.y += dy;
-        m_cam.target.y += dy;
-    }
-
-    void Camera::move_z(float dz) {
-        m_cam.position.z += dz;
-        m_cam.target.z += dz;
-    }
-
-    void Camera::update_pos_2d() {
-        pos_2d.x = m_cam.position.x;
-        pos_2d.y = m_cam.position.z;
-    }
 
     // --- Getters implemented in CPP --- //
 
@@ -256,14 +191,57 @@ namespace bsp {
     }
     
     glm::vec2 Camera::get_pos_2d() const { 
-        return pos_2d; 
+        return glm::vec2{position.x, position.z}; 
     }
     
-    glm::vec3 Camera::get_pos_3d() const { 
-        return glm::vec3(m_cam.position.x, m_cam.position.y, m_cam.position.z); 
+    glm::vec3& Camera::get_position() { 
+        return position;
     }
 
     float Camera::get_player_radius() const {
         return player_radius;
+    }
+
+
+    void Camera::refresh_raylib() {
+        m_cam.target = v3_rtg(get_target());
+        m_cam.position = v3_rtg(position);
+    }
+
+    glm::vec3 Camera::get_target() {
+        return forward + position;
+    }
+
+    glm::vec3 Camera::calc_dir() {
+        float pitch = glm::radians(f_pitch);
+        float yaw =   glm::radians(f_yaw);
+
+        glm::vec3 res {
+            cos(yaw)*cos(pitch),
+            sin(pitch),
+            sin(yaw)*cos(pitch)
+        };
+        return res;
+    }
+
+    glm::vec3 Camera::get_forward() {
+        return forward;
+    }
+
+    glm::vec3 Camera::calc_right() {
+        glm::vec3 tmp_up = glm::normalize(up);
+        glm::vec3 res =glm::normalize(glm::cross(forward, tmp_up));
+        return res;
+    }
+
+    glm::vec3 Camera::get_flat_forward() {
+        glm::vec3 flat_forward = forward;
+        flat_forward.y = 0.0f;
+        return glm::normalize(flat_forward);
+    }
+
+    void Camera::refresh_vec_cache() {
+        forward = calc_dir();
+        right = calc_right();
     }
 }

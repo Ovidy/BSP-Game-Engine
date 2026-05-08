@@ -26,7 +26,7 @@ int main () {
 		glm::float32_t deltaTime = 0.0f;
 
 		// create our renderer and load the test level segments into it
-		bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);
+		bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
 		bsp::Handler bsp_handler;
 		render::Handler render_handler;
 		input::Handler input_handler;
@@ -47,8 +47,7 @@ int main () {
 		// Update:
 		deltaTime = GetFrameTime();
 		prevent_dt_clamp(deltaTime);
-		camera.pre_update(deltaTime);
-		input_handler.update(camera, render_handler.get_map_renderer());
+		input_handler.update(camera, render_handler.get_map_renderer(), deltaTime);
 		
 		// Ask the BSP tree what is nearby
     	std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(

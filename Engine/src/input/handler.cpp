@@ -7,7 +7,7 @@ namespace input {
     // Default constructor implementation moved to CPP
     Handler::Handler() = default;
 
-    void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer) {
+    void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer, const float& dt) {
         // ----------- system controls ----------- //
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
@@ -23,28 +23,30 @@ namespace input {
         // ----------- mouse look --------------- //
         Vector2 mouse_delta = GetMouseDelta();
         if (mouse_delta.x != 0.0f) {
-            camera.add_yaw(mouse_delta.x);
+            camera.add_yaw(mouse_delta.x * dt);
         }
 
         if (camera.is_free_view()) {
             if (mouse_delta.y != 0.0f) {
-                camera.add_pitch(mouse_delta.y);
+                camera.add_pitch(-mouse_delta.y * dt, true);
             }
         }
+        camera.handle_mouse_delta(glm::vec2(mouse_delta.x, mouse_delta.y) * dt, true);
+        DrawText(TextFormat("%f %f", camera.yaw(), camera.pitch()), 20, 30, 20, RAYWHITE);
 
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
-            camera.step_forward();
+            camera.step_forward(dt);
         } 
         else if (IsKeyDown(KEY_S)) {
-            camera.step_back();
+            camera.step_back(dt);
         }
 
         if (IsKeyDown(KEY_D)) {
-            camera.step_right();
+            camera.step_right(dt);
         } 
         else if (IsKeyDown(KEY_A)) {
-            camera.step_left();
+            camera.step_left(dt);
         }
 
         if (IsKeyDown(KEY_RIGHT)) {
@@ -63,7 +65,7 @@ namespace input {
             }
         } else {
             if (IsKeyDown(KEY_SPACE)) {
-                camera.jump();
+                camera.jump(dt);
             }
         }
         // ----------- camera rotation ---------- //

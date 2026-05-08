@@ -1,4 +1,5 @@
 #include <bsp/utils.h>
+#include <raylib.h>
 
 namespace bsp {
     glm::float32_t cross(const glm::vec2& a, const glm::vec2& b) {
@@ -11,5 +12,9 @@ namespace bsp {
 
     bool is_on_back(const glm::vec2& a, const glm::vec2& b) {
         return !is_on_front(a, b);
+    }
+
+    Vector3 v3_rtg(const glm::vec3& value) {
+        return {value.x, value.y, value.z};
     }
 }

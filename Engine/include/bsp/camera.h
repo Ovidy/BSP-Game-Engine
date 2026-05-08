@@ -10,15 +10,23 @@
 namespace bsp {
     class Camera {
     public:
-        Camera(const glm::vec3& start_pos, const glm::vec3& start_target, float fov_y);
+        Camera(const glm::vec3& start_pos, const float pitch, const float yaw, float fov_y);
 
-        void pre_update(const glm::float32_t& deltaTime);
         void update(const glm::float32_t& deltaTime, const std::vector<bsp::Sector>& level_sectors);
 
-        void step_forward();
-        void step_back();
-        void step_left();
-        void step_right();
+        float set_pitch(float pitch, float max = 180.0f, bool refresh_cache = true);
+        float set_yaw(float yaw, float max = 360.0f, bool refresh_cache = true);
+        void add_pitch(float delta, bool lock, bool refresh_cache = true); // Both should really be static functions
+        void add_yaw(float delta, bool refresh_cache = true);              // in the cpp file but it's your choice 
+        void handle_mouse_delta(glm::vec2 delta, bool lock_pitch);
+
+        constexpr float pitch() {return f_pitch;};
+        constexpr float yaw() {return f_yaw;};
+
+        void step_forward(const float& dt);
+        void step_back(const float& dt);
+        void step_left(const float& dt);
+        void step_right(const float& dt);
 
         void tilt_up();
         void tilt_down();
@@ -26,7 +34,7 @@ namespace bsp {
         void fly_up();
         void fly_down();
 
-        void jump();
+        void jump(const float& dt);
 
         // Enables or disables collision
         void toggle_noclip();
@@ -36,19 +44,15 @@ namespace bsp {
         void toggle_free_view();
         bool is_free_view() const;
 
-        void add_yaw(float dx);
-        void add_pitch(float dy);
-
         // Declarations only
         const Camera3D& get_raylib_camera() const;
+        glm::vec3& get_position();
         glm::vec2 get_pos_2d() const;
-        glm::vec3 get_pos_3d() const;
         float get_player_radius() const;
 
     private:
         Camera3D m_cam;
-        glm::vec3 fake_up;
-        glm::vec2 pos_2d;
+        glm::vec3 position;
 
         float speed;
         float pitch_dir;
@@ -56,29 +60,33 @@ namespace bsp {
         float pitch_delta;
         float player_height = 0.8f; // How tall the camera is
         float player_radius = 0.25f;
-        float velocity_y = 0.0f;
         bool is_grounded = false;
         
-        const float GRAVITY = 15.0f;     // How fast we fall
-        const float JUMP_FORCE = 6.0f;   // How high we jump
+        const float GRAVITY = 05.0f;     // How fast we fall
+        const float JUMP_FORCE = 60.0f;   // How high we jump
 
-        glm::vec3 cam_step;
-        glm::vec3 forward;
-        glm::vec3 right;
+        glm::vec3 velocity = glm::vec3(0.0);
         bool noclip_enabled = false;
         bool free_view = true; // Look everywhere with mouse
 
-        void set_yaw(float dt);
-        void set_pitch(float dt);
-        void update_target(const glm::vec3& new_target_pos);
-        void update_vectors();
-        glm::vec3 get_forward() const;
-        void init_cam_step(float dt);
-        void check_cam_step();
+        glm::vec3 up;
+        glm::vec3 right;
+        glm::vec3 forward;
+        float f_pitch;
+        float f_yaw;
+
+        
+
+        void check_velocity();
         void move(const std::vector<bsp::Sector>& level_sectors, const glm::float32_t deltaTime);
-        void move_x(float dx);
-        void move_y(float dy);
-        void move_z(float dz);
-        void update_pos_2d();
+
+        glm::vec3 calc_dir();
+        glm::vec3 calc_right();
+        glm::vec3 get_target();
+        glm::vec3 get_forward(); 
+        glm::vec3 get_flat_forward(); // Isn't really releveant for 2.5D but nice to have
+        void refresh_raylib();
+        void refresh_vec_cache();
     };
+
 }
