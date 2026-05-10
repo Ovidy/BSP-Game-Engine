@@ -1,4 +1,5 @@
 #include <bsp/tree_builder.h>
+#include <algorithm>
 
 namespace bsp {
     TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0), num_front_segments(0), num_back_segments(0), num_split_segments(0) {}

@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <bsp/handler.h>
 #include <bsp/camera.h>
 #include <render/handler.h>
@@ -23,13 +21,13 @@ int main () {
 
 	DisableCursor();
 
-		glm::float32_t deltaTime = 0.0f;
+    glm::float32_t deltaTime = 0.0f;
 
-		// create our renderer and load the test level segments into it
-		bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
-		bsp::Handler bsp_handler;
-		render::Handler render_handler;
-		input::Handler input_handler;
+    // create our renderer and load the test level segments into it
+    bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
+    bsp::Handler bsp_handler;
+    render::Handler render_handler;
+    input::Handler input_handler;
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("Game/resources");

@@ -12,6 +12,9 @@ namespace render {
     public:
         ViewRenderer() = default;
         ~ViewRenderer(); // Required to safely unload Raylib models/textures from VRAM
+        // Manual Memory unloading
+        // Only required if the object isn't used for the entire program lifetime
+        void clear();
 
         // Pass the generated BSP tree segments here once during level load
         void load_models(const std::vector<bsp::Segment>& bsp_segments, const std::vector<bsp::Sector>& level_sectors, TextureManager& texture_manager);

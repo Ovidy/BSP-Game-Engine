@@ -1,4 +1,5 @@
 #include <bsp/camera.h>
+#include <algorithm>
 
 namespace bsp {
 
@@ -131,36 +132,38 @@ namespace bsp {
         // Apply Gravity to the camera
 
         glm::vec2 current_pos_2d = get_pos_2d();
-        glm::vec2 intended_vel = glm::vec2{ velocity.x, velocity.z };
-        glm::vec2 intended_pos = current_pos_2d + intended_vel * dt;
+        glm::vec2 vel_2d = glm::vec2{ velocity.x, velocity.z };
 
         if (!noclip_enabled) {
-            velocity.y -= GRAVITY * dt;
-            float y_pos = position.y + velocity.y * dt;
+            if (!is_grounded && velocity.y > terminal_vel)
+                velocity.y -= GRAVITY;
 
+
+            float y_pos = position.y + velocity.y * dt;
             // Calculate where our body parts are relative to our "Eyes" (position.y)
             float head_y = y_pos + 0.2f;          // Head is slightly above eyes
-            float feet_y = y_pos - player_height; // Feet are way below eyes
+            float feet_y = y_pos - player_height * 2; // Feet are way below eyes
 
             // --- 1. HORIZONTAL COLLISION ---
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
-                intended_pos, player_radius, feet_y, head_y, level_sectors
+               current_pos_2d, vel_2d * dt, player_radius, feet_y, head_y, level_sectors
             );
 
-            if (hit.is_colliding) {
-                velocity.x = (hit.push_vector.x <= 0.0f) ? velocity.x : 0.0f;
-                velocity.z = (hit.push_vector.y <= 0.0f) ? velocity.z : 0.0f;
+            if (hit.any_collision()) {
+                velocity.x = hit.x ? 0.0f : velocity.x;
+                velocity.z = hit.y ? 0.0f : velocity.z;
             }
+
+            TraceLog(LOG_WARNING, "Hit (%d, %d)", hit.x, hit.y);
             
             // --- 2. VERTICAL COLLISION ---
             // Ask the physics engine for the limits at our intended position
-            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(intended_pos, feet_y, head_y, level_sectors);
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(current_pos_2d, feet_y, head_y, level_sectors);
             
 
             // Floor Collision
             if (feet_y <= bounds.floor_height) {
                 // We hit the floor! Snap the EYES to the correct height ABOVE the floor
-                //position.y = bounds.floor_height + player_height; 
                 velocity.y = 0.0f;
                 is_grounded = true;
             } else {

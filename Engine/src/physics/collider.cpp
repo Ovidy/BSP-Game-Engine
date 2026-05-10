@@ -5,37 +5,27 @@
 namespace physics {
 
     CollisionResult Collider::detect_wall_collision(
-        const glm::vec2& intended_pos, float player_radius, 
+        const glm::vec2& pos,const glm::vec2& vel ,float player_radius,        
         float feet_y, float head_y, 
         const std::vector<bsp::Sector>& level_sectors) 
     {
         CollisionResult result;
+
+        glm::vec2 intented_x = pos + glm::vec2(vel.x, 0.0f);
+        glm::vec2 intented_y = pos + glm::vec2(0.0, vel.y);
 
         for (const auto& sector : level_sectors) {
             // Height check: Are we flying over or walking under this wall?
             if (feet_y >= sector.ceiling_height) continue; 
             if (head_y <= sector.floor_height) continue;
 
-            // ... (Keep the rest of your wall collision logic exactly the same) ...
-            for (const auto& wall : sector.walls) {
-                glm::vec2 closest = closest_point_on_segment(intended_pos, wall.get_start(), wall.get_end());
-                glm::vec2 diff = intended_pos - closest;
-                float dist_sq = glm::dot(diff, diff);
-                float radius_sq = player_radius * player_radius;
+            if (result.total_collision()) return result;
 
-                if (dist_sq < radius_sq) {
-                    result.is_colliding = true;
-                    if (dist_sq > 0.0f) {
-                        float dist = std::sqrt(dist_sq);
-                        float penetration_depth = player_radius - dist;
-                        glm::vec2 push_dir = diff / dist; 
-                        result.push_vector += push_dir * penetration_depth;
-                    } else {
-                        glm::vec2 wall_dir = glm::normalize(wall.get_end() - wall.get_start());
-                        glm::vec2 normal(-wall_dir.y, wall_dir.x);
-                        result.push_vector += normal * player_radius;
-                    }
-                }
+            for (const auto& wall : sector.walls) {
+                if (!result.x)
+                    result.x = check_axis(intented_x, player_radius, wall);
+                if (!result.y)
+                    result.y = check_axis(intented_y, player_radius, wall);
             }
         }
         return result;
@@ -100,5 +90,14 @@ namespace physics {
         }
         
         return is_inside;
+    }
+
+    bool Collider::check_axis(const glm::vec2& pos, float player_radius, const bsp::Segment& wall) {
+
+        glm::vec2 closest = closest_point_on_segment(pos, wall.get_start(), wall.get_end());
+        glm::vec2 diff = pos - closest;
+        float dist_sq = glm::dot(diff, diff);
+        float radius_sq = player_radius * player_radius;
+        return dist_sq < radius_sq;
     }
 }
