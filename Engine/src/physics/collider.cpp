@@ -31,37 +31,36 @@ namespace physics {
         return result;
     }
 
-    VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
-        VerticalBounds best_bounds;
-        
-        for (const auto& sector : level_sectors) {
-            // If our 2D coordinates are inside this room's footprint
-            if (is_point_in_sector(player_pos_2d, sector)) {
-                
-                // --- CHECK 1: The Sector's Floor ---
-                // Does it act as ground below our feet?
-                if (sector.floor_height <= feet_y + 0.1f && sector.floor_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.floor_height;
-                }
-                // Does it act as a ceiling above our head? (Standing underneath a floating block)
-                if (sector.floor_height >= head_y - 0.1f && sector.floor_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.floor_height;
-                }
+VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
+    VerticalBounds best_bounds; 
+    // Assumes best_bounds starts with floor_height = -INFINITY, ceiling_height = INFINITY
 
-                // --- CHECK 2: The Sector's Ceiling ---
-                // Does it act as ground below our feet? (Standing ON TOP of a block)
-                if (sector.ceiling_height <= feet_y + 0.1f && sector.ceiling_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.ceiling_height;
-                }
-                // Does it act as a normal ceiling above our head?
-                if (sector.ceiling_height >= head_y - 0.1f && sector.ceiling_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.ceiling_height;
-                }
-            }
+    for (const auto& sector : level_sectors) {
+        if (!is_point_in_sector(player_pos_2d, sector)) continue;
+
+        // --- 1. The Sector's Floor ---
+        // Does it act as ground? (Our head is above it, meaning we haven't completely fallen through)
+        if (sector.floor_height < head_y && sector.floor_height > best_bounds.floor_height) {
+            best_bounds.floor_height = sector.floor_height;
         }
-        
-        return best_bounds;
+        // Does it act as a ceiling? (Our feet are below it, so it's a floating block blocking us from below)
+        if (sector.floor_height > feet_y && sector.floor_height < best_bounds.ceiling_height) {
+            best_bounds.ceiling_height = sector.floor_height;
+        }
+
+        // --- 2. The Sector's Ceiling ---
+        // Does it act as ground? (Standing on top of a 3D block, head is above it)
+        if (sector.ceiling_height < head_y && sector.ceiling_height > best_bounds.floor_height) {
+            best_bounds.floor_height = sector.ceiling_height;
+        }
+        // Does it act as a normal ceiling? (Our feet are below it)
+        if (sector.ceiling_height > feet_y && sector.ceiling_height < best_bounds.ceiling_height) {
+            best_bounds.ceiling_height = sector.ceiling_height;
+        }
     }
+    
+    return best_bounds;
+}
 
     glm::vec2 Collider::closest_point_on_segment(const glm::vec2& p, const glm::vec2& a, const glm::vec2& b) {
         glm::vec2 ab = b - a;

@@ -15,6 +15,9 @@ namespace input {
         
         if (IsKeyPressed(KEY_C)) {
             camera.toggle_noclip();
+            static float gravities[] = {0.0f, camera.GRAVITY};
+            camera.GRAVITY = gravities[!camera.is_noclip()];
+            camera.velocity.y = 0.0f;
         }
 
         if (IsKeyPressed(KEY_F)) {
@@ -58,10 +61,10 @@ namespace input {
 
         if (camera.is_noclip()) {
             if (IsKeyDown(KEY_SPACE)) {
-                camera.fly_up();
+                camera.fly_up(dt);
             }
             else if (IsKeyDown(KEY_LEFT_SHIFT)) {
-                camera.fly_down();
+                camera.fly_down(dt);
             }
         } else {
             if (IsKeyDown(KEY_SPACE)) {

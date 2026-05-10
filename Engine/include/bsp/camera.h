@@ -31,8 +31,8 @@ namespace bsp {
         void tilt_up();
         void tilt_down();
 
-        void fly_up();
-        void fly_down();
+        void fly_up(const float& dt);
+        void fly_down(const float& dt);
 
         void jump(const float& dt);
 
@@ -50,6 +50,11 @@ namespace bsp {
         glm::vec2 get_pos_2d() const;
         float get_player_radius() const;
 
+        float GRAVITY = 0.5f;     // How fast we fall
+        const float JUMP_FORCE = 10.0f;   // How high we jump
+
+        glm::vec3 velocity = glm::vec3(0.0);
+        float terminal_vel = -7.0f;
     private:
         Camera3D m_cam;
         glm::vec3 position;
@@ -62,11 +67,6 @@ namespace bsp {
         float player_radius = 0.25f;
         bool is_grounded = false;
         
-        const float GRAVITY = 0.5f;     // How fast we fall
-        const float JUMP_FORCE = 10.0f;   // How high we jump
-
-        glm::vec3 velocity = glm::vec3(0.0);
-        float terminal_vel = -7.0f;
         bool noclip_enabled = false;
         bool free_view = true; // Look everywhere with mouse
 

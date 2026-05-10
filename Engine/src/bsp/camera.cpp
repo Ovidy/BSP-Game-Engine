@@ -61,7 +61,6 @@ namespace bsp {
 
 
     void Camera::update(const glm::float32_t& dt, const std::vector<bsp::Sector>& level_sectors) {
-        //TraceLog(LOG_INFO, "yaw %f pitch %f", f_yaw, f_pitch);
         check_velocity();
         move(level_sectors, dt);
         refresh_raylib();
@@ -91,12 +90,12 @@ namespace bsp {
         pitch_dir -= 1.0f;
     }
 
-    void Camera::fly_up() {
-        velocity.y += speed; 
+    void Camera::fly_up(const float& dt) {
+        position.y += speed * dt; 
     }
 
-    void Camera::fly_down() {
-        velocity.y -= speed; 
+    void Camera::fly_down(const float& dt) {
+        position.y -= speed * dt; 
     }
 
     void Camera::jump(const float& dt) {
@@ -123,8 +122,9 @@ namespace bsp {
     }
 
     void Camera::check_velocity() {
-        if (velocity.x != 0.0f && velocity.z != 0.0f) {
-            velocity *= CAM_DIAG_MOVE_CORR;
+        if (velocity.x != 0.0f || velocity.z != 0.0f) {
+            velocity.x *= CAM_DIAG_MOVE_CORR;
+            velocity.z *= CAM_DIAG_MOVE_CORR;
         }
     }
 
@@ -142,7 +142,7 @@ namespace bsp {
             float y_pos = position.y + velocity.y * dt;
             // Calculate where our body parts are relative to our "Eyes" (position.y)
             float head_y = y_pos + 0.2f;          // Head is slightly above eyes
-            float feet_y = y_pos - player_height * 2; // Feet are way below eyes
+            float feet_y = y_pos - player_height; // Feet are way below eyes
 
             // --- 1. HORIZONTAL COLLISION ---
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
@@ -153,12 +153,10 @@ namespace bsp {
                 velocity.x = hit.x ? 0.0f : velocity.x;
                 velocity.z = hit.y ? 0.0f : velocity.z;
             }
-
-            TraceLog(LOG_WARNING, "Hit (%d, %d)", hit.x, hit.y);
             
             // --- 2. VERTICAL COLLISION ---
             // Ask the physics engine for the limits at our intended position
-            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(current_pos_2d, feet_y, head_y, level_sectors);
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(current_pos_2d + vel_2d * dt, feet_y, head_y, level_sectors);
             
 
             // Floor Collision
@@ -178,11 +176,10 @@ namespace bsp {
             }
         } else {
             // NOCLIP FLYING BEHAVIOR
-            position += velocity;
+            position += velocity * dt;
             return;
         }
         
-        TraceLog(LOG_INFO, "velocity (%f, %f, %f)", velocity.x, velocity.y, velocity.z);
         position += velocity * dt;
     }
 
