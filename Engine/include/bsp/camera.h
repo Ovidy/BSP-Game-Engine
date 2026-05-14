@@ -28,13 +28,17 @@ namespace bsp {
         void step_left(const float& dt);
         void step_right(const float& dt);
 
-        void tilt_up();
-        void tilt_down();
-
         void fly_up(const float& dt);
+
         void fly_down(const float& dt);
 
         void jump(const float& dt);
+
+        void add_force(const glm::vec3& vec);
+
+        const glm::vec3& get_right() const { return right; }
+        glm::vec3 get_forward(); 
+        glm::vec3 get_flat_forward(); // Isn't really releveant for 2.5D but nice to have
 
         // Enables or disables collision
         void toggle_noclip();
@@ -50,7 +54,11 @@ namespace bsp {
         glm::vec2 get_pos_2d() const;
         float get_player_radius() const;
 
-        float GRAVITY = 0.5f;     // How fast we fall
+
+        const float& get_sensitivity() const { return sensitivity; }
+        const float& get_speed() const { return speed; }
+
+        float GRAVITY = CAM_GRAV;
         const float JUMP_FORCE = 10.0f;   // How high we jump
 
         glm::vec3 velocity = glm::vec3(0.0);
@@ -60,6 +68,7 @@ namespace bsp {
         glm::vec3 position;
 
         float speed;
+        float sensitivity;
         float pitch_dir;
         float yaw_delta;
         float pitch_delta;
@@ -84,8 +93,6 @@ namespace bsp {
         glm::vec3 calc_dir();
         glm::vec3 calc_right();
         glm::vec3 get_target();
-        glm::vec3 get_forward(); 
-        glm::vec3 get_flat_forward(); // Isn't really releveant for 2.5D but nice to have
         void refresh_raylib();
         void refresh_vec_cache();
     };

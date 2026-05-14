@@ -17,6 +17,7 @@ namespace bsp {
 
         velocity = glm::vec3(0.0f);
         speed = CAM_SPEED;
+        sensitivity = CAM_SPEED;
     }
 
     static float wrap_angle(float angle, float min, float max) {
@@ -82,14 +83,6 @@ namespace bsp {
         velocity += speed * right;
     }
 
-    void Camera::tilt_up() {
-        pitch_dir += 1.0f;
-    }
-
-    void Camera::tilt_down() {
-        pitch_dir -= 1.0f;
-    }
-
     void Camera::fly_up(const float& dt) {
         position.y += speed * dt; 
     }
@@ -103,6 +96,10 @@ namespace bsp {
             velocity.y = JUMP_FORCE;
             is_grounded = false;
         }
+    }
+
+    void Camera::add_force(const glm::vec3& vec) {
+        velocity += vec;
     }
 
     void Camera::toggle_noclip() {
@@ -165,7 +162,7 @@ namespace bsp {
 
             // Floor Snapping
             if (next_feet_y <= bounds.floor_height) {
-                position.y = bounds.floor_height + player_height; // CRITICAL: Snap to surface
+                position.y = bounds.floor_height + player_height;
                 velocity.y = 0.0f;
                 is_grounded = true;
             } else {
@@ -175,7 +172,7 @@ namespace bsp {
 
             // Ceiling Snapping
             if (next_head_y >= bounds.ceiling_height) {
-                position.y = bounds.ceiling_height - 0.2f; // CRITICAL: Don't let head enter ceiling
+                position.y = bounds.ceiling_height - 0.2f;
                 velocity.y = 0.0f;
             }
         } else {
