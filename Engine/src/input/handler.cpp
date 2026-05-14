@@ -36,7 +36,7 @@ namespace input {
         }
         camera.handle_mouse_delta(glm::vec2(mouse_delta.x, mouse_delta.y) * dt, true);
         DrawText(TextFormat("%f %f", camera.yaw(), camera.pitch()), 20, 30, 20, RAYWHITE);
-
+        
         // ----------- camera control ----------- //
         if (IsKeyDown(KEY_W)) {
             camera.step_forward(dt);
@@ -51,12 +51,12 @@ namespace input {
         else if (IsKeyDown(KEY_A)) {
             camera.step_left(dt);
         }
-
+        
         if (IsKeyDown(KEY_RIGHT)) {
-            camera.add_yaw(1.0f);
+            camera.add_yaw(100.0f * dt);
         } 
         else if (IsKeyDown(KEY_LEFT)) {
-            camera.add_yaw(-1.0f);
+            camera.add_yaw(-100.0f * dt);
         }
 
         if (camera.is_noclip()) {

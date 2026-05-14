@@ -129,58 +129,58 @@ namespace bsp {
     }
 
     void Camera::move(const std::vector<bsp::Sector>& level_sectors, float dt) {
-        // Apply Gravity to the camera
-
         glm::vec2 current_pos_2d = get_pos_2d();
         glm::vec2 vel_2d = glm::vec2{ velocity.x, velocity.z };
-
+        
         if (!noclip_enabled) {
-            if (!is_grounded && velocity.y > terminal_vel)
-                velocity.y -= GRAVITY;
-
-
-            float y_pos = position.y + velocity.y * dt;
-            // Calculate where our body parts are relative to our "Eyes" (position.y)
-            float head_y = y_pos + 0.2f;          // Head is slightly above eyes
-            float feet_y = y_pos - player_height; // Feet are way below eyes
+            // Apply Gravity
+            if (!is_grounded) {
+                velocity.y -= GRAVITY; 
+            }
 
             // --- 1. HORIZONTAL COLLISION ---
+            // Calculate bounds based on current height
+            float head_y = position.y + 0.2f;
+            float feet_y = position.y - player_height;
+
             physics::CollisionResult hit = physics::Collider::detect_wall_collision(
-               current_pos_2d, vel_2d * dt, player_radius, feet_y, head_y, level_sectors
+            current_pos_2d, vel_2d * dt, player_radius, feet_y, head_y, level_sectors
             );
 
             if (hit.any_collision()) {
-                velocity.x = hit.x ? 0.0f : velocity.x;
-                velocity.z = hit.y ? 0.0f : velocity.z;
+                velocity.x *= !hit.x;
+                velocity.z *= !hit.y;
             }
             
-            // --- 2. VERTICAL COLLISION ---
-            // Ask the physics engine for the limits at our intended position
-            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(current_pos_2d + vel_2d * dt, feet_y, head_y, level_sectors);
-            
+            // --- 2. APPLY HORIZONTAL MOVEMENT ---
+            position.x += velocity.x * dt;
+            position.z += velocity.z * dt;
 
-            // Floor Collision
-            if (feet_y <= bounds.floor_height) {
-                // We hit the floor! Snap the EYES to the correct height ABOVE the floor
+            // --- 3. VERTICAL COLLISION & SNAPPING ---
+            physics::VerticalBounds bounds = physics::Collider::get_sector_bounds(get_pos_2d(), feet_y, head_y, level_sectors);
+
+            float next_y = position.y + velocity.y * dt;
+            float next_feet_y = next_y - player_height;
+            float next_head_y = next_y + 0.2f;
+
+            // Floor Snapping
+            if (next_feet_y <= bounds.floor_height) {
+                position.y = bounds.floor_height + player_height; // CRITICAL: Snap to surface
                 velocity.y = 0.0f;
                 is_grounded = true;
             } else {
+                position.y = next_y;
                 is_grounded = false;
             }
 
-            // Ceiling Collision
-            head_y = y_pos + 0.2f;
-            if (head_y >= bounds.ceiling_height) {
-                // Bonked our head, snap eyes below the ceiling
+            // Ceiling Snapping
+            if (next_head_y >= bounds.ceiling_height) {
+                position.y = bounds.ceiling_height - 0.2f; // CRITICAL: Don't let head enter ceiling
                 velocity.y = 0.0f;
             }
         } else {
-            // NOCLIP FLYING BEHAVIOR
             position += velocity * dt;
-            return;
         }
-        
-        position += velocity * dt;
     }
 
 
@@ -216,12 +216,11 @@ namespace bsp {
         float pitch = glm::radians(f_pitch);
         float yaw =   glm::radians(f_yaw);
 
-        glm::vec3 res {
+        return {
             cos(yaw)*cos(pitch),
             sin(pitch),
             sin(yaw)*cos(pitch)
         };
-        return res;
     }
 
     glm::vec3 Camera::get_forward() {

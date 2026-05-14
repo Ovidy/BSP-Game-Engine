@@ -7,8 +7,6 @@
 #include <raylib.h>
 #include <resource_dir.h>
 
-void prevent_dt_clamp(glm::float32_t& deltaTime);
-
 int main () {
 	// Tell the window to use vsync and work on high DPI displays
 	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
@@ -44,7 +42,6 @@ int main () {
 	{
 		// Update:
 		deltaTime = GetFrameTime();
-		prevent_dt_clamp(deltaTime);
 		input_handler.update(camera, render_handler.get_map_renderer(), deltaTime);
 		
 		// Ask the BSP tree what is nearby
@@ -63,10 +60,4 @@ int main () {
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
-}
-
-void prevent_dt_clamp(glm::float32_t& deltaTime) {
-	if (deltaTime > 0.05f) {
-		deltaTime = 0.0166f; 
-	}
 }
