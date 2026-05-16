@@ -19,6 +19,9 @@ namespace render {
     };
 
     ViewRenderer::~ViewRenderer() {
+    }
+
+    void ViewRenderer::clear() {
         for (auto& pair : batched_models) {
             UnloadModel(pair.second);
         }

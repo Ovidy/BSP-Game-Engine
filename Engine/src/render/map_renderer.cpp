@@ -65,6 +65,10 @@ namespace render {
         return enabled;
     }
 
+    void MapRenderer::toggle() {
+        enabled = !enabled;
+    }
+
     void MapRenderer::draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward) {
         glm::vec2 player_pos = remap_vec2(camera_position);
         

@@ -336,7 +336,7 @@ if (downloadRaylib) then
         
         vpaths 
         {
-            ["Header Files/*"] = { "Game/src/**.h", "Game/src/**.hpp" },
+            ["Header Files/*"] = { "Game/include/**.h", "Game/include/**.hpp" },
             ["Source Files/*"] = { "Game/src/**.c", "Game/src/**.cpp" },
             ["Game Resource Files/*"] = { "Game/resources/**" }
         }
@@ -345,8 +345,8 @@ if (downloadRaylib) then
         files {
             "Game/src/**.c",
             "Game/src/**.cpp",
-            "Game/src/**.h", 
-            "Game/src/**.hpp"
+            "Game/include/**.h", 
+            "Game/include/**.hpp"
         }
         
         filter {"system:windows", "action:vs*"}

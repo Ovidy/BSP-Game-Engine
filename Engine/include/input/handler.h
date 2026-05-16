@@ -11,6 +11,6 @@ namespace input {
         // Declaration only
         Handler();
 
-        void update(bsp::Camera& camera, render::MapRenderer& map_renderer);
+        void update(bsp::Camera& camera, render::MapRenderer& map_renderer, const float& dt);
     };
 }

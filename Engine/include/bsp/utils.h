@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <glm/glm.hpp>
 
 #define WINDOW_WIDTH 1024
@@ -14,13 +13,20 @@
 #define EPSILON 0.00001f
 
 #define CAM_HEIGHT 1.0f
-#define CAM_SPEED 6.2
+#define CAM_GRAV 0.5f
+#define CAM_SPEED 3.2
+#define CAM_SENSE 10.0f
 #define CAM_ROT_SPEED 3.0
 #define CAM_DIAG_MOVE_CORR 1 / pow(2, 0.5)
+
+
+struct Vector3;
 
 namespace bsp {
     glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
 
     bool is_on_front(const glm::vec2& a, const glm::vec2& b);
     bool is_on_back(const glm::vec2& a, const glm::vec2& b);
+
+    Vector3 v3_rtg(const glm::vec3& value);
 }

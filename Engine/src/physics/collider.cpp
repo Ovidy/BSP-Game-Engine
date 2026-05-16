@@ -5,73 +5,62 @@
 namespace physics {
 
     CollisionResult Collider::detect_wall_collision(
-        const glm::vec2& intended_pos, float player_radius, 
+        const glm::vec2& pos,const glm::vec2& vel ,float player_radius,        
         float feet_y, float head_y, 
         const std::vector<bsp::Sector>& level_sectors) 
     {
         CollisionResult result;
+
+        glm::vec2 intented_x = pos + glm::vec2(vel.x, 0.0f);
+        glm::vec2 intented_y = pos + glm::vec2(0.0, vel.y);
 
         for (const auto& sector : level_sectors) {
             // Height check: Are we flying over or walking under this wall?
             if (feet_y >= sector.ceiling_height) continue; 
             if (head_y <= sector.floor_height) continue;
 
-            // ... (Keep the rest of your wall collision logic exactly the same) ...
-            for (const auto& wall : sector.walls) {
-                glm::vec2 closest = closest_point_on_segment(intended_pos, wall.get_start(), wall.get_end());
-                glm::vec2 diff = intended_pos - closest;
-                float dist_sq = glm::dot(diff, diff);
-                float radius_sq = player_radius * player_radius;
+            if (result.total_collision()) return result;
 
-                if (dist_sq < radius_sq) {
-                    result.is_colliding = true;
-                    if (dist_sq > 0.0f) {
-                        float dist = std::sqrt(dist_sq);
-                        float penetration_depth = player_radius - dist;
-                        glm::vec2 push_dir = diff / dist; 
-                        result.push_vector += push_dir * penetration_depth;
-                    } else {
-                        glm::vec2 wall_dir = glm::normalize(wall.get_end() - wall.get_start());
-                        glm::vec2 normal(-wall_dir.y, wall_dir.x);
-                        result.push_vector += normal * player_radius;
-                    }
-                }
+            for (const auto& wall : sector.walls) {
+                if (!result.x)
+                    result.x = check_axis(intented_x, player_radius, wall);
+                if (!result.y)
+                    result.y = check_axis(intented_y, player_radius, wall);
             }
         }
         return result;
     }
 
-    VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
-        VerticalBounds best_bounds;
-        
-        for (const auto& sector : level_sectors) {
-            // If our 2D coordinates are inside this room's footprint
-            if (is_point_in_sector(player_pos_2d, sector)) {
-                
-                // --- CHECK 1: The Sector's Floor ---
-                // Does it act as ground below our feet?
-                if (sector.floor_height <= feet_y + 0.1f && sector.floor_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.floor_height;
-                }
-                // Does it act as a ceiling above our head? (Standing underneath a floating block)
-                if (sector.floor_height >= head_y - 0.1f && sector.floor_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.floor_height;
-                }
+VerticalBounds Collider::get_sector_bounds(const glm::vec2& player_pos_2d, float feet_y, float head_y, const std::vector<bsp::Sector>& level_sectors) {
+    VerticalBounds best_bounds; 
+    // Assumes best_bounds starts with floor_height = -INFINITY, ceiling_height = INFINITY
 
-                // --- CHECK 2: The Sector's Ceiling ---
-                // Does it act as ground below our feet? (Standing ON TOP of a block)
-                if (sector.ceiling_height <= feet_y + 0.1f && sector.ceiling_height > best_bounds.floor_height) {
-                    best_bounds.floor_height = sector.ceiling_height;
-                }
-                // Does it act as a normal ceiling above our head?
-                if (sector.ceiling_height >= head_y - 0.1f && sector.ceiling_height < best_bounds.ceiling_height) {
-                    best_bounds.ceiling_height = sector.ceiling_height;
-                }
-            }
+    for (const auto& sector : level_sectors) {
+        if (!is_point_in_sector(player_pos_2d, sector)) continue;
+
+        // --- 1. The Sector's Floor ---
+        // Does it act as ground? (Our head is above it, meaning we haven't completely fallen through)
+        if (sector.floor_height < head_y && sector.floor_height > best_bounds.floor_height) {
+            best_bounds.floor_height = sector.floor_height;
         }
-        
-        return best_bounds;
+        // Does it act as a ceiling? (Our feet are below it, so it's a floating block blocking us from below)
+        if (sector.floor_height > feet_y && sector.floor_height < best_bounds.ceiling_height) {
+            best_bounds.ceiling_height = sector.floor_height;
+        }
+
+        // --- 2. The Sector's Ceiling ---
+        // Does it act as ground? (Standing on top of a 3D block, head is above it)
+        if (sector.ceiling_height < head_y && sector.ceiling_height > best_bounds.floor_height) {
+            best_bounds.floor_height = sector.ceiling_height;
+        }
+        // Does it act as a normal ceiling? (Our feet are below it)
+        if (sector.ceiling_height > feet_y && sector.ceiling_height < best_bounds.ceiling_height) {
+            best_bounds.ceiling_height = sector.ceiling_height;
+        }
     }
+    
+    return best_bounds;
+}
 
     glm::vec2 Collider::closest_point_on_segment(const glm::vec2& p, const glm::vec2& a, const glm::vec2& b) {
         glm::vec2 ab = b - a;
@@ -100,5 +89,14 @@ namespace physics {
         }
         
         return is_inside;
+    }
+
+    bool Collider::check_axis(const glm::vec2& pos, float player_radius, const bsp::Segment& wall) {
+
+        glm::vec2 closest = closest_point_on_segment(pos, wall.get_start(), wall.get_end());
+        glm::vec2 diff = pos - closest;
+        float dist_sq = glm::dot(diff, diff);
+        float radius_sq = player_radius * player_radius;
+        return dist_sq < radius_sq;
     }
 }

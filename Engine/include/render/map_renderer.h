@@ -25,6 +25,7 @@ namespace render {
         void disable_render();
 
         bool is_enabled() const;
+        void toggle();
 
     private:
         void draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward);
