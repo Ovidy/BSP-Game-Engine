@@ -7,7 +7,7 @@ namespace input {
     // Default constructor implementation moved to CPP
     Handler::Handler() = default;
 
-    void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer) {
+    void Handler::update(bsp::Camera& camera, MapRenderer& map_renderer, const float& dt) {
         // ----------- system controls ----------- //
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
@@ -15,6 +15,9 @@ namespace input {
         
         if (IsKeyPressed(KEY_C)) {
             camera.toggle_noclip();
+            
+            camera.GRAVITY = camera.is_noclip() ? 0.0f : CAM_GRAV;
+            camera.velocity.y = 0.0f;
         }
 
         if (IsKeyPressed(KEY_F)) {
@@ -22,66 +25,42 @@ namespace input {
         }
         // ----------- mouse look --------------- //
         Vector2 mouse_delta = GetMouseDelta();
-        if (mouse_delta.x != 0.0f) {
-            camera.add_yaw(mouse_delta.x);
-        }
+        camera.handle_mouse_delta(glm::vec2(mouse_delta.x, mouse_delta.y) * camera.get_sensitivity() * dt, true);
 
-        if (camera.is_free_view()) {
-            if (mouse_delta.y != 0.0f) {
-                camera.add_pitch(mouse_delta.y);
-            }
-        }
-
+        
         // ----------- camera control ----------- //
-        if (IsKeyDown(KEY_W)) {
-            camera.step_forward();
-        } 
-        else if (IsKeyDown(KEY_S)) {
-            camera.step_back();
-        }
+        float f = (float)(IsKeyDown(KEY_W) - IsKeyDown(KEY_S));
+        float r = (float)(IsKeyDown(KEY_D) - IsKeyDown(KEY_A));
 
-        if (IsKeyDown(KEY_D)) {
-            camera.step_right();
-        } 
-        else if (IsKeyDown(KEY_A)) {
-            camera.step_left();
-        }
+        const auto& forward = camera.get_flat_forward();
+        const auto& right = camera.get_right();
 
-        if (IsKeyDown(KEY_RIGHT)) {
-            camera.add_yaw(1.0f);
-        } 
-        else if (IsKeyDown(KEY_LEFT)) {
-            camera.add_yaw(-1.0f);
-        }
+        camera.add_force((f * forward + r * right) * camera.get_speed());
+        
+        float pitch_delta = IsKeyDown(KEY_UP)  - IsKeyDown(KEY_DOWN);
+        camera.add_pitch(100.0f * pitch_delta * dt, camera.is_free_view());
+
+        float yaw_delta = IsKeyDown(KEY_RIGHT)  - IsKeyDown(KEY_LEFT);
+        camera.add_yaw(100.0f * yaw_delta * dt);
+
+
 
         if (camera.is_noclip()) {
             if (IsKeyDown(KEY_SPACE)) {
-                camera.fly_up();
+                camera.fly_up(dt);
             }
             else if (IsKeyDown(KEY_LEFT_SHIFT)) {
-                camera.fly_down();
+                camera.fly_down(dt);
             }
         } else {
             if (IsKeyDown(KEY_SPACE)) {
-                camera.jump();
+                camera.jump(dt);
             }
         }
+
         // ----------- camera rotation ---------- //
-        if (camera.is_free_view()) {
-            if (IsKeyDown(KEY_UP)) {
-                camera.tilt_up();
-            }
-            else if (IsKeyDown(KEY_DOWN)) {
-                camera.tilt_down();
-            }
-        }
-        // -------------------------------------- //
         if (IsKeyPressed(KEY_M)) {
-            if (map_renderer.is_enabled()) {
-                map_renderer.disable_render();
-            } else {
-                map_renderer.enable_render();
-            }
+            map_renderer.toggle();
         }
     }
 }

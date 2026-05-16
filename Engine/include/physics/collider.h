@@ -7,8 +7,10 @@
 namespace physics {
     // The result of our detection phase
     struct CollisionResult {
-        bool is_colliding = false;
-        glm::vec2 push_vector = glm::vec2(0.0f); // Accumulates forces to push the player out
+        bool x = false;
+        bool y = false;
+        bool any_collision() {return x || y;}
+        bool total_collision() {return x && y;}
     };
 
     // Struct to hold the vertical limits of wherever the player is standing
@@ -21,7 +23,7 @@ namespace physics {
     public:
         // Checks math, returns data, DOES NOT alter the player
         static CollisionResult detect_wall_collision(
-            const glm::vec2& intended_pos, float player_radius,        
+            const glm::vec2& pos,const glm::vec2& vel ,float player_radius,        
             float feet_y, float head_y,        
             const std::vector<bsp::Sector>& level_sectors
         );
@@ -49,5 +51,7 @@ namespace physics {
 
         // Math helper to check if a point is inside a polygon
         static bool is_point_in_sector(const glm::vec2& point, const bsp::Sector& sector);
+
+        static bool check_axis(const glm::vec2& pos, float player_radius, const bsp::Segment& wall);
     };
 }

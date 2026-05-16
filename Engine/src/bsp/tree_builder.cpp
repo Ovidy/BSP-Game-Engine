@@ -1,13 +1,14 @@
 #include <bsp/tree_builder.h>
+#include <algorithm>
 
 namespace bsp {
     TreeBuilder::TreeBuilder() : root_node(std::make_shared<Node>()), segment_id(0), num_front_segments(0), num_back_segments(0), num_split_segments(0) {}
 
     void TreeBuilder::print_number_of_segments() const {
-        std::cout << "Total segments: " << segments.size() << std::endl;
-        std::cout << "Front segments: " << num_front_segments << std::endl;
-        std::cout << "Back segments: " << num_back_segments << std::endl;
-        std::cout << "Split segments: " << num_split_segments << std::endl;
+        TraceLog(LOG_INFO, "Total segments: %d" , segments.size() );
+        TraceLog(LOG_INFO, "Front segments: %d" , num_front_segments );
+        TraceLog(LOG_INFO, "Back segments:  %d" , num_back_segments );
+        TraceLog(LOG_INFO, "Split segments: %d" , num_split_segments );
     }
 
     void TreeBuilder::load_segments(const glm::int32_t& seed, const std::vector<Segment>& input_segments) {
@@ -51,7 +52,7 @@ namespace bsp {
             glm::int32_t chunk_start = start_seed + i * chunk_size;
             glm::int32_t chunk_end = (i == cpu_count - 1) ? end_seed : chunk_start + chunk_size;
 
-            std::cout << "CPU " << i << ": " << chunk_start << ", " << chunk_end << std::endl;
+           TraceLog(LOG_TRACE, "CPU %d: %d, %d" , i, chunk_start , chunk_end);
 
             // Launch the thread asynchronously. 
             // Notice: No 'this' pointer is captured, making it perfectly isolated.
@@ -74,7 +75,7 @@ namespace bsp {
             }
         }
 
-        std::cout << "\nBest seed: " << best_seed << " with score: " << best_score << std::endl;
+        TraceLog(LOG_TRACE, "Best seed %d with score %d", best_seed, best_score);
         return best_seed;
     }
 
@@ -134,8 +135,8 @@ namespace bsp {
             }
         }
 
-        std::cout << "Best seed found: " << best_seed << " with score: " << best_score << std::endl;
 
+        TraceLog(LOG_TRACE, "Best seed %d with score %d", best_seed, best_score);
         return best_seed;
     }
 

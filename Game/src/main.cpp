@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <bsp/handler.h>
 #include <bsp/camera.h>
 #include <render/handler.h>
@@ -8,8 +6,6 @@
 
 #include <raylib.h>
 #include <resource_dir.h>
-
-void prevent_dt_clamp(glm::float32_t& deltaTime);
 
 int main () {
 	// Tell the window to use vsync and work on high DPI displays
@@ -23,13 +19,13 @@ int main () {
 
 	DisableCursor();
 
-		glm::float32_t deltaTime = 0.0f;
+    glm::float32_t deltaTime = 0.0f;
 
-		// create our renderer and load the test level segments into it
-		bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);
-		bsp::Handler bsp_handler;
-		render::Handler render_handler;
-		input::Handler input_handler;
+    // create our renderer and load the test level segments into it
+    bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
+    bsp::Handler bsp_handler;
+    render::Handler render_handler;
+    input::Handler input_handler;
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("Game/resources");
@@ -46,9 +42,7 @@ int main () {
 	{
 		// Update:
 		deltaTime = GetFrameTime();
-		prevent_dt_clamp(deltaTime);
-		camera.pre_update(deltaTime);
-		input_handler.update(camera, render_handler.get_map_renderer());
+		input_handler.update(camera, render_handler.get_map_renderer(), deltaTime);
 		
 		// Ask the BSP tree what is nearby
     	std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(
@@ -66,10 +60,4 @@ int main () {
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
-}
-
-void prevent_dt_clamp(glm::float32_t& deltaTime) {
-	if (deltaTime > 0.05f) {
-		deltaTime = 0.0166f; 
-	}
 }

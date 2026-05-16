@@ -1,9 +1,10 @@
 #include <render/texture_manager.h>
+#include <random>
 
 namespace render {
 
     TextureManager::~TextureManager() {
-        clear();
+        //clear();
     }
 
     void TextureManager::clear() {
