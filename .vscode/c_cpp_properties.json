@@ -9,7 +9,8 @@
                 "${workspaceFolder}/Game/src",
                 "${workspaceFolder}/external/glm",
                 "${workspaceFolder}/external/earcut/include",
-                "${workspaceFolder}/external/raylib-master/src"
+                "${workspaceFolder}/external/raylib-master/src",
+                "${workspaceFolder}/external/entt/single_include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
@@ -26,7 +27,8 @@
                 "${workspaceFolder}/Game/src",
                 "${workspaceFolder}/external/glm",
                 "${workspaceFolder}/external/earcut/include",
-                "${workspaceFolder}/external/raylib-master/src"
+                "${workspaceFolder}/external/raylib-master/src",
+                "${workspaceFolder}/external/entt/single_include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
@@ -43,7 +45,8 @@
                 "${workspaceFolder}/Game/src",
                 "${workspaceFolder}/external/glm",
                 "${workspaceFolder}/external/earcut/include",
-                "${workspaceFolder}/external/raylib-master/src"
+                "${workspaceFolder}/external/raylib-master/src",
+                "${workspaceFolder}/external/entt/single_include"
             ],
             "defines": [
                 "_DEBUG",
