@@ -130,8 +130,8 @@ function check_entt()
         zip.extract("entt.zip", os.getcwd())
         
         -- The github zip extracts to a folder named 'entt-master'
-        if (os.isdir("entt-master")) then
-            os.rename("entt-master", "entt")
+        if (os.isdir("entt-main")) then
+            os.rename("entt-main", "entt")
         end
         
         os.remove("entt.zip")
@@ -269,7 +269,7 @@ if (downloadRaylib) then
             "Engine/src",
             "external/glm", 
             "external/earcut/include",
-            "external/entt/src",
+            "external/entt/single_include",
             raylib_dir .. "/src" 
         }
 
@@ -383,7 +383,7 @@ if (downloadRaylib) then
             "Engine/include",
             "Game/include",
             "external/glm", 
-            "external/entt/src",
+            "external/entt/single_include",
             raylib_dir .. "/src" 
         }
 
