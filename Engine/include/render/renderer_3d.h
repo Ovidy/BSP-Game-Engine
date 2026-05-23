@@ -5,10 +5,10 @@
 #include <render/texture_manager.h>
 
 namespace render {
-    class Handler {
+    class Renderer3D {
     public:
-        Handler();
-        ~Handler();
+        Renderer3D();
+        ~Renderer3D();
 
         void render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
 

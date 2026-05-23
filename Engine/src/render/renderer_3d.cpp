@@ -1,17 +1,17 @@
-#include <render/handler.h>
+#include <render/renderer_3d.h>
 
 using namespace bsp;
 
 namespace render {
-    Handler::Handler() {
+    Renderer3D::Renderer3D() {
         // constructor code here
     }
 
-    Handler::~Handler() {
+    Renderer3D::~Renderer3D() {
         // destructor code here
     }
 
-    void Handler::render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
         // drawing
         BeginDrawing();
 
@@ -26,7 +26,7 @@ namespace render {
         EndDrawing();
     }
 
-    void Handler::render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
         // Calculate the 2D forward direction on the XZ plane
         glm::vec2 forward(
             raylib_camera.target.x - raylib_camera.position.x,
@@ -43,7 +43,7 @@ namespace render {
         draw_controls_overlay();
     }
 
-    void Handler::draw_controls_overlay() {
+    void Renderer3D::draw_controls_overlay() {
         // ==========================================
         // DRAW CONTROLS OVERLAY
         // ==========================================
@@ -94,7 +94,7 @@ namespace render {
         DrawText("F11 - Fullscreen", x_pos, y_pos, small_font, LIGHTGRAY);
     }
 
-    void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
@@ -105,7 +105,7 @@ namespace render {
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
+    void Renderer3D::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
         segments = input_segments;
         tree_segments = input_tree_segments;
         
@@ -116,15 +116,15 @@ namespace render {
         view_renderer.load_models(tree_segments, level_sectors, texture_manager);
     }
 
-    void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
+    void Renderer3D::load_texture(glm::int32_t id, const std::string& file_path) {
         texture_manager.load_texture(id, file_path);
     }
 
-    void Handler::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
+    void Renderer3D::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
         view_renderer.load_sprites(level_sprites);
     }
 
-    MapRenderer& Handler::get_map_renderer() {
+    MapRenderer& Renderer3D::get_map_renderer() {
         return map_renderer;
     }
 }

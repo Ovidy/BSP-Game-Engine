@@ -3,7 +3,7 @@
 #include <entt/entt.hpp>
 
 #include <bsp/handler.h>
-#include <render/handler.h>
+#include <render/renderer_3d.h>
 #include <input/handler.h>
 
 class Scene {
@@ -23,6 +23,6 @@ private:
     entt::entity player_entity;
 
     bsp::Handler bsp_handler;
-    render::Handler render_handler;
+    render::Renderer3D renderer;
     input::Handler input_handler;
 };

@@ -13,13 +13,13 @@ Scene::Scene() {
 
     SearchAndSetResourceDir("Game/resources");
 	
-    render_handler.load_texture(1, "Wall1.png");
-	render_handler.load_texture(2, "Monster1-north.png");
-	render_handler.load_texture(3, "wabbit_alpha.png");
+    renderer.load_texture(1, "Wall1.png");
+	renderer.load_texture(2, "Monster1-north.png");
+	renderer.load_texture(3, "wabbit_alpha.png");
 
 	bsp_handler.load_level(bsp::test_level_sectors);
-	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
-	render_handler.load_sprites(bsp::test_level_sprites);
+	renderer.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
+	renderer.load_sprites(bsp::test_level_sprites);
 }
 
 Scene::~Scene() {
@@ -29,7 +29,7 @@ Scene::~Scene() {
 void Scene::update(const glm::float32_t& delta_time) {
     bsp::Camera& camera = registry.get<bsp::Camera>(player_entity);
 
-    input_handler.update(camera, render_handler.get_map_renderer(), delta_time);
+    input_handler.update(camera, renderer.get_map_renderer(), delta_time);
 		
     // Ask the BSP tree what is nearby
     std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(
@@ -41,7 +41,7 @@ void Scene::update(const glm::float32_t& delta_time) {
     bsp_handler.update(camera.get_pos_2d());
 
     // Render:
-    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
+    renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
 }
 
 entt::entity Scene::create_entity() {
