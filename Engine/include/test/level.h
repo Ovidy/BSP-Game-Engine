@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <bsp/data_types.h>
+#include <ecs/scene.h>
 
 namespace bsp {
     // Points (Remains exactly the same)
@@ -88,5 +89,11 @@ namespace bsp {
 
         // Place a sprite up on the floating triangle platform (Floor is 4.0f)
         { glm::vec3(5.2f, 4.5f, 4.5f), 3, 1.5f, WHITE } // Tinted red, slightly larger
+    };
+
+    std::unordered_map<glm::int32_t, std::string> test_level_textures = {
+        { 1, "Wall1.png" },
+        { 2, "Monster1-north.png" },
+        { 3, "wabbit_alpha.png" }
     };
 }

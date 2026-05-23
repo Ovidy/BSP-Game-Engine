@@ -8,27 +8,34 @@
 
 class Scene {
 public:
-    Scene();
+    Scene(
+        const std::vector<bsp::Sector>& sectors, 
+        const std::vector<bsp::Sprite>& sprites, 
+        const std::unordered_map<glm::int32_t, std::string>& textures
+    );
+    Scene(const Scene& scene);
     ~Scene();
 
-    void update(const glm::float32_t& delta_time);
+    const std::vector<bsp::Sector>& get_sectors() const { return sectors; }
+    const std::vector<bsp::Sprite>& get_sprites() const { return sprites; }
+    const std::unordered_map<glm::int32_t, std::string>& get_textures() const { return textures; }
 
     entt::entity create_entity();
     void destroy_entity(const entt::entity& entity);
 
     entt::registry& get_registry();
 
+    void create_main_camera(const glm::vec3& start_pos, const float pitch, const float yaw, const float fov_y);
     entt::entity create_camera_entity(const glm::vec3& start_pos, const float pitch, const float yaw, const float fov_y);
     void set_main_camera(const entt::entity& main_camera);
-
-    void load_texture(glm::int32_t id, const std::string& file_path);
-    void load_level(const std::vector<bsp::Sector>& input_sectors, const std::vector<bsp::Sprite>& input_sprites);
+    bsp::Camera& get_main_camera();
 
 private:
     entt::registry registry;
-    entt::entity main_camera;
 
-    bsp::Handler bsp_handler;
-    Renderer3D renderer;
-    input::Handler input_handler;
+    std::vector<bsp::Sector> sectors;
+    std::vector<bsp::Sprite> sprites;
+    std::unordered_map<glm::int32_t, std::string> textures;
+
+    entt::entity main_camera;
 };
