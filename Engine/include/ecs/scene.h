@@ -11,7 +11,13 @@ public:
         const std::vector<bsp::Sprite>& sprites, 
         const std::unordered_map<glm::int32_t, std::string>& textures
     );
-    Scene(const Scene& scene);
+
+    Scene(const Scene& scene) = delete;
+    Scene& operator=(const Scene&) = delete;
+
+    Scene(Scene&& scene) = default;
+    Scene& operator=(Scene&&) = default;
+
     ~Scene();
 
     const std::vector<bsp::Sector>& get_sectors() const;
