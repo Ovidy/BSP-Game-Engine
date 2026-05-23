@@ -18,9 +18,15 @@ public:
 
     entt::registry& get_registry();
 
+    entt::entity create_camera_entity(const glm::vec3& start_pos, const float pitch, const float yaw, const float fov_y);
+    void set_main_camera(const entt::entity& main_camera);
+
+    void load_texture(glm::int32_t id, const std::string& file_path);
+    void load_level(const std::vector<bsp::Sector>& input_sectors, const std::vector<bsp::Sprite>& input_sprites);
+
 private:
     entt::registry registry;
-    entt::entity player_entity;
+    entt::entity main_camera;
 
     bsp::Handler bsp_handler;
     Renderer3D renderer;
