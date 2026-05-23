@@ -2,7 +2,9 @@
 
 #include <entt/entt.hpp>
 
-#include <bsp/data_types.h>
+#include <bsp/handler.h>
+#include <render/handler.h>
+#include <input/handler.h>
 
 class Scene {
 public:
@@ -18,4 +20,9 @@ public:
 
 private:
     entt::registry registry;
+    entt::entity camera_entity;
+
+    bsp::Handler bsp_handler;
+    render::Handler render_handler;
+    input::Handler input_handler;
 };
