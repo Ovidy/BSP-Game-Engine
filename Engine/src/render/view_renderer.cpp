@@ -5,6 +5,9 @@
 #include <cstring> // For memcpy
 #include <rlgl.h>
 
+#include <bsp/components.h>
+#include <physics/components.h>
+
 using namespace bsp;
 using Point = std::array<float, 2>;
 
@@ -216,11 +219,7 @@ void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments, const s
     }
 }
 
-void ViewRenderer::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
-    this->sprites = level_sprites;
-}
-
-void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager) {
+void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager, entt::registry& registry) {
     Color screen_tint = is_map_drawn ? DARKGRAY : WHITE;
 
     // 1. Draw solid geometry first (Walls, Floors, Ceilings)
@@ -235,40 +234,53 @@ void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManage
     rlEnableBackfaceCulling();
 
     // ==========================================
-    // 2. SORT AND DRAW SPRITES
+    // 2. SORT AND DRAW ECS SPRITES
     // ==========================================
-    if (!sprites.empty()) {
-        glm::vec3 cam_pos(camera.position.x, camera.position.y, camera.position.z);
+    glm::vec3 cam_pos(camera.position.x, camera.position.y, camera.position.z);
 
-        // Create a temporary list of pointers/indices so we can sort without modifying the original array
-        std::vector<std::pair<float, const bsp::Sprite*>> sorted_sprites;
-        sorted_sprites.reserve(sprites.size());
+    // We still need to sort, so we create a temporary struct to hold the sorting data
+    struct SortableSprite {
+        float distance_sq;
+        const TransformComponent* transform;
+        const SpriteComponent* sprite;
+    };
 
-        for (const auto& sprite : sprites) {
-            // Calculate squared distance (faster than actual distance, perfectly fine for sorting)
-            glm::vec3 diff = sprite.position - cam_pos;
-            float dist_sq = glm::dot(diff, diff);
-            sorted_sprites.push_back({ dist_sq, &sprite });
-        }
+    std::vector<SortableSprite> sorted_sprites;
 
-        // Sort from furthest to closest (Painter's Algorithm)
-        std::sort(sorted_sprites.begin(), sorted_sprites.end(), 
-            [](const auto& a, const auto& b) {
-                return a.first > b.first; 
-            });
+    // Query EnTT for all entities with Transforms and Sprites
+    auto view = registry.view<const TransformComponent, const SpriteComponent>();
 
-        // Draw the sorted sprites
-        for (const auto& pair : sorted_sprites) {
-            const bsp::Sprite* sprite = pair.second;
-            
-            // Get the actual texture from the manager
-            Texture2D tex = texture_manager.get_texture(sprite->texture_id);
-            
-            Vector3 raylib_pos = { sprite->position.x, sprite->position.y, sprite->position.z };
-            
-            // DrawBillboard is Raylib's magic function that automatically calculates 
-            // the quad vertices so they perfectly face the camera!
-            DrawBillboard(camera, tex, raylib_pos, sprite->scale, sprite->tint);
-        }
+    // Reserve space to avoid reallocation (optional but good for performance)
+    sorted_sprites.reserve(view.size_hint());
+
+    for (auto entity : view) {
+        const auto& transform = view.get<TransformComponent>(entity);
+        const auto& sprite_comp = view.get<SpriteComponent>(entity);
+
+        // Calculate squared distance to camera
+        glm::vec3 diff = transform.position - cam_pos;
+        float dist_sq = glm::dot(diff, diff);
+
+        sorted_sprites.push_back({ dist_sq, &transform, &sprite_comp });
+    }
+
+    // Sort from furthest to closest (Painter's Algorithm)
+    std::sort(sorted_sprites.begin(), sorted_sprites.end(), 
+        [](const SortableSprite& a, const SortableSprite& b) {
+            return a.distance_sq > b.distance_sq; 
+        });
+
+    // Draw the sorted ECS sprites
+    for (const auto& sorted : sorted_sprites) {
+        Texture2D tex = texture_manager.get_texture(sorted.sprite->texture_id);
+        
+        Vector3 raylib_pos = { 
+            sorted.transform->position.x, 
+            sorted.transform->position.y, 
+            sorted.transform->position.z 
+        };
+        
+        // Use the Transform's position, but the Sprite's scale and tint
+        DrawBillboard(camera, tex, raylib_pos, sorted.transform->scale.x, sorted.sprite->tint);
     }
 }

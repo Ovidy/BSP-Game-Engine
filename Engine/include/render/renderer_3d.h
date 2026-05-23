@@ -4,23 +4,23 @@
 #include <render/view_renderer.h>
 #include <render/texture_manager.h>
 
+#include <entt/entt.hpp>
+
 class Renderer3D {
 public:
     Renderer3D();
     ~Renderer3D();
 
-    void render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
+    void render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids, entt::registry& registry);
 
     void load_segments(const std::vector<bsp::Segment>& segments, const std::vector<bsp::Segment>& tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size);
 
     void load_texture(glm::int32_t id, const std::string& file_path);
 
-    void load_sprites(const std::vector<bsp::Sprite>& level_sprites);
-    
     MapRenderer& get_map_renderer();
 private:
     void render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids);
-    void render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids);
+    void render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids, entt::registry& registry);
 
     void draw_controls_overlay();
 

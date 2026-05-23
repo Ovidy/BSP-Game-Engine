@@ -7,6 +7,11 @@
 #include <render/renderer_3d.h>
 #include <input/handler.h>
 
+#include <ecs/scene.h>
+
+#include <physics/components.h>
+#include <bsp/components.h>
+
 #include <test/level.h>
 
 int main () {
@@ -37,10 +42,15 @@ int main () {
 		renderer.load_texture(id, path);
 	}
 
+	for (const auto& sprite : scene.get_sprites()) {
+		entt::entity sprite_entity = scene.create_entity();
+		scene.get_registry().emplace<TransformComponent>(sprite_entity, sprite.position, glm::vec3(0.0f), glm::vec3(1.0f));
+		scene.get_registry().emplace<SpriteComponent>(sprite_entity, sprite.texture_id, sprite.tint);
+	}
+
 	bsp_handler.load_level(scene.get_sectors());
 	renderer.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), scene.get_sectors(), WINDOW_RESOLUTION);
-	renderer.load_sprites(scene.get_sprites());
-
+	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
@@ -59,7 +69,7 @@ int main () {
 		bsp_handler.update(camera.get_pos_2d());
 
 		// Render:
-		renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
+		renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render(), scene.get_registry());
 	}
 
 	// destroy the window and cleanup the OpenGL context
