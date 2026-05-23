@@ -1,4 +1,4 @@
-#include <scene/scene.h>
+#include <ecs/scene.h>
 
 #include <raylib.h>
 
