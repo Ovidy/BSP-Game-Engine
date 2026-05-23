@@ -45,7 +45,7 @@ int main () {
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		delta_time = GetFrameTime();
-		bsp::Camera& camera = scene.get_main_camera();
+		bsp::Camera& camera = scene.get_registry().get<bsp::Camera>(scene.get_main_camera_entity());
 
 		input_handler.update(camera, renderer.get_map_renderer(), delta_time);
 			

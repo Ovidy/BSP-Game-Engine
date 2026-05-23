@@ -44,6 +44,6 @@ void Scene::set_main_camera(const entt::entity& main_camera_entity) {
     this->main_camera = main_camera_entity;
 }
 
-bsp::Camera& Scene::get_main_camera() {
-    return registry.get<bsp::Camera>(main_camera);
+entt::entity Scene::get_main_camera_entity() const {
+    return main_camera;
 }

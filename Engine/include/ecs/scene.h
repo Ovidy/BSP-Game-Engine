@@ -32,7 +32,7 @@ public:
     void create_main_camera(const glm::vec3& start_pos, const float pitch, const float yaw, const float fov_y);
     entt::entity create_camera_entity(const glm::vec3& start_pos, const float pitch, const float yaw, const float fov_y);
     void set_main_camera(const entt::entity& main_camera);
-    bsp::Camera& get_main_camera();
+    entt::entity get_main_camera_entity() const;
 
 private:
     entt::registry registry;
