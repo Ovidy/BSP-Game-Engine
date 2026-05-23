@@ -1,7 +1,5 @@
 #include <input/handler.h>
 
-using namespace render;
-
 namespace input {
     
     // Default constructor implementation moved to CPP

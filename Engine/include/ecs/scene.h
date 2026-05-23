@@ -23,6 +23,6 @@ private:
     entt::entity player_entity;
 
     bsp::Handler bsp_handler;
-    render::Renderer3D renderer;
+    Renderer3D renderer;
     input::Handler input_handler;
 };
