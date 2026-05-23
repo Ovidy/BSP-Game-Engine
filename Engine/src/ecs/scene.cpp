@@ -8,8 +8,8 @@
 #include <test/level.h>
 
 Scene::Scene() {
-    camera_entity = create_entity();
-    registry.emplace<bsp::Camera>(camera_entity, glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
+    player_entity = create_entity();
+    registry.emplace<bsp::Camera>(player_entity, glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
 
     SearchAndSetResourceDir("Game/resources");
 	
@@ -27,7 +27,7 @@ Scene::~Scene() {
 }
 
 void Scene::update(const glm::float32_t& delta_time) {
-    bsp::Camera& camera = registry.get<bsp::Camera>(camera_entity);
+    bsp::Camera& camera = registry.get<bsp::Camera>(player_entity);
 
     input_handler.update(camera, render_handler.get_map_renderer(), delta_time);
 		

@@ -20,7 +20,7 @@ public:
 
 private:
     entt::registry registry;
-    entt::entity camera_entity;
+    entt::entity player_entity;
 
     bsp::Handler bsp_handler;
     render::Handler render_handler;
