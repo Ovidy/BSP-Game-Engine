@@ -1,10 +1,8 @@
 #pragma once
 
 #include <entt/entt.hpp>
-
-#include <bsp/handler.h>
-#include <render/renderer_3d.h>
-#include <input/handler.h>
+#include <bsp/data_types.h>
+#include <bsp/camera.h>
 
 class Scene {
 public:
@@ -16,9 +14,9 @@ public:
     Scene(const Scene& scene);
     ~Scene();
 
-    const std::vector<bsp::Sector>& get_sectors() const { return sectors; }
-    const std::vector<bsp::Sprite>& get_sprites() const { return sprites; }
-    const std::unordered_map<glm::int32_t, std::string>& get_textures() const { return textures; }
+    const std::vector<bsp::Sector>& get_sectors() const;
+    const std::vector<bsp::Sprite>& get_sprites() const;
+    const std::unordered_map<glm::int32_t, std::string>& get_textures() const;
 
     entt::entity create_entity();
     void destroy_entity(const entt::entity& entity);

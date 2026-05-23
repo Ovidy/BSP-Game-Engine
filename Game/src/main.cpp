@@ -3,6 +3,10 @@
 #include <raylib.h>
 #include <resource_dir.h>
 
+#include <bsp/handler.h>
+#include <render/renderer_3d.h>
+#include <input/handler.h>
+
 #include <test/level.h>
 
 int main () {

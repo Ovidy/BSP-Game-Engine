@@ -14,6 +14,10 @@ Scene::~Scene() {
 
 }
 
+const std::vector<bsp::Sector>& Scene::get_sectors() const { return sectors; }
+const std::vector<bsp::Sprite>& Scene::get_sprites() const { return sprites; }
+const std::unordered_map<glm::int32_t, std::string>& Scene::get_textures() const { return textures; }
+
 entt::entity Scene::create_entity() {
     return registry.create();    
 }
