@@ -5,7 +5,7 @@
 
 #include <bsp/handler.h>
 #include <render/renderer_3d.h>
-#include <input/handler.h>
+#include <input/input_handler.h>
 
 #include <ecs/scene.h>
 
@@ -32,7 +32,7 @@ int main () {
 
 	bsp::Handler bsp_handler;
     Renderer3D renderer;
-    input::Handler input_handler;
+    InputHandler input_handler;
 
 	scene.create_main_camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
 
