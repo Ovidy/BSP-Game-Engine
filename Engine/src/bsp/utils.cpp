@@ -1,6 +1,4 @@
 #include <bsp/utils.h>
-#include <raylib.h>
-#include <glm/glm.hpp>
 
 namespace engine
 {
@@ -22,5 +20,15 @@ namespace engine
     Vector3 v3_rtg(const glm::vec3 &value)
     {
         return {value.x, value.y, value.z};
+    }
+
+    Vector2 v2_rtg(const glm::vec2 &value)
+    {
+        return {value.x, value.y};
+    }
+
+    glm::vec2 rtg_v2(const Vector2 &value)
+    {
+        return {value.x, value.y};
     }
 }

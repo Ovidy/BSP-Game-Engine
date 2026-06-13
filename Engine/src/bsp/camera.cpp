@@ -22,28 +22,32 @@ namespace engine
     {
         float range = max - min;
         float wrapped = std::fmod(angle - min, range);
-        if (wrapped < 0) wrapped += range;
+        if (wrapped < 0)
+            wrapped += range;
         return wrapped + min;
     }
 
     float Camera::set_pitch(float pitch, float max, bool refresh_cache)
     {
         f_pitch = wrap_angle(pitch, max - 360.0f, max);
-        if (refresh_cache) refresh_vec_cache();
+        if (refresh_cache)
+            refresh_vec_cache();
         return f_pitch;
     }
 
     float Camera::set_yaw(float yaw, float max, bool refresh_cache)
     {
         f_yaw = wrap_angle(yaw, max - 360.0f, max);
-        if (refresh_cache) refresh_vec_cache();
+        if (refresh_cache)
+            refresh_vec_cache();
         return f_yaw;
     }
 
     void Camera::add_pitch(float delta, bool lock, bool refresh_cache)
     {
         float desired = f_pitch + delta;
-        if (lock) desired = std::clamp(desired, -89.9f, 89.9f);
+        if (lock)
+            desired = std::clamp(desired, -89.9f, 89.9f);
         set_pitch(desired, 180.0f, refresh_cache);
     }
 
@@ -56,7 +60,8 @@ namespace engine
     {
         add_yaw(delta.x, false);
         add_pitch(-delta.y, lock, false);
-        if (delta != glm::vec2(0.0f)) refresh_vec_cache();
+        if (delta != glm::vec2(0.0f))
+            refresh_vec_cache();
     }
 
     void Camera::toggle_free_view()

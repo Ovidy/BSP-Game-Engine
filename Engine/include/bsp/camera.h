@@ -39,7 +39,7 @@ namespace engine
         glm::vec3 calc_right();
 
         Camera3D m_cam;
-        
+
         glm::vec3 position;
         glm::vec3 forward;
         glm::vec3 up;

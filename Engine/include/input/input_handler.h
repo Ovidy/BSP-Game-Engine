@@ -13,6 +13,6 @@ namespace engine
         // Declaration only
         InputHandler();
 
-        void update(Camera &camera, MapRenderer &map_renderer, const float &dt);
+        void update(entt::registry& registry, entt::entity player_entity, float dt);
     };
 }
