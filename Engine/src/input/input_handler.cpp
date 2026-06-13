@@ -66,7 +66,7 @@ namespace engine
         else
         {
             // NORMAL MODE: Jump
-            if (IsKeyPressed(KEY_SPACE) && controller.is_grounded)
+            if (IsKeyDown(KEY_SPACE) && controller.is_grounded)
             {
                 velocity.velocity.y = controller.jump_force;
                 controller.is_grounded = false;
