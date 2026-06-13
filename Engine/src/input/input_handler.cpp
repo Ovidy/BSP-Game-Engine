@@ -1,9 +1,10 @@
 #include <input/input_handler.h>
 
-// Default constructor implementation moved to CPP
-InputHandler::InputHandler() = default;
+namespace engine {
+    // Default constructor implementation moved to CPP
+    InputHandler::InputHandler() = default;
 
-void InputHandler::update(bsp::Camera& camera, MapRenderer& map_renderer, const float& dt) {
+    void InputHandler::update(Camera& camera, MapRenderer& map_renderer, const float& dt) {
     // ----------- system controls ----------- //
     if (IsKeyPressed(KEY_F11)) {
         ToggleFullscreen();
@@ -57,5 +58,6 @@ void InputHandler::update(bsp::Camera& camera, MapRenderer& map_renderer, const 
     // ----------- camera rotation ---------- //
     if (IsKeyPressed(KEY_M)) {
         map_renderer.toggle();
+    }
     }
 }

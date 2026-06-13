@@ -6,8 +6,9 @@
 #include <string>
 #include <glm/glm.hpp>
 
-class TextureManager {
-public:
+namespace engine {
+    class TextureManager {
+    public:
     TextureManager() = default;
     ~TextureManager();
 
@@ -20,10 +21,11 @@ public:
     // Clear VRAM manually if needed
     void clear();
 
-private:
+    private:
     std::unordered_map<glm::int32_t, Texture2D> loaded_textures;
     std::vector<Texture2D> generated_textures; 
 
     Texture2D generate_random_texture();
     Color get_random_color() const;
-};
+    };
+}

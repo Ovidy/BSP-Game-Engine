@@ -1,11 +1,12 @@
 #include <render/texture_manager.h>
 #include <random>
 
-TextureManager::~TextureManager() {
+namespace engine {
+    TextureManager::~TextureManager() {
     //clear();
-}
+    }
 
-void TextureManager::clear() {
+    void TextureManager::clear() {
     for (auto& pair : loaded_textures) {
         UnloadTexture(pair.second);
     }
@@ -14,17 +15,17 @@ void TextureManager::clear() {
     }
     loaded_textures.clear();
     generated_textures.clear();
-}
+    }
 
-void TextureManager::load_texture(glm::int32_t id, const std::string& file_path) {
+    void TextureManager::load_texture(glm::int32_t id, const std::string& file_path) {
     // If ID already exists, unload the old one first to prevent memory leaks
     if (loaded_textures.find(id) != loaded_textures.end()) {
         UnloadTexture(loaded_textures[id]);
     }
     loaded_textures[id] = LoadTexture(file_path.c_str());
-}
+    }
 
-Texture2D TextureManager::get_texture(glm::int32_t id) {
+    Texture2D TextureManager::get_texture(glm::int32_t id) {
     // 1. If the ID exists in our map (either manually loaded OR previously generated), return it!
     // Notice I removed the 'id >= 0' check so we can cache the '-1' placeholder ID too.
     if (loaded_textures.find(id) != loaded_textures.end()) {
@@ -41,16 +42,16 @@ Texture2D TextureManager::get_texture(glm::int32_t id) {
     loaded_textures[id] = random_tex;
 
     return random_tex;
-}
+    }
 
-Texture2D TextureManager::generate_random_texture() {
+    Texture2D TextureManager::generate_random_texture() {
     Image image = GenImageChecked(10, 10, 1, 1, get_random_color(), WHITE);
     Texture2D texture = LoadTextureFromImage(image);
     UnloadImage(image);
     return texture;
-}
+    }
 
-Color TextureManager::get_random_color() const {
+    Color TextureManager::get_random_color() const {
     // 1. Setup a static, hardware-seeded Mersenne Twister.
     // Making it 'static' ensures it only initializes once and keeps its state.
     static std::random_device rd;
@@ -71,4 +72,5 @@ Color TextureManager::get_random_color() const {
 
     // 4. Let Raylib handle the complex math of converting HSV back to an RGB Color struct
     return ColorFromHSV(h, s, v);
+    }
 }

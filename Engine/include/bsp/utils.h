@@ -19,10 +19,9 @@
 #define CAM_ROT_SPEED 3.0
 #define CAM_DIAG_MOVE_CORR 1 / pow(2, 0.5)
 
-
 struct Vector3;
 
-namespace bsp {
+namespace engine {
     glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
 
     bool is_on_front(const glm::vec2& a, const glm::vec2& b);

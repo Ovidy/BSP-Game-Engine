@@ -14,6 +14,8 @@
 
 #include <test/level.h>
 
+using namespace engine;
+
 int main () {
 	// Tell the window to use vsync and work on high DPI displays
 	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
@@ -28,9 +30,8 @@ int main () {
 
     glm::float32_t delta_time = 0.0f;
 
-	Scene scene(bsp::test_level_sectors, bsp::test_level_sprites, bsp::test_level_textures);
-
-	bsp::Handler bsp_handler;
+	Scene scene(test_level_sectors, test_level_sprites, test_level_textures);
+    BspManager bsp_manager;
     Renderer3D renderer;
     InputHandler input_handler;
 
@@ -48,28 +49,28 @@ int main () {
 		scene.get_registry().emplace<SpriteComponent>(sprite_entity, sprite.texture_id, sprite.tint);
 	}
 
-	bsp_handler.load_level(scene.get_sectors());
-	renderer.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), scene.get_sectors(), WINDOW_RESOLUTION);
+	bsp_manager.load_level(scene.get_sectors());
+	renderer.load_segments(bsp_manager.get_segments(), bsp_manager.get_segments(), scene.get_sectors(), WINDOW_RESOLUTION);
 	
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		delta_time = GetFrameTime();
-		bsp::Camera& camera = scene.get_registry().get<bsp::Camera>(scene.get_main_camera_entity());
+		engine::Camera& camera = scene.get_registry().get<engine::Camera>(scene.get_main_camera_entity());
 
 		input_handler.update(camera, renderer.get_map_renderer(), delta_time);
 			
 		// Ask the BSP tree what is nearby
-		std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(
+		std::vector<Sector> nearby_sectors = bsp_manager.get_nearby_sectors(
 			camera.get_pos_2d(), 
 			camera.get_player_radius()
 		);
 
 		camera.update(delta_time, nearby_sectors);
-		bsp_handler.update(camera.get_pos_2d());
+		bsp_manager.update(camera.get_pos_2d());
 
 		// Render:
-		renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render(), scene.get_registry());
+		renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_manager.get_segment_ids_to_render(), scene.get_registry());
 	}
 
 	// destroy the window and cleanup the OpenGL context

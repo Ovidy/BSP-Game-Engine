@@ -1,8 +1,7 @@
 #include <render/map_renderer.h>
 
-using namespace bsp;
-
-void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, const std::vector<Segment>& input_tree_segments, const glm::vec2& window_size) {
+namespace engine {
+    void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, const std::vector<Segment>& input_tree_segments, const glm::vec2& window_size) {
     // Initialize min and max based on the level data
     min = glm::vec2(std::numeric_limits<float>::max());
     max = glm::vec2(std::numeric_limits<float>::lowest());
@@ -41,34 +40,34 @@ void MapRenderer::load_level_data(const std::vector<Segment>& input_segments, co
 
     segments = remap_segments(input_segments);
     tree_segments = remap_segments(input_tree_segments);
-}
+    }
 
-void MapRenderer::render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position, const glm::vec2& camera_forward) {
+    void MapRenderer::render(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position, const glm::vec2& camera_forward) {
     if (is_enabled()) {
         draw_segments();
         draw_tree_segments(segment_ids, camera_position);
         draw_normals();
         draw_player(camera_position, camera_forward);
     }
-}
+    }
 
-void MapRenderer::enable_render() {
+    void MapRenderer::enable_render() {
     enabled = true;
-}
+    }
 
-void MapRenderer::disable_render() {
+    void MapRenderer::disable_render() {
     enabled = false;
-}
+    }
 
-bool MapRenderer::is_enabled() const {
+    bool MapRenderer::is_enabled() const {
     return enabled;
-}
+    }
 
-void MapRenderer::toggle() {
+    void MapRenderer::toggle() {
     enabled = !enabled;
-}
+    }
 
-void MapRenderer::draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward) {
+    void MapRenderer::draw_player(const glm::vec2& camera_position, const glm::vec2& camera_forward) {
     glm::vec2 player_pos = remap_vec2(camera_position);
     
     // Draw the player circle
@@ -85,9 +84,9 @@ void MapRenderer::draw_player(const glm::vec2& camera_position, const glm::vec2&
         4.0f, 
         DARKGREEN
     );
-}
+    }
 
-void MapRenderer::draw_segments() {
+    void MapRenderer::draw_segments() {
     for (const auto& segment : segments) {
         // Draw the line segment
         DrawLineV(Vector2({segment.get_start().x, segment.get_start().y}), Vector2({segment.get_end().x, segment.get_end().y}), DARKBROWN);
@@ -96,9 +95,9 @@ void MapRenderer::draw_segments() {
         DrawCircleV(Vector2({segment.get_start().x, segment.get_start().y}), 5, DARKGRAY);
         DrawCircleV(Vector2({segment.get_end().x, segment.get_end().y}), 5, DARKGRAY);
     }
-}
+    }
 
-void MapRenderer::draw_tree_segments(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position) {
+    void MapRenderer::draw_tree_segments(const std::vector<glm::int32_t>& segment_ids, const glm::vec2& camera_position) {
     glm::vec2 current_camera_pos = camera_position;
 
     // 1. Reset the animation if the camera moves to demonstrate the new calculation
@@ -134,9 +133,9 @@ void MapRenderer::draw_tree_segments(const std::vector<glm::int32_t>& segment_id
             );
         }
     }
-}
+    }
 
-void MapRenderer::draw_normals() {
+    void MapRenderer::draw_normals() {
     std::vector<Segment> normalized_segments = get_normalized_segments();
 
     for (const auto& segment : normalized_segments) {
@@ -149,9 +148,9 @@ void MapRenderer::draw_normals() {
         DrawLineV(Vector2({segment.get_end().x, segment.get_end().y}), Vector2({segment.get_end().x + perpendicular.x, segment.get_end().y + perpendicular.y}), BLUE);
         DrawLineV(Vector2({segment.get_end().x, segment.get_end().y}), Vector2({segment.get_end().x - perpendicular.x, segment.get_end().y - perpendicular.y}), BLUE);
     }
-}
+    }
 
-std::vector<Segment> MapRenderer::get_normalized_segments() const {
+    std::vector<Segment> MapRenderer::get_normalized_segments() const {
     std::vector<Segment> normalized_segments;
     normalized_segments.reserve(segments.size());
 
@@ -165,9 +164,9 @@ std::vector<Segment> MapRenderer::get_normalized_segments() const {
     }
 
     return normalized_segments;
-}
+    }
 
-std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments_) const {
+    std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& segments_) const {
     std::vector<Segment> remapped_segments;
     remapped_segments.reserve(segments_.size());
     
@@ -180,16 +179,17 @@ std::vector<Segment> MapRenderer::remap_segments(const std::vector<Segment>& seg
     }
 
     return remapped_segments;
-}
+    }
 
-glm::vec2 MapRenderer::remap_vec2(const glm::vec2& vec) const {
+    glm::vec2 MapRenderer::remap_vec2(const glm::vec2& vec) const {
     return glm::vec2(remap_x(static_cast<glm::float32_t>(vec.x)), remap_y(static_cast<glm::float32_t>(vec.y)));
-}
+    }
 
-glm::float32_t MapRenderer::remap_x(const glm::float32_t& x, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
+    glm::float32_t MapRenderer::remap_x(const glm::float32_t& x, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
     return static_cast<glm::float32_t>((x - min.x) / (max.x - min.x) * (out_max - out_min) + out_min);
-}
+    }
 
-glm::float32_t MapRenderer::remap_y(const glm::float32_t& y, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
+    glm::float32_t MapRenderer::remap_y(const glm::float32_t& y, const glm::float32_t& out_min, const glm::float32_t& out_max) const {
     return static_cast<glm::float32_t>((y - min.y) / (max.y - min.y) * (out_max - out_min) + out_min);
+    }
 }

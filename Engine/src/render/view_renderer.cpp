@@ -8,30 +8,30 @@
 #include <bsp/components.h>
 #include <physics/components.h>
 
-using namespace bsp;
-using Point = std::array<float, 2>;
+namespace engine {
+    using Point = std::array<float, 2>;
 
-// Helper structure to temporarily hold mesh data while we batch it
-struct MeshData {
+    // Helper structure to temporarily hold mesh data while we batch it
+    struct MeshData {
     std::vector<float> vertices;
     std::vector<float> texcoords;
     std::vector<float> normals;
     std::vector<unsigned short> indices;
-};
+    };
 
-ViewRenderer::~ViewRenderer() {
-}
+    ViewRenderer::~ViewRenderer() {
+    }
 
-void ViewRenderer::clear() {
+    void ViewRenderer::clear() {
     for (auto& pair : batched_models) {
         UnloadModel(pair.second);
     }
     for (auto& pair : batched_plane_models) {
         UnloadModel(pair.second);
     }
-}
+    }
 
-void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments, const std::vector<Sector>& level_sectors, TextureManager& texture_manager) {
+    void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments, const std::vector<Sector>& level_sectors, TextureManager& texture_manager) {
     // Clean up old models
     for (auto& pair : batched_models) UnloadModel(pair.second);
     for (auto& pair : batched_plane_models) UnloadModel(pair.second);
@@ -217,9 +217,9 @@ void ViewRenderer::load_models(const std::vector<Segment>& bsp_segments, const s
         model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture_manager.get_texture(tex_id);
         batched_plane_models[tex_id] = model;
     }
-}
+    }
 
-void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager, entt::registry& registry) {
+    void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager, entt::registry& registry) {
     Color screen_tint = is_map_drawn ? DARKGRAY : WHITE;
 
     // 1. Draw solid geometry first (Walls, Floors, Ceilings)
@@ -282,5 +282,6 @@ void ViewRenderer::draw(bool is_map_drawn, const Camera3D& camera, TextureManage
         
         // Use the Transform's position, but the Sprite's scale and tint
         DrawBillboard(camera, tex, raylib_pos, sorted.transform->scale.x, sorted.sprite->tint);
+    }
     }
 }

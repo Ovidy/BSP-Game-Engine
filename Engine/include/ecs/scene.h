@@ -4,11 +4,12 @@
 #include <bsp/data_types.h>
 #include <bsp/camera.h>
 
-class Scene {
-public:
+namespace engine {
+    class Scene {
+    public:
     Scene(
-        const std::vector<bsp::Sector>& sectors, 
-        const std::vector<bsp::Sprite>& sprites, 
+        const std::vector<Sector>& sectors, 
+        const std::vector<Sprite>& sprites, 
         const std::unordered_map<glm::int32_t, std::string>& textures
     );
 
@@ -20,8 +21,8 @@ public:
 
     ~Scene();
 
-    const std::vector<bsp::Sector>& get_sectors() const;
-    const std::vector<bsp::Sprite>& get_sprites() const;
+    const std::vector<Sector>& get_sectors() const;
+    const std::vector<Sprite>& get_sprites() const;
     const std::unordered_map<glm::int32_t, std::string>& get_textures() const;
 
     entt::entity create_entity();
@@ -34,12 +35,13 @@ public:
     void set_main_camera(const entt::entity& main_camera);
     entt::entity get_main_camera_entity() const;
 
-private:
+    private:
     entt::registry registry;
 
-    std::vector<bsp::Sector> sectors;
-    std::vector<bsp::Sprite> sprites;
+    std::vector<Sector> sectors;
+    std::vector<Sprite> sprites;
     std::unordered_map<glm::int32_t, std::string> textures;
 
     entt::entity main_camera;
-};
+    };
+}
