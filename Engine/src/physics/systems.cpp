@@ -1,3 +1,4 @@
+#include <physics/systems.h>
 #include <entt/entt.hpp>
 #include <physics/collider.h>
 #include <physics/components.h>
