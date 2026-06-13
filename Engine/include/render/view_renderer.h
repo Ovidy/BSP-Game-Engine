@@ -8,23 +8,25 @@
 #include <render/texture_manager.h>
 #include <entt/entt.hpp>
 
-namespace engine {
-    class ViewRenderer {
+namespace engine
+{
+    class ViewRenderer
+    {
     public:
-    ViewRenderer() = default;
-    ~ViewRenderer(); // Required to safely unload Raylib models/textures from VRAM
-    // Manual Memory unloading
-    // Only required if the object isn't used for the entire program lifetime
-    void clear();
+        ViewRenderer() = default;
+        ~ViewRenderer(); // Required to safely unload Raylib models/textures from VRAM
+        // Manual Memory unloading
+        // Only required if the object isn't used for the entire program lifetime
+        void clear();
 
-    // Pass the generated BSP tree segments here once during level load
-    void load_models(const std::vector<Segment>& bsp_segments, const std::vector<Sector>& level_sectors, TextureManager& texture_manager);
+        // Pass the generated BSP tree segments here once during level load
+        void load_models(const std::vector<Segment> &bsp_segments, const std::vector<Sector> &level_sectors, TextureManager &texture_manager);
 
-    // Call this every frame in render_3d. Screen tint is calculated on the fly.
-    void draw(bool is_map_drawn, const Camera3D& camera, TextureManager& texture_manager, entt::registry& registry);
+        // Call this every frame in render_3d. Screen tint is calculated on the fly.
+        void draw(bool is_map_drawn, const Camera3D &camera, TextureManager &texture_manager, entt::registry &registry);
 
     private:
-    std::unordered_map<glm::int32_t, Model> batched_models;       // For vertical walls
-    std::unordered_map<glm::int32_t, Model> batched_plane_models; // For horizontal floors/ceilings    
+        std::unordered_map<glm::int32_t, Model> batched_models;       // For vertical walls
+        std::unordered_map<glm::int32_t, Model> batched_plane_models; // For horizontal floors/ceilings
     };
 }

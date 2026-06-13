@@ -21,11 +21,12 @@
 
 struct Vector3;
 
-namespace engine {
-    glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
+namespace engine
+{
+    glm::float32_t cross(const glm::vec2 &a, const glm::vec2 &b);
 
-    bool is_on_front(const glm::vec2& a, const glm::vec2& b);
-    bool is_on_back(const glm::vec2& a, const glm::vec2& b);
+    bool is_on_front(const glm::vec2 &a, const glm::vec2 &b);
+    bool is_on_back(const glm::vec2 &a, const glm::vec2 &b);
 
-    Vector3 v3_rtg(const glm::vec3& value);
+    Vector3 v3_rtg(const glm::vec3 &value);
 }
