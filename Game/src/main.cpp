@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <resource_dir.h>
 
-#include <bsp/handler.h>
+#include <bsp/bsp_manager.h>
 #include <render/renderer_3d.h>
 #include <input/input_handler.h>
 
