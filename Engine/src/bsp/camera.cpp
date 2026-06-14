@@ -5,7 +5,7 @@
 
 namespace engine
 {
-    Camera::Camera(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y)
+    CameraComponent::CameraComponent(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y)
     {
         up = glm::vec3(0.0f, 1.0f, 0.0f);
         position = start_pos;
@@ -27,7 +27,7 @@ namespace engine
         return wrapped + min;
     }
 
-    float Camera::set_pitch(float pitch, float max, bool refresh_cache)
+    float CameraComponent::set_pitch(float pitch, float max, bool refresh_cache)
     {
         f_pitch = wrap_angle(pitch, max - 360.0f, max);
         if (refresh_cache)
@@ -35,7 +35,7 @@ namespace engine
         return f_pitch;
     }
 
-    float Camera::set_yaw(float yaw, float max, bool refresh_cache)
+    float CameraComponent::set_yaw(float yaw, float max, bool refresh_cache)
     {
         f_yaw = wrap_angle(yaw, max - 360.0f, max);
         if (refresh_cache)
@@ -43,7 +43,7 @@ namespace engine
         return f_yaw;
     }
 
-    void Camera::add_pitch(float delta, bool lock, bool refresh_cache)
+    void CameraComponent::add_pitch(float delta, bool lock, bool refresh_cache)
     {
         float desired = f_pitch + delta;
         if (lock)
@@ -51,12 +51,12 @@ namespace engine
         set_pitch(desired, 180.0f, refresh_cache);
     }
 
-    void Camera::add_yaw(float delta, bool refresh_cache)
+    void CameraComponent::add_yaw(float delta, bool refresh_cache)
     {
         set_yaw(f_yaw + delta, 360.0f, refresh_cache);
     }
 
-    void Camera::handle_mouse_delta(glm::vec2 delta, bool lock)
+    void CameraComponent::handle_mouse_delta(glm::vec2 delta, bool lock)
     {
         add_yaw(delta.x, false);
         add_pitch(-delta.y, lock, false);
@@ -64,33 +64,33 @@ namespace engine
             refresh_vec_cache();
     }
 
-    void Camera::toggle_free_view()
+    void CameraComponent::toggle_free_view()
     {
         free_view = !free_view;
     }
 
-    bool Camera::is_free_view() const
+    bool CameraComponent::is_free_view() const
     {
         return free_view;
     }
 
-    const Camera3D &Camera::get_raylib_camera() const { return m_cam; }
-    glm::vec2 Camera::get_pos_2d() const { return glm::vec2{position.x, position.z}; }
-    glm::vec3 &Camera::get_position() { return position; }
-    glm::vec3 Camera::get_forward() { return forward; }
+    const Camera3D &CameraComponent::get_raylib_camera() const { return m_cam; }
+    glm::vec2 CameraComponent::get_pos_2d() const { return glm::vec2{position.x, position.z}; }
+    glm::vec3 &CameraComponent::get_position() { return position; }
+    glm::vec3 CameraComponent::get_forward() { return forward; }
 
-    void Camera::refresh_raylib()
+    void CameraComponent::refresh_raylib()
     {
         m_cam.target = v3_rtg(get_target());
         m_cam.position = v3_rtg(position);
     }
 
-    glm::vec3 Camera::get_target()
+    glm::vec3 CameraComponent::get_target()
     {
         return forward + position;
     }
 
-    glm::vec3 Camera::calc_dir()
+    glm::vec3 CameraComponent::calc_dir()
     {
         float pitch = glm::radians(f_pitch);
         float yaw = glm::radians(f_yaw);
@@ -101,20 +101,20 @@ namespace engine
             sin(yaw) * cos(pitch)};
     }
 
-    glm::vec3 Camera::calc_right()
+    glm::vec3 CameraComponent::calc_right()
     {
         glm::vec3 tmp_up = glm::normalize(up);
         return glm::normalize(glm::cross(forward, tmp_up));
     }
 
-    glm::vec3 Camera::get_flat_forward()
+    glm::vec3 CameraComponent::get_flat_forward()
     {
         glm::vec3 flat_forward = forward;
         flat_forward.y = 0.0f;
         return glm::normalize(flat_forward);
     }
 
-    void Camera::refresh_vec_cache()
+    void CameraComponent::refresh_vec_cache()
     {
         forward = calc_dir();
         right = calc_right();

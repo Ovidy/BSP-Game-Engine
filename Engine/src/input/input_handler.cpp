@@ -9,18 +9,23 @@ namespace engine
 {
     InputHandler::InputHandler() {}
 
-    void InputHandler::update(entt::registry &registry, entt::entity player_entity, float dt)
+
+    // TODO: Again, this is very weird to see on the engine side rather than the game's
+    // This contains player logic, putting it in a system doesn't make sense
+    // Maybe add an Action component?
+
+    void InputHandler::update(Entity& player_entity, float dt)
     {
         // 1. Grab the components we need to read/write
-        auto &velocity = registry.get<engine::VelocityComponent>(player_entity);
-        auto &controller = registry.get<engine::CharacterControllerComponent>(player_entity);
-        auto &camera = registry.get<engine::Camera>(player_entity);
+        auto &velocity = player_entity.get_component<VelocityComponent>();
+        auto &controller = player_entity.get_component<CharacterControllerComponent>();
+        auto &camera = player_entity.get_component<CameraComponent>();
 
         // ==========================================
         // 2. MOUSE & CAMERA LOOK
         // ==========================================
         glm::vec2 mouse_delta = rtg_v2(GetMouseDelta());
-        camera.handle_mouse_delta(mouse_delta);
+        camera.handle_mouse_delta(mouse_delta * controller.sensitivity *dt);
 
         // Arrow Keys Look (Fallback)
         if (IsKeyDown(KEY_RIGHT))

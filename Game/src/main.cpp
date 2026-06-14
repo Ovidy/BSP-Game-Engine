@@ -1,4 +1,4 @@
-#include <ecs/scene.h>
+#include <ecs/entity.h>
 
 #include <raylib.h>
 #include <resource_dir.h>
@@ -32,19 +32,17 @@ int main()
     InputHandler input_handler;
 
     // Setup player entity and camera
-    scene.create_main_camera(glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f), 0.0f, 0.0f, 60.0f);
-    entt::entity player = scene.get_main_camera_entity();
-
-    auto &reg = scene.get_registry();
+    Entity player = scene.create_main_camera(glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f), 0.0f, 0.0f, 60.0f);
 
     // Setup player physics components
-    reg.emplace<engine::TransformComponent>(player, glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f));
-    reg.emplace<engine::VelocityComponent>(player);
+    player.add_component<TransformComponent>( glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f));
+    player.add_component<VelocityComponent >();
 
-    auto &controller = reg.emplace<engine::CharacterControllerComponent>(player);
-    controller.radius = 0.5f;
-    controller.height = CAM_HEIGHT;
-    controller.speed = 5.0f;
+    auto &controller = player.add_component<CharacterControllerComponent>();
+        controller.radius = 0.5f;
+        controller.height = CAM_HEIGHT;
+        controller.speed = 5.0f;
+        controller.sensitivity = 9.0f;
 
     // Resource loading
     SearchAndSetResourceDir("Game/resources");
@@ -57,9 +55,9 @@ int main()
     // Spawn level sprites
     for (const auto &sprite : scene.get_sprites())
     {
-        entt::entity sprite_entity = scene.create_entity();
-        reg.emplace<TransformComponent>(sprite_entity, sprite.position, glm::vec3(0.0f), glm::vec3(1.0f));
-        reg.emplace<SpriteComponent>(sprite_entity, sprite.texture_id, sprite.tint);
+        Entity sprite_entity = scene.create_entity();
+        sprite_entity.add_component<TransformComponent>(sprite.position, glm::vec3(0.0f), glm::vec3(1.0f));
+        sprite_entity.add_component<SpriteComponent>(sprite.texture_id, sprite.tint);
     }
 
     // Initialize BSP level data
@@ -70,11 +68,8 @@ int main()
     while (!WindowShouldClose())
     {
         delta_time = GetFrameTime();
-        entt::entity player = scene.get_main_camera_entity();
-        auto &reg = scene.get_registry();
-
         // --- 1. Input ---
-        input_handler.update(reg, player, delta_time);
+        input_handler.update(player, delta_time);
 
         if (IsKeyPressed(KEY_M))
         {
@@ -82,23 +77,23 @@ int main()
         }
 
         // --- 2. Physics ---
-        engine::Camera &camera = reg.get<engine::Camera>(player);
+        engine::CameraComponent &camera = player.get_component<CameraComponent>();
 
         std::vector<engine::Sector> nearby_sectors = bsp_manager.get_nearby_sectors(
             glm::vec2(camera.get_position().x, camera.get_position().z),
-            reg.get<engine::CharacterControllerComponent>(player).radius);
+            player.get_component<CharacterControllerComponent>().radius);
 
-        character_controller_update(reg, delta_time, nearby_sectors);
+        character_controller_update(&scene, delta_time, nearby_sectors);
 
         // --- 3. Camera Sync ---
-        auto &transform = reg.get<engine::TransformComponent>(player);
+        auto &transform = player.get_component<TransformComponent>();
         camera.get_position() = transform.position;
         camera.refresh_raylib();
 
         bsp_manager.update(camera.get_pos_2d());
 
         // --- 4. Render ---
-        renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_manager.get_segment_ids_to_render(), reg);
+        renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_manager.get_segment_ids_to_render(), &scene);
     }
 
     CloseWindow();

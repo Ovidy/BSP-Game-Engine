@@ -5,11 +5,11 @@
 
 namespace engine
 {
-    class Camera
+    class CameraComponent
     {
     public:
-        Camera(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y);
-        ~Camera() = default;
+        CameraComponent(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y);
+        ~CameraComponent() = default;
 
         // Angle Management
         float set_pitch(float pitch, float max = 89.9f, bool refresh_cache = true);

@@ -1,4 +1,5 @@
 #include <ecs/scene.h>
+#include <ecs/entity.h>
 
 #include <raylib.h>
 
@@ -19,9 +20,9 @@ namespace engine
     const std::vector<Sprite> &Scene::get_sprites() const { return sprites; }
     const std::unordered_map<glm::int32_t, std::string> &Scene::get_textures() const { return textures; }
 
-    entt::entity Scene::create_entity()
+    Entity Scene::create_entity()
     {
-        return registry.create();
+        return Entity(registry.create(), this);
     }
 
     void Scene::destroy_entity(const entt::entity &entity)
@@ -34,15 +35,17 @@ namespace engine
         return registry;
     }
 
-    void Scene::create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
+    Entity Scene::create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
     {
-        set_main_camera(create_camera_entity(start_pos, pitch, yaw, fov_y));
+        Entity tmp = create_camera_entity(start_pos, pitch, yaw, fov_y);
+        set_main_camera(tmp.id());
+        return tmp;
     }
 
-    entt::entity Scene::create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
+    Entity Scene::create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
     {
-        entt::entity camera_entity = create_entity();
-        registry.emplace<Camera>(camera_entity, start_pos, pitch, yaw, fov_y);
+        Entity camera_entity = create_entity();
+        camera_entity.add_component<CameraComponent>(start_pos, pitch, yaw, fov_y);
         return camera_entity;
     }
 

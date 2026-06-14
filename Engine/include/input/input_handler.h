@@ -4,6 +4,7 @@
 #include <bsp/camera.h>
 #include <render/map_renderer.h>
 #include <render/view_renderer.h>
+#include <ecs/entity.h>
 
 namespace engine
 {
@@ -13,6 +14,6 @@ namespace engine
         // Declaration only
         InputHandler();
 
-        void update(entt::registry& registry, entt::entity player_entity, float dt);
+        void update(Entity& player_entity, float dt);
     };
 }

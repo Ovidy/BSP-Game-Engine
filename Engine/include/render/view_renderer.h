@@ -10,6 +10,7 @@
 
 namespace engine
 {
+    class Scene;
     class ViewRenderer
     {
     public:
@@ -23,7 +24,7 @@ namespace engine
         void load_models(const std::vector<Segment> &bsp_segments, const std::vector<Sector> &level_sectors, TextureManager &texture_manager);
 
         // Call this every frame in render_3d. Screen tint is calculated on the fly.
-        void draw(bool is_map_drawn, const Camera3D &camera, TextureManager &texture_manager, entt::registry &registry);
+        void draw(bool is_map_drawn, const Camera3D &camera, TextureManager &texture_manager, Scene* scene);
 
     private:
         std::unordered_map<glm::int32_t, Model> batched_models;       // For vertical walls

@@ -14,7 +14,7 @@ namespace engine
         Renderer3D();
         ~Renderer3D();
 
-        void render(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry);
+        void render(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids, Scene* scene);
 
         void load_segments(const std::vector<Segment> &segments, const std::vector<Segment> &tree_segments, const std::vector<Sector> &level_sectors, const glm::vec2 &window_size);
 
@@ -24,7 +24,7 @@ namespace engine
 
     private:
         void render_2d(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids);
-        void render_3d(const Camera3D &raylib_camera, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry);
+        void render_3d(const Camera3D &raylib_camera, const std::vector<glm::int32_t> &current_segment_ids, Scene* scene);
 
         void draw_controls_overlay();
 

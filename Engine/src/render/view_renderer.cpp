@@ -1,4 +1,5 @@
 #include <render/view_renderer.h>
+#include <ecs/entity.h>
 
 #include <mapbox/earcut.hpp>
 #include <array>
@@ -257,7 +258,7 @@ namespace engine
         }
     }
 
-    void ViewRenderer::draw(bool is_map_drawn, const Camera3D &camera, TextureManager &texture_manager, entt::registry &registry)
+    void ViewRenderer::draw(bool is_map_drawn, const Camera3D &camera, TextureManager &texture_manager, Scene* scene)
     {
         Color screen_tint = is_map_drawn ? DARKGRAY : WHITE;
 
@@ -290,15 +291,16 @@ namespace engine
         std::vector<SortableSprite> sorted_sprites;
 
         // Query EnTT for all entities with Transforms and Sprites
-        auto view = registry.view<const TransformComponent, const SpriteComponent>();
+        auto view = scene->get_registry().view<const TransformComponent, const SpriteComponent>();
 
         // Reserve space to avoid reallocation (optional but good for performance)
         sorted_sprites.reserve(view.size_hint());
 
         for (auto entity : view)
         {
-            const auto &transform = view.get<TransformComponent>(entity);
-            const auto &sprite_comp = view.get<SpriteComponent>(entity);
+            Entity tmp(entity, scene);
+            const auto &transform = tmp.get_component<TransformComponent>();
+            const auto &sprite_comp = tmp.get_component<SpriteComponent>();
 
             // Calculate squared distance to camera
             glm::vec3 diff = transform.position - cam_pos;

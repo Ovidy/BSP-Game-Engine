@@ -1,5 +1,6 @@
 #include <physics/systems.h>
 #include <entt/entt.hpp>
+#include <ecs/entity.h>
 #include <physics/collider.h>
 #include <physics/components.h>
 #include <bsp/components.h>
@@ -8,16 +9,17 @@
 
 namespace engine
 {
-void character_controller_update(entt::registry &registry, float dt, const std::vector<Sector> &level_sectors)
+void character_controller_update(Scene* scene, float dt, const std::vector<Sector>& level_sectors)
     {
         // Find every entity that can move and collide
-        auto view = registry.view<TransformComponent, VelocityComponent, CharacterControllerComponent>();
+        auto view = scene->get_registry().view<TransformComponent, VelocityComponent, CharacterControllerComponent>();
 
         for (auto entity : view)
         {
-            auto &transform = view.get<TransformComponent>(entity);
-            auto &velocity = view.get<VelocityComponent>(entity);
-            auto &controller = view.get<CharacterControllerComponent>(entity);
+            Entity tmp(entity, scene);
+            auto &transform  = tmp.get_component<TransformComponent>();
+            auto &velocity   = tmp.get_component<VelocityComponent>();
+            auto &controller = tmp.get_component<CharacterControllerComponent>();
 
             // Noclip bypass
             if (controller.noclip_enabled)

@@ -1,4 +1,5 @@
 #include <render/renderer_3d.h>
+#include <ecs/scene.h>
 
 namespace engine
 {
@@ -12,7 +13,7 @@ namespace engine
         // destructor code here
     }
 
-    void Renderer3D::render(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry)
+    void Renderer3D::render(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids, Scene* scene)
     {
         // drawing
         BeginDrawing();
@@ -21,7 +22,7 @@ namespace engine
         ClearBackground(BLACK);
 
         // render 2D and 3D content
-        render_3d(raylib_camera, current_segment_ids, registry);
+        render_3d(raylib_camera, current_segment_ids, scene);
         render_2d(raylib_camera, camera_position, current_segment_ids);
 
         // end the frame and get ready for the next one  (display frame, poll input, etc...)
@@ -97,12 +98,12 @@ namespace engine
         DrawText("F11 - Fullscreen", x_pos, y_pos, small_font, LIGHTGRAY);
     }
 
-    void Renderer3D::render_3d(const Camera3D &raylib_camera, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry)
+    void Renderer3D::render_3d(const Camera3D &raylib_camera, const std::vector<glm::int32_t> &current_segment_ids, Scene* scene)
     {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
-        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager, registry);
+        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager, scene);
 
         DrawGrid(32, 1.0f);
 

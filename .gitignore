@@ -141,4 +141,4 @@ bin/
 obj/
 *.zip
 
-build/.clangd
+build/.cache

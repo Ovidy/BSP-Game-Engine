@@ -6,6 +6,10 @@
 
 namespace engine
 {
+    class Entity;
+
+
+    // TODO: Use UUIDs instead of entt::entities because they change upon reruns
     class Scene
     {
     public:
@@ -26,13 +30,13 @@ namespace engine
         const std::vector<Sprite> &get_sprites() const;
         const std::unordered_map<glm::int32_t, std::string> &get_textures() const;
 
-        entt::entity create_entity();
+        Entity create_entity();
         void destroy_entity(const entt::entity &entity);
 
         entt::registry &get_registry();
 
-        void create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);
-        entt::entity create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);
+        Entity create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);
+        Entity create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);
         void set_main_camera(const entt::entity &main_camera);
         entt::entity get_main_camera_entity() const;
 
