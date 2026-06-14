@@ -140,3 +140,5 @@ external/**/*
 bin/
 obj/
 *.zip
+
+build/.clangd
