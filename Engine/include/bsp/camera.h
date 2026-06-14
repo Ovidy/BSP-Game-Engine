@@ -8,7 +8,7 @@ namespace engine
     class CameraComponent
     {
     public:
-        CameraComponent(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y);
+        CameraComponent(const float pitch, const float yaw, float fov_y);
         ~CameraComponent() = default;
 
         // Angle Management
@@ -19,14 +19,12 @@ namespace engine
         void handle_mouse_delta(glm::vec2 delta, bool lock = true);
 
         // Core Updates
-        void refresh_raylib();
+        void refresh_raylib(const glm::vec3& position);
         void refresh_vec_cache();
 
         // Getters
         const Camera3D &get_raylib_camera() const;
-        glm::vec2 get_pos_2d() const;
-        glm::vec3 &get_position();
-        glm::vec3 get_target();
+        glm::vec3 get_target(const glm::vec3& position);
         glm::vec3 get_forward();
         glm::vec3 get_flat_forward();
 
@@ -40,7 +38,6 @@ namespace engine
 
         Camera3D m_cam;
 
-        glm::vec3 position;
         glm::vec3 forward;
         glm::vec3 up;
         glm::vec3 right;

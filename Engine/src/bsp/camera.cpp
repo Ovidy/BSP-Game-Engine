@@ -5,17 +5,15 @@
 
 namespace engine
 {
-    CameraComponent::CameraComponent(const glm::vec3 &start_pos, const float pitch, const float yaw, float fov_y)
+    CameraComponent::CameraComponent(const float pitch, const float yaw, float fov_y)
     {
         up = glm::vec3(0.0f, 1.0f, 0.0f);
-        position = start_pos;
         m_cam.up = v3_rtg(up);
         m_cam.fovy = fov_y;
         m_cam.projection = CAMERA_PERSPECTIVE;
 
         set_pitch(pitch);
         set_yaw(yaw);
-        refresh_raylib();
     }
 
     static float wrap_angle(float angle, float min, float max)
@@ -75,17 +73,15 @@ namespace engine
     }
 
     const Camera3D &CameraComponent::get_raylib_camera() const { return m_cam; }
-    glm::vec2 CameraComponent::get_pos_2d() const { return glm::vec2{position.x, position.z}; }
-    glm::vec3 &CameraComponent::get_position() { return position; }
     glm::vec3 CameraComponent::get_forward() { return forward; }
 
-    void CameraComponent::refresh_raylib()
+    void CameraComponent::refresh_raylib(const glm::vec3& position)
     {
-        m_cam.target = v3_rtg(get_target());
+        m_cam.target = v3_rtg(get_target(position));
         m_cam.position = v3_rtg(position);
     }
 
-    glm::vec3 CameraComponent::get_target()
+    glm::vec3 CameraComponent::get_target(const glm::vec3& position)
     {
         return forward + position;
     }

@@ -33,7 +33,7 @@ namespace engine
         Entity create_entity();
         void destroy_entity(const entt::entity &entity);
 
-        entt::registry &get_registry();
+        constexpr entt::registry &get_registry() { return registry; }
 
         Entity create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);
         Entity create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y);

@@ -25,7 +25,14 @@ namespace engine
         // 2. MOUSE & CAMERA LOOK
         // ==========================================
         glm::vec2 mouse_delta = rtg_v2(GetMouseDelta());
-        camera.handle_mouse_delta(mouse_delta * controller.sensitivity *dt);
+
+
+        // Simple guard to prevent wrong initial mouse delta
+        static int first = 0;
+        if(first > 1)
+            camera.handle_mouse_delta(mouse_delta * controller.sensitivity *dt);
+        else
+             first++;
 
         // Arrow Keys Look (Fallback)
         if (IsKeyDown(KEY_RIGHT))

@@ -9,8 +9,8 @@ namespace engine {
     // Wrapper class to simplify EnTT's API
     class Entity {
     public:
-        Entity(entt::entity id, Scene* scene) : m_id(id), scene(scene) {};
-        Entity() : m_id(entt::null), scene(nullptr) {};
+        Entity(entt::entity id, Scene* scene) : m_id(id), m_scene(scene) {};
+        Entity() : m_id(entt::null), m_scene(nullptr) {};
 
         template <typename T>
         bool has_component() {
@@ -52,11 +52,11 @@ namespace engine {
     private:
 
         constexpr entt::registry& registry() {
-            return scene->get_registry();
+            return m_scene->get_registry();
         }
 
         entt::entity m_id;
-        Scene* scene;
+        Scene* m_scene;
     };
 
 }

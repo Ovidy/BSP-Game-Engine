@@ -78,22 +78,21 @@ int main()
 
         // --- 2. Physics ---
         engine::CameraComponent &camera = player.get_component<CameraComponent>();
+        auto &transform = player.get_component<TransformComponent>();
 
         std::vector<engine::Sector> nearby_sectors = bsp_manager.get_nearby_sectors(
-            glm::vec2(camera.get_position().x, camera.get_position().z),
+            glm::vec2(transform.position.x, transform.position.z),
             player.get_component<CharacterControllerComponent>().radius);
 
         character_controller_update(&scene, delta_time, nearby_sectors);
 
         // --- 3. Camera Sync ---
-        auto &transform = player.get_component<TransformComponent>();
-        camera.get_position() = transform.position;
-        camera.refresh_raylib();
+        camera.refresh_raylib(transform.position);
 
-        bsp_manager.update(camera.get_pos_2d());
+        bsp_manager.update(transform.get_bsp_position());
 
         // --- 4. Render ---
-        renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_manager.get_segment_ids_to_render(), &scene);
+        renderer.render(camera.get_raylib_camera(), transform.get_bsp_position(), bsp_manager.get_segment_ids_to_render(), &scene);
     }
 
     CloseWindow();

@@ -10,7 +10,11 @@ namespace engine
     Scene::Scene(
         const std::vector<Sector> &sectors,
         const std::vector<Sprite> &sprites,
-        const std::unordered_map<glm::int32_t, std::string> &textures) : sectors(sectors), sprites(sprites), textures(textures) {}
+        const std::unordered_map<glm::int32_t, std::string> &textures)  { 
+        this->sectors  = sectors;
+        this->sprites  = sprites;
+        this->textures = textures; 
+    }
 
     Scene::~Scene()
     {
@@ -30,11 +34,6 @@ namespace engine
         registry.destroy(entity);
     }
 
-    entt::registry &Scene::get_registry()
-    {
-        return registry;
-    }
-
     Entity Scene::create_main_camera(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
     {
         Entity tmp = create_camera_entity(start_pos, pitch, yaw, fov_y);
@@ -45,7 +44,7 @@ namespace engine
     Entity Scene::create_camera_entity(const glm::vec3 &start_pos, const float pitch, const float yaw, const float fov_y)
     {
         Entity camera_entity = create_entity();
-        camera_entity.add_component<CameraComponent>(start_pos, pitch, yaw, fov_y);
+        camera_entity.add_component<CameraComponent>(pitch, yaw, fov_y);
         return camera_entity;
     }
 
