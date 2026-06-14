@@ -275,7 +275,7 @@ if (downloadRaylib) then
 
         cdialect "C17"
         cppdialect "C++17"
-        flags { "ShadowedVariables"}
+        --buildoptions { "-Wshadow" }
         platform_defines()
 
         filter "action:vs*"
