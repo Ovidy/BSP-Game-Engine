@@ -5,12 +5,14 @@
 #include <render/map_renderer.h>
 #include <render/view_renderer.h>
 
-namespace input {
-    class Handler {
+namespace engine
+{
+    class InputHandler
+    {
     public:
         // Declaration only
-        Handler();
+        InputHandler();
 
-        void update(bsp::Camera& camera, render::MapRenderer& map_renderer, const float& dt);
+        void update(entt::registry& registry, entt::entity player_entity, float dt);
     };
 }

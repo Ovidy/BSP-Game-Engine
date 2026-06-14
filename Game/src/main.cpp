@@ -1,63 +1,106 @@
-#include <bsp/handler.h>
-#include <bsp/camera.h>
-#include <render/handler.h>
-#include <input/handler.h>
-#include <test/level.h>
+#include <ecs/scene.h>
 
 #include <raylib.h>
 #include <resource_dir.h>
 
-int main () {
-	// Tell the window to use vsync and work on high DPI displays
-	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
+#include <bsp/bsp_manager.h>
+#include <render/renderer_3d.h>
+#include <input/input_handler.h>
 
-	// Create the window and OpenGL context
-	InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, "BSP Game Engine");
+#include <physics/components.h>
+#include <physics/systems.h>
+#include <bsp/components.h>
 
-	// Set the target FPS to 60 so that our game loop runs at a consistent speed
-	SetTargetFPS(60);
+#include <test/level.h>
 
-	DisableCursor();
+using namespace engine;
 
-    glm::float32_t deltaTime = 0.0f;
+int main()
+{
+    // Window and context initialization
+    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
+    InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, "BSP Game Engine");
+    SetTargetFPS(60);
+    DisableCursor();
 
-    // create our renderer and load the test level segments into it
-    bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT + 2, 5.0f), 0.0f, 0.0f, 60.0f);
-    bsp::Handler bsp_handler;
-    render::Handler render_handler;
-    input::Handler input_handler;
+    glm::float32_t delta_time = 0.0f;
 
-	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
-	SearchAndSetResourceDir("Game/resources");
-	render_handler.load_texture(1, "Wall1.png");
-	render_handler.load_texture(2, "Monster1-north.png");
-	render_handler.load_texture(3, "wabbit_alpha.png");
+    // Core systems initialization
+    Scene scene(test_level_sectors, test_level_sprites, test_level_textures);
+    BspManager bsp_manager;
+    Renderer3D renderer;
+    InputHandler input_handler;
 
-	bsp_handler.load_level(bsp::test_level_sectors);
-	render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);
-	render_handler.load_sprites(bsp::test_level_sprites);
-	
-	// game loop
-	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
-	{
-		// Update:
-		deltaTime = GetFrameTime();
-		input_handler.update(camera, render_handler.get_map_renderer(), deltaTime);
-		
-		// Ask the BSP tree what is nearby
-    	std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(
-			camera.get_pos_2d(), 
-			camera.get_player_radius()
-		);
+    // Setup player entity and camera
+    scene.create_main_camera(glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f), 0.0f, 0.0f, 60.0f);
+    entt::entity player = scene.get_main_camera_entity();
 
-		camera.update(deltaTime, nearby_sectors);
-		bsp_handler.update(camera.get_pos_2d());
+    auto &reg = scene.get_registry();
 
-		// Render:
-		render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());
-	}
+    // Setup player physics components
+    reg.emplace<engine::TransformComponent>(player, glm::vec3(6.0f, CAM_HEIGHT + 2.0f, 5.0f));
+    reg.emplace<engine::VelocityComponent>(player);
 
-	// destroy the window and cleanup the OpenGL context
-	CloseWindow();
-	return 0;
+    auto &controller = reg.emplace<engine::CharacterControllerComponent>(player);
+    controller.radius = 0.5f;
+    controller.height = CAM_HEIGHT;
+    controller.speed = 5.0f;
+
+    // Resource loading
+    SearchAndSetResourceDir("Game/resources");
+
+    for (const auto &[id, path] : scene.get_textures())
+    {
+        renderer.load_texture(id, path);
+    }
+
+    // Spawn level sprites
+    for (const auto &sprite : scene.get_sprites())
+    {
+        entt::entity sprite_entity = scene.create_entity();
+        reg.emplace<TransformComponent>(sprite_entity, sprite.position, glm::vec3(0.0f), glm::vec3(1.0f));
+        reg.emplace<SpriteComponent>(sprite_entity, sprite.texture_id, sprite.tint);
+    }
+
+    // Initialize BSP level data
+    bsp_manager.load_level(scene.get_sectors());
+    renderer.load_segments(bsp_manager.get_segments(), bsp_manager.get_segments(), scene.get_sectors(), WINDOW_RESOLUTION);
+
+    // Main game loop
+    while (!WindowShouldClose())
+    {
+        delta_time = GetFrameTime();
+        entt::entity player = scene.get_main_camera_entity();
+        auto &reg = scene.get_registry();
+
+        // --- 1. Input ---
+        input_handler.update(reg, player, delta_time);
+
+        if (IsKeyPressed(KEY_M))
+        {
+            renderer.get_map_renderer().toggle();
+        }
+
+        // --- 2. Physics ---
+        engine::Camera &camera = reg.get<engine::Camera>(player);
+
+        std::vector<engine::Sector> nearby_sectors = bsp_manager.get_nearby_sectors(
+            glm::vec2(camera.get_position().x, camera.get_position().z),
+            reg.get<engine::CharacterControllerComponent>(player).radius);
+
+        character_controller_update(reg, delta_time, nearby_sectors);
+
+        // --- 3. Camera Sync ---
+        auto &transform = reg.get<engine::TransformComponent>(player);
+        camera.get_position() = transform.position;
+        camera.refresh_raylib();
+
+        bsp_manager.update(camera.get_pos_2d());
+
+        // --- 4. Render ---
+        renderer.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_manager.get_segment_ids_to_render(), reg);
+    }
+
+    CloseWindow();
+    return 0;
 }

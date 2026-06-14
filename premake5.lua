@@ -116,11 +116,35 @@ function check_earcut()
     os.chdir("../")
 end
 
+function check_entt()
+    os.chdir("external")
+    if(os.isdir("entt") == false) then
+        if(not os.isfile("entt.zip")) then
+            print("EnTT not found, downloading from github...")
+            local result_str, response_code = http.download("https://github.com/skypjack/entt/archive/refs/heads/master.zip", "entt.zip", {
+                progress = download_progress,
+                headers = { "From: Premake", "Referer: Premake" }
+            })
+        end
+        print("Unzipping EnTT...")
+        zip.extract("entt.zip", os.getcwd())
+        
+        -- The github zip extracts to a folder named 'entt-master'
+        if (os.isdir("entt-main")) then
+            os.rename("entt-main", "entt")
+        end
+        
+        os.remove("entt.zip")
+    end
+    os.chdir("../")
+end
+
 function build_externals()
      print("calling externals")
      check_raylib()
      check_glm()
      check_earcut()
+     check_entt()
 end
 
 function platform_defines()
@@ -245,6 +269,7 @@ if (downloadRaylib) then
             "Engine/src",
             "external/glm", 
             "external/earcut/include",
+            "external/entt/single_include",
             raylib_dir .. "/src" 
         }
 
@@ -358,6 +383,7 @@ if (downloadRaylib) then
             "Engine/include",
             "Game/include",
             "external/glm", 
+            "external/entt/single_include",
             raylib_dir .. "/src" 
         }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <raylib.h>
 #include <glm/glm.hpp>
 
 #define WINDOW_WIDTH 1024
@@ -19,14 +20,15 @@
 #define CAM_ROT_SPEED 3.0
 #define CAM_DIAG_MOVE_CORR 1 / pow(2, 0.5)
 
+namespace engine
+{
+    glm::float32_t cross(const glm::vec2 &a, const glm::vec2 &b);
 
-struct Vector3;
+    bool is_on_front(const glm::vec2 &a, const glm::vec2 &b);
+    bool is_on_back(const glm::vec2 &a, const glm::vec2 &b);
 
-namespace bsp {
-    glm::float32_t cross(const glm::vec2& a, const glm::vec2& b);
+    Vector3 v3_rtg(const glm::vec3 &value);
+    Vector2 v2_rtg(const glm::vec2 &value);
 
-    bool is_on_front(const glm::vec2& a, const glm::vec2& b);
-    bool is_on_back(const glm::vec2& a, const glm::vec2& b);
-
-    Vector3 v3_rtg(const glm::vec3& value);
+    glm::vec2 rtg_v2(const Vector2 &value);
 }

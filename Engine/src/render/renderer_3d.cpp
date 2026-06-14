@@ -1,17 +1,19 @@
-#include <render/handler.h>
+#include <render/renderer_3d.h>
 
-using namespace bsp;
-
-namespace render {
-    Handler::Handler() {
+namespace engine
+{
+    Renderer3D::Renderer3D()
+    {
         // constructor code here
     }
 
-    Handler::~Handler() {
+    Renderer3D::~Renderer3D()
+    {
         // destructor code here
     }
 
-    void Handler::render(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry)
+    {
         // drawing
         BeginDrawing();
 
@@ -19,20 +21,20 @@ namespace render {
         ClearBackground(BLACK);
 
         // render 2D and 3D content
-        render_3d(raylib_camera, current_segment_ids);
+        render_3d(raylib_camera, current_segment_ids, registry);
         render_2d(raylib_camera, camera_position, current_segment_ids);
-        
+
         // end the frame and get ready for the next one  (display frame, poll input, etc...)
         EndDrawing();
     }
 
-    void Handler::render_2d(const Camera3D& raylib_camera, const glm::vec2& camera_position, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render_2d(const Camera3D &raylib_camera, const glm::vec2 &camera_position, const std::vector<glm::int32_t> &current_segment_ids)
+    {
         // Calculate the 2D forward direction on the XZ plane
         glm::vec2 forward(
             raylib_camera.target.x - raylib_camera.position.x,
-            raylib_camera.target.z - raylib_camera.position.z
-        );
-        
+            raylib_camera.target.z - raylib_camera.position.z);
+
         // Normalize it so it doesn't scale weirdly if you change camera target distance
         forward = glm::normalize(forward);
 
@@ -43,7 +45,8 @@ namespace render {
         draw_controls_overlay();
     }
 
-    void Handler::draw_controls_overlay() {
+    void Renderer3D::draw_controls_overlay()
+    {
         // ==========================================
         // DRAW CONTROLS OVERLAY
         // ==========================================
@@ -53,11 +56,11 @@ namespace render {
         int line_spacing = 22;
 
         // Position it on the top right side of the screen
-        int x_pos = GetScreenWidth() - 260; 
+        int x_pos = GetScreenWidth() - 260;
         int y_pos = padding;
 
         // Draw a subtle semi-transparent background box so the text is readable against bright walls
-        DrawRectangle(x_pos - 10, y_pos - 10, 260, 260, Color{ 0, 0, 0, 150 });
+        DrawRectangle(x_pos - 10, y_pos - 10, 260, 260, Color{0, 0, 0, 150});
 
         // Draw the Title
         DrawText("CONTROLS:", x_pos, y_pos, font_size, RAYWHITE);
@@ -66,13 +69,13 @@ namespace render {
         // Draw the list of keys
         DrawText("W/A/S/D - Move", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
-        
+
         DrawText("SPACE - Jump", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
-        
+
         DrawText("L-SHIFT - Fly Down", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
-        
+
         DrawText("TAB - Toggle Mouse Lock", x_pos, y_pos, small_font, LIGHTGRAY);
         y_pos += line_spacing;
 
@@ -94,37 +97,37 @@ namespace render {
         DrawText("F11 - Fullscreen", x_pos, y_pos, small_font, LIGHTGRAY);
     }
 
-    void Handler::render_3d(const Camera3D& raylib_camera, const std::vector<glm::int32_t>& current_segment_ids) {
+    void Renderer3D::render_3d(const Camera3D &raylib_camera, const std::vector<glm::int32_t> &current_segment_ids, entt::registry &registry)
+    {
         BeginMode3D(raylib_camera);
 
         // Just tell the view renderer to draw its batched models
-        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager);
+        view_renderer.draw(map_renderer.is_enabled(), raylib_camera, texture_manager, registry);
 
         DrawGrid(32, 1.0f);
 
         EndMode3D();
     }
 
-    void Handler::load_segments(const std::vector<bsp::Segment>& input_segments, const std::vector<bsp::Segment>& input_tree_segments, const std::vector<bsp::Sector>& level_sectors, const glm::vec2& window_size) {
+    void Renderer3D::load_segments(const std::vector<Segment> &input_segments, const std::vector<Segment> &input_tree_segments, const std::vector<Sector> &level_sectors, const glm::vec2 &window_size)
+    {
         segments = input_segments;
         tree_segments = input_tree_segments;
-        
+
         // MapRenderer only needs the 2D lines
         map_renderer.load_level_data(segments, tree_segments, window_size);
-        
+
         // ViewRenderer needs the 3D walls AND the sectors to generate triangulated floors
         view_renderer.load_models(tree_segments, level_sectors, texture_manager);
     }
 
-    void Handler::load_texture(glm::int32_t id, const std::string& file_path) {
+    void Renderer3D::load_texture(glm::int32_t id, const std::string &file_path)
+    {
         texture_manager.load_texture(id, file_path);
     }
 
-    void Handler::load_sprites(const std::vector<bsp::Sprite>& level_sprites) {
-        view_renderer.load_sprites(level_sprites);
-    }
-
-    MapRenderer& Handler::get_map_renderer() {
+    MapRenderer &Renderer3D::get_map_renderer()
+    {
         return map_renderer;
     }
 }
