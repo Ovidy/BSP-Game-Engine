@@ -17,10 +17,10 @@ config/bookstack/*
 config/bookstack/www/*
 
 # 4. ...but explicitly allow the 'uploads' folder and all its contents!
-!config/bookstack/www/uploads/
+# !config/bookstack/www/uploads/
 
 # (Optional: If you have a storage folder next to uploads, un-ignore it here too)
-!config/bookstack/www/storage/
+# !config/bookstack/www/storage/
 
 # ----------------------------------
 # Environment & Overrides

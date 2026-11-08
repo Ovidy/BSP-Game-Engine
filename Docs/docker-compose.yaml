@@ -13,7 +13,7 @@ services:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ./config/mariadb:/config
+      - mariadb_data:/config
     ports:
       - 3306:3306
     restart: unless-stopped
@@ -35,7 +35,11 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=bookstack
     volumes:
-      - ./config/bookstack:/config
+      - bookstack_data:/config
     ports:
       - 6875:80
     restart: unless-stopped
+
+volumes:
+  mariadb_data:
+  bookstack_data:
