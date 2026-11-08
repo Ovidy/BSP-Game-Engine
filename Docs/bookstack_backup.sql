@@ -1,9 +1,9 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.4.10-MariaDB, for Linux (aarch64)
+-- MariaDB dump 10.19-11.8.8-MariaDB, for Linux (aarch64)
 --
 -- Host: localhost    Database: bookstack
 -- ------------------------------------------------------
--- Server version	11.4.10-MariaDB-log
+-- Server version	11.8.8-MariaDB-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -46,6 +46,7 @@ CREATE TABLE `activities` (
 -- Dumping data for table `activities`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `activities` WRITE;
 /*!40000 ALTER TABLE `activities` DISABLE KEYS */;
 INSERT INTO `activities` VALUES
@@ -94,6 +95,8 @@ INSERT INTO `activities` VALUES
 (43,'page_update','(10) Creating a Simple Game',1,'192.168.65.1',10,'page','2026-05-07 13:38:21','2026-05-07 13:38:21');
 /*!40000 ALTER TABLE `activities` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `api_tokens`
@@ -122,10 +125,13 @@ CREATE TABLE `api_tokens` (
 -- Dumping data for table `api_tokens`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `api_tokens` WRITE;
 /*!40000 ALTER TABLE `api_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `api_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `attachments`
@@ -155,10 +161,13 @@ CREATE TABLE `attachments` (
 -- Dumping data for table `attachments`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `attachments` WRITE;
 /*!40000 ALTER TABLE `attachments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `attachments` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `bookshelves_books`
@@ -180,6 +189,7 @@ CREATE TABLE `bookshelves_books` (
 -- Dumping data for table `bookshelves_books`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `bookshelves_books` WRITE;
 /*!40000 ALTER TABLE `bookshelves_books` DISABLE KEYS */;
 INSERT INTO `bookshelves_books` VALUES
@@ -187,6 +197,8 @@ INSERT INTO `bookshelves_books` VALUES
 (3,2,0);
 /*!40000 ALTER TABLE `bookshelves_books` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `cache`
@@ -207,10 +219,13 @@ CREATE TABLE `cache` (
 -- Dumping data for table `cache`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `cache` WRITE;
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `comments`
@@ -243,10 +258,13 @@ CREATE TABLE `comments` (
 -- Dumping data for table `comments`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `deletions`
@@ -273,12 +291,15 @@ CREATE TABLE `deletions` (
 -- Dumping data for table `deletions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `deletions` WRITE;
 /*!40000 ALTER TABLE `deletions` DISABLE KEYS */;
 INSERT INTO `deletions` VALUES
 (1,1,'bookshelf',1,'2026-05-04 13:11:08','2026-05-04 13:11:08');
 /*!40000 ALTER TABLE `deletions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `email_confirmations`
@@ -303,10 +324,13 @@ CREATE TABLE `email_confirmations` (
 -- Dumping data for table `email_confirmations`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `email_confirmations` WRITE;
 /*!40000 ALTER TABLE `email_confirmations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `email_confirmations` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `entities`
@@ -344,6 +368,7 @@ CREATE TABLE `entities` (
 -- Dumping data for table `entities`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `entities` WRITE;
 /*!40000 ALTER TABLE `entities` DISABLE KEYS */;
 INSERT INTO `entities` VALUES
@@ -359,6 +384,8 @@ INSERT INTO `entities` VALUES
 (10,'page','Creating a Simple Game','creating-a-simple-game',2,8,4,'2026-05-05 05:57:55','2026-05-07 13:38:21',NULL,1,1,1);
 /*!40000 ALTER TABLE `entities` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `entity_container_data`
@@ -383,6 +410,7 @@ CREATE TABLE `entity_container_data` (
 -- Dumping data for table `entity_container_data`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `entity_container_data` WRITE;
 /*!40000 ALTER TABLE `entity_container_data` DISABLE KEYS */;
 INSERT INTO `entity_container_data` VALUES
@@ -393,6 +421,8 @@ INSERT INTO `entity_container_data` VALUES
 (8,'chapter','Create a basic project with a prepared world map and objects.\r\n','<p>Create a basic project with a prepared world map and objects.</p><p><br></p>',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `entity_container_data` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `entity_page_data`
@@ -420,6 +450,7 @@ CREATE TABLE `entity_page_data` (
 -- Dumping data for table `entity_page_data`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `entity_page_data` WRITE;
 /*!40000 ALTER TABLE `entity_page_data` DISABLE KEYS */;
 INSERT INTO `entity_page_data` VALUES
@@ -430,6 +461,8 @@ INSERT INTO `entity_page_data` VALUES
 (10,0,0,9,'markdown','<h4 id=\"bkmrk-introduction\">Introduction</h4>\n<p id=\"bkmrk-we%27re-going-to-creat\">We\'re going to create a simple game only in our <code>main.cpp</code> file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.</p>\n<p id=\"bkmrk-all-of-the-used-reso\">All of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.</p>\n<p id=\"bkmrk-we%27ll-walk-through-e\">We\'ll walk through each step of creating the engine.</p>\n<h4 id=\"bkmrk-include-headers\">Include Headers</h4>\n<pre id=\"bkmrk-%2F%2F-1.-standard-io-st\"><code class=\"language-c++\">// 1. Standard IO Stream\n#include &lt;iostream&gt;\n\n// 2. Engine Cores\n#include &lt;bsp/handler.h&gt;\n#include &lt;render/handler.h&gt;\n#include &lt;input/handler.h&gt;\n\n// 3. Game Camera\n#include &lt;bsp/camera.h&gt;\n\n// 4. Example Level\n#include &lt;test/level.h&gt;\n\n// 5. RayLib-Related Code\n#include &lt;raylib.h&gt;\n#include &lt;resource_dir.h&gt;\n\n</code></pre>\n<ol id=\"bkmrk-standard-io-stream--\">\n<li>Standard IO Stream - Debugging</li>\n<li>Engine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters</li>\n<li>Game Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)</li>\n<li>Example Level - Provided by the engine for testing</li>\n<li>RayLib-Related Code - For basic configurations (such as window and <code>resources</code> folder finding)</li>\n</ol>\n<p id=\"bkmrk-from-now-on-all-of-t\">From now on all of the code will be placed in the main function:</p>\n<pre id=\"bkmrk-int-main-%28%29-%7B-...-yo\"><code class=\"language-c++\">int main () {\n  ... Your code ...\n}\n</code></pre>\n<h4 id=\"bkmrk-raylib-initializatio\">RayLib Initializations</h4>\n<pre id=\"bkmrk-%2F%2F-optional%3A-tell-th\"><code class=\"language-c++\">  // Optional: Tell the window to use vsync and work on high DPI displays\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\n\n  // Must: Create the window and OpenGL context\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\n\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\n  SetTargetFPS(60);\n\n  // Must: Disable cursor for camera lookaround with 3D Camera\n  DisableCursor();\n</code></pre>\n<h4 id=\"bkmrk-engine-initializatio\">Engine Initializations</h4>\n<pre id=\"bkmrk-%2F%2F-set-game-delta-ti\"><code class=\"language-c++\">  // Set Game Delta-Time for fixed camera, world, and objects movement\n  glm::float32_t deltaTime = 0.0f;\n\n  // Create the 3D Camera and locate it in (6, 7) coordinates\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\n\n  // Create Engine Handlers (BSP, rendering, and user input)\n  bsp::Handler bsp_handler;\n  render::Handler render_handler;\n  input::Handler input_handler;\n\n</code></pre>\n<h4 id=\"bkmrk-resources-loading\">Resources Loading</h4>\n<pre id=\"bkmrk-%2F%2F-set-%60game%2Fresourc\"><code class=\"language-c++\">  // Set `Game/resources` as main resources directory for easy load\n  SearchAndSetResourceDir(\"Game/resources\");\n\n  // Load textures using Texture Manager\n  render_handler.load_texture(1, \"Wall1.png\");\n  render_handler.load_texture(2, \"Monster1-north.png\");\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\n\n  // Load Level sectors and segments from example level\n  bsp_handler.load_level(bsp::test_level_sectors);\n\n  // Load calculated sectors and segments by the BSP Handler\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\n\n  // Load sprites for example level\n  render_handler.load_sprites(bsp::test_level_sprites);\n\n</code></pre>\n<h4 id=\"bkmrk-delta-time-clamp-pre\">Delta-Time Clamp Prevention (recommended)</h4>\n<p id=\"bkmrk-first-we%27ll-add-the-\">First we\'ll add the function declaration at the top of the file below the includes:</p>\n<pre id=\"bkmrk-void-prevent_dt_clam\"><code class=\"language-c++\">void prevent_dt_clamp(glm::float32_t&amp; deltaTime);\n</code></pre>\n<p id=\"bkmrk-now-below-the-main-f\">Now below the main function we\'ll add this:</p>\n<pre id=\"bkmrk-void-prevent_dt_clam-1\"><code class=\"language-c++\">void prevent_dt_clamp(glm::float32_t&amp; deltaTime) {\n  if (deltaTime &gt; 0.05f) {\n    deltaTime = 0.0166f; \n  }\n}\n\n</code></pre>\n<p id=\"bkmrk-we%27ll-use-it-soon.\">We\'ll use it soon.</p>\n<h4 id=\"bkmrk-main-game-loop-%26-win\">Main Game Loop &amp; Window Management</h4>\n<pre id=\"bkmrk-%2F%2F-game-loop-%28run-un\"><code class=\"language-c++\">  // Game Loop (run until the window is closed)\n  while (!WindowShouldClose())\n  {\n    // Update and calculate Delta-Time:\n    deltaTime = GetFrameTime();\n    prevent_dt_clamp(deltaTime);\n    camera.pre_update(deltaTime);\n    input_handler.update(camera, render_handler.get_map_renderer());\n    \n    // Ask the BSP tree what is nearby\n    std::vector&lt;bsp::Sector&gt; nearby_sectors = bsp_handler.get_nearby_sectors(\n        camera.get_pos_2d(), \n        camera.get_player_radius()\n    );\n\n    // Update Camera, BSP Tree, and BSP Traverser \n    camera.update(deltaTime, nearby_sectors);\n    bsp_handler.update(camera.get_pos_2d());\n\n    // Render Everything\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\n  }\n</code></pre>\n<p id=\"bkmrk-at-the-end-of-the-ma\">At the end of the main function add this:</p>\n<pre id=\"bkmrk-%2F%2F-destroy-the-windo\"><code class=\"language-c++\">  // Destroy the window and cleanup the OpenGL context\n  CloseWindow();\n  return 0;\n</code></pre>\n<p id=\"bkmrk-you-should-see-this-\">You should see this resulting game if done right:</p>\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/image-1778161088033.png\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/image-1778161088033.png\" alt=\"\"></a></p>\n','Introduction\nWe\'re going to create a simple game only in our main.cpp file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.\nAll of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.\nWe\'ll walk through each step of creating the engine.\nInclude Headers\n// 1. Standard IO Stream\n#include <iostream>\n\n// 2. Engine Cores\n#include <bsp/handler.h>\n#include <render/handler.h>\n#include <input/handler.h>\n\n// 3. Game Camera\n#include <bsp/camera.h>\n\n// 4. Example Level\n#include <test/level.h>\n\n// 5. RayLib-Related Code\n#include <raylib.h>\n#include <resource_dir.h>\n\n\n\nStandard IO Stream - Debugging\nEngine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters\nGame Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)\nExample Level - Provided by the engine for testing\nRayLib-Related Code - For basic configurations (such as window and resources folder finding)\n\nFrom now on all of the code will be placed in the main function:\nint main () {\n  ... Your code ...\n}\n\nRayLib Initializations\n  // Optional: Tell the window to use vsync and work on high DPI displays\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\n\n  // Must: Create the window and OpenGL context\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\n\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\n  SetTargetFPS(60);\n\n  // Must: Disable cursor for camera lookaround with 3D Camera\n  DisableCursor();\n\nEngine Initializations\n  // Set Game Delta-Time for fixed camera, world, and objects movement\n  glm::float32_t deltaTime = 0.0f;\n\n  // Create the 3D Camera and locate it in (6, 7) coordinates\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\n\n  // Create Engine Handlers (BSP, rendering, and user input)\n  bsp::Handler bsp_handler;\n  render::Handler render_handler;\n  input::Handler input_handler;\n\n\nResources Loading\n  // Set `Game/resources` as main resources directory for easy load\n  SearchAndSetResourceDir(\"Game/resources\");\n\n  // Load textures using Texture Manager\n  render_handler.load_texture(1, \"Wall1.png\");\n  render_handler.load_texture(2, \"Monster1-north.png\");\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\n\n  // Load Level sectors and segments from example level\n  bsp_handler.load_level(bsp::test_level_sectors);\n\n  // Load calculated sectors and segments by the BSP Handler\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\n\n  // Load sprites for example level\n  render_handler.load_sprites(bsp::test_level_sprites);\n\n\nDelta-Time Clamp Prevention (recommended)\nFirst we\'ll add the function declaration at the top of the file below the includes:\nvoid prevent_dt_clamp(glm::float32_t& deltaTime);\n\nNow below the main function we\'ll add this:\nvoid prevent_dt_clamp(glm::float32_t& deltaTime) {\n  if (deltaTime > 0.05f) {\n    deltaTime = 0.0166f; \n  }\n}\n\n\nWe\'ll use it soon.\nMain Game Loop & Window Management\n  // Game Loop (run until the window is closed)\n  while (!WindowShouldClose())\n  {\n    // Update and calculate Delta-Time:\n    deltaTime = GetFrameTime();\n    prevent_dt_clamp(deltaTime);\n    camera.pre_update(deltaTime);\n    input_handler.update(camera, render_handler.get_map_renderer());\n    \n    // Ask the BSP tree what is nearby\n    std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(\n        camera.get_pos_2d(), \n        camera.get_player_radius()\n    );\n\n    // Update Camera, BSP Tree, and BSP Traverser \n    camera.update(deltaTime, nearby_sectors);\n    bsp_handler.update(camera.get_pos_2d());\n\n    // Render Everything\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\n  }\n\nAt the end of the main function add this:\n  // Destroy the window and cleanup the OpenGL context\n  CloseWindow();\n  return 0;\n\nYou should see this resulting game if done right:\n\n','#### Introduction\r\nWe\'re going to create a simple game only in our `main.cpp` file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.\r\n\r\nAll of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.\r\n\r\nWe\'ll walk through each step of creating the engine.\r\n\r\n#### Include Headers\r\n```c++\r\n// 1. Standard IO Stream\r\n#include <iostream>\r\n\r\n// 2. Engine Cores\r\n#include <bsp/handler.h>\r\n#include <render/handler.h>\r\n#include <input/handler.h>\r\n\r\n// 3. Game Camera\r\n#include <bsp/camera.h>\r\n\r\n// 4. Example Level\r\n#include <test/level.h>\r\n\r\n// 5. RayLib-Related Code\r\n#include <raylib.h>\r\n#include <resource_dir.h>\r\n\r\n```\r\n1. Standard IO Stream - Debugging\r\n2. Engine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters\r\n3. Game Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)\r\n4. Example Level - Provided by the engine for testing\r\n5. RayLib-Related Code - For basic configurations (such as window and `resources` folder finding)\r\n\r\nFrom now on all of the code will be placed in the main function:\r\n```c++\r\nint main () {\r\n  ... Your code ...\r\n}\r\n```\r\n\r\n#### RayLib Initializations\r\n```c++\r\n  // Optional: Tell the window to use vsync and work on high DPI displays\r\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\r\n\r\n  // Must: Create the window and OpenGL context\r\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\r\n\r\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\r\n  SetTargetFPS(60);\r\n\r\n  // Must: Disable cursor for camera lookaround with 3D Camera\r\n  DisableCursor();\r\n```\r\n\r\n#### Engine Initializations\r\n```c++\r\n  // Set Game Delta-Time for fixed camera, world, and objects movement\r\n  glm::float32_t deltaTime = 0.0f;\r\n\r\n  // Create the 3D Camera and locate it in (6, 7) coordinates\r\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\r\n\r\n  // Create Engine Handlers (BSP, rendering, and user input)\r\n  bsp::Handler bsp_handler;\r\n  render::Handler render_handler;\r\n  input::Handler input_handler;\r\n\r\n```\r\n\r\n#### Resources Loading\r\n```c++\r\n  // Set `Game/resources` as main resources directory for easy load\r\n  SearchAndSetResourceDir(\"Game/resources\");\r\n\r\n  // Load textures using Texture Manager\r\n  render_handler.load_texture(1, \"Wall1.png\");\r\n  render_handler.load_texture(2, \"Monster1-north.png\");\r\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\r\n\r\n  // Load Level sectors and segments from example level\r\n  bsp_handler.load_level(bsp::test_level_sectors);\r\n\r\n  // Load calculated sectors and segments by the BSP Handler\r\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\r\n\r\n  // Load sprites for example level\r\n  render_handler.load_sprites(bsp::test_level_sprites);\r\n\r\n```\r\n\r\n#### Delta-Time Clamp Prevention (recommended)\r\nFirst we\'ll add the function declaration at the top of the file below the includes:\r\n```c++\r\nvoid prevent_dt_clamp(glm::float32_t& deltaTime);\r\n```\r\n\r\nNow below the main function we\'ll add this:\r\n```c++\r\nvoid prevent_dt_clamp(glm::float32_t& deltaTime) {\r\n  if (deltaTime > 0.05f) {\r\n    deltaTime = 0.0166f; \r\n  }\r\n}\r\n\r\n```\r\n\r\nWe\'ll use it soon.\r\n\r\n#### Main Game Loop & Window Management\r\n```c++\r\n  // Game Loop (run until the window is closed)\r\n  while (!WindowShouldClose())\r\n  {\r\n    // Update and calculate Delta-Time:\r\n    deltaTime = GetFrameTime();\r\n    prevent_dt_clamp(deltaTime);\r\n    camera.pre_update(deltaTime);\r\n    input_handler.update(camera, render_handler.get_map_renderer());\r\n    \r\n    // Ask the BSP tree what is nearby\r\n    std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(\r\n        camera.get_pos_2d(), \r\n        camera.get_player_radius()\r\n    );\r\n\r\n    // Update Camera, BSP Tree, and BSP Traverser \r\n    camera.update(deltaTime, nearby_sectors);\r\n    bsp_handler.update(camera.get_pos_2d());\r\n\r\n    // Render Everything\r\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\r\n  }\r\n```\r\n\r\nAt the end of the main function add this:\r\n```c++\r\n  // Destroy the window and cleanup the OpenGL context\r\n  CloseWindow();\r\n  return 0;\r\n```\r\n\r\nYou should see this resulting game if done right:\r\n\r\n[![](http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/image-1778161088033.png)](http://localhost:6875/uploads/images/gallery/2026-05/image-1778161088033.png)');
 /*!40000 ALTER TABLE `entity_page_data` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `entity_permissions`
@@ -457,10 +490,13 @@ CREATE TABLE `entity_permissions` (
 -- Dumping data for table `entity_permissions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `entity_permissions` WRITE;
 /*!40000 ALTER TABLE `entity_permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `entity_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `failed_jobs`
@@ -486,10 +522,13 @@ CREATE TABLE `failed_jobs` (
 -- Dumping data for table `failed_jobs`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `failed_jobs` WRITE;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `favourites`
@@ -515,10 +554,13 @@ CREATE TABLE `favourites` (
 -- Dumping data for table `favourites`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `favourites` WRITE;
 /*!40000 ALTER TABLE `favourites` DISABLE KEYS */;
 /*!40000 ALTER TABLE `favourites` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `images`
@@ -548,6 +590,7 @@ CREATE TABLE `images` (
 -- Dumping data for table `images`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
 INSERT INTO `images` VALUES
@@ -561,6 +604,8 @@ INSERT INTO `images` VALUES
 (8,'image-1778161088033.png','http://localhost:6875/uploads/images/gallery/2026-05/image-1778161088033.png','2026-05-07 13:38:08','2026-05-07 13:38:08',1,1,'/uploads/images/gallery/2026-05/image-1778161088033.png','gallery',10);
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `imports`
@@ -588,10 +633,13 @@ CREATE TABLE `imports` (
 -- Dumping data for table `imports`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `imports` WRITE;
 /*!40000 ALTER TABLE `imports` DISABLE KEYS */;
 /*!40000 ALTER TABLE `imports` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `jobs`
@@ -617,10 +665,13 @@ CREATE TABLE `jobs` (
 -- Dumping data for table `jobs`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `joint_permissions`
@@ -647,6 +698,7 @@ CREATE TABLE `joint_permissions` (
 -- Dumping data for table `joint_permissions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `joint_permissions` WRITE;
 /*!40000 ALTER TABLE `joint_permissions` DISABLE KEYS */;
 INSERT INTO `joint_permissions` VALUES
@@ -692,6 +744,8 @@ INSERT INTO `joint_permissions` VALUES
 (4,'page',10,1,1);
 /*!40000 ALTER TABLE `joint_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `mention_history`
@@ -718,10 +772,13 @@ CREATE TABLE `mention_history` (
 -- Dumping data for table `mention_history`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `mention_history` WRITE;
 /*!40000 ALTER TABLE `mention_history` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mention_history` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `mfa_values`
@@ -747,10 +804,13 @@ CREATE TABLE `mfa_values` (
 -- Dumping data for table `mfa_values`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `mfa_values` WRITE;
 /*!40000 ALTER TABLE `mfa_values` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mfa_values` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `migrations`
@@ -764,13 +824,14 @@ CREATE TABLE `migrations` (
   `migration` varchar(191) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `migrations`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` VALUES
@@ -874,9 +935,13 @@ INSERT INTO `migrations` VALUES
 (98,'2025_10_22_134507_update_comments_relation_field_names',1),
 (99,'2025_11_23_161812_create_slug_history_table',1),
 (100,'2025_12_15_140219_create_mention_history_table',1),
-(101,'2025_12_19_103417_add_views_viewable_type_index',1);
+(101,'2025_12_19_103417_add_views_viewable_type_index',1),
+(102,'2026_04_19_141616_add_revision_view_all_permission',2),
+(103,'2026_07_27_201402_update_users_external_auth_id_collation',2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `page_revisions`
@@ -913,6 +978,7 @@ CREATE TABLE `page_revisions` (
 -- Dumping data for table `page_revisions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `page_revisions` WRITE;
 /*!40000 ALTER TABLE `page_revisions` DISABLE KEYS */;
 INSERT INTO `page_revisions` VALUES
@@ -942,6 +1008,8 @@ INSERT INTO `page_revisions` VALUES
 (41,10,'Creating a Simple Game','<h4 id=\"bkmrk-introduction\">Introduction</h4>\n<p id=\"bkmrk-we%27re-going-to-creat\">We\'re going to create a simple game only in our <code>main.cpp</code> file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.</p>\n<p id=\"bkmrk-all-of-the-used-reso\">All of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.</p>\n<p id=\"bkmrk-we%27ll-walk-through-e\">We\'ll walk through each step of creating the engine.</p>\n<h4 id=\"bkmrk-include-headers\">Include Headers</h4>\n<pre id=\"bkmrk-%2F%2F-1.-standard-io-st\"><code class=\"language-c++\">// 1. Standard IO Stream\n#include &lt;iostream&gt;\n\n// 2. Engine Cores\n#include &lt;bsp/handler.h&gt;\n#include &lt;render/handler.h&gt;\n#include &lt;input/handler.h&gt;\n\n// 3. Game Camera\n#include &lt;bsp/camera.h&gt;\n\n// 4. Example Level\n#include &lt;test/level.h&gt;\n\n// 5. RayLib-Related Code\n#include &lt;raylib.h&gt;\n#include &lt;resource_dir.h&gt;\n\n</code></pre>\n<ol id=\"bkmrk-standard-io-stream--\">\n<li>Standard IO Stream - Debugging</li>\n<li>Engine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters</li>\n<li>Game Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)</li>\n<li>Example Level - Provided by the engine for testing</li>\n<li>RayLib-Related Code - For basic configurations (such as window and <code>resources</code> folder finding)</li>\n</ol>\n<p id=\"bkmrk-from-now-on-all-of-t\">From now on all of the code will be placed in the main function:</p>\n<pre id=\"bkmrk-int-main-%28%29-%7B-...-yo\"><code class=\"language-c++\">int main () {\n  ... Your code ...\n}\n</code></pre>\n<h4 id=\"bkmrk-raylib-initializatio\">RayLib Initializations</h4>\n<pre id=\"bkmrk-%2F%2F-optional%3A-tell-th\"><code class=\"language-c++\">  // Optional: Tell the window to use vsync and work on high DPI displays\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\n\n  // Must: Create the window and OpenGL context\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\n\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\n  SetTargetFPS(60);\n\n  // Must: Disable cursor for camera lookaround with 3D Camera\n  DisableCursor();\n</code></pre>\n<h4 id=\"bkmrk-engine-initializatio\">Engine Initializations</h4>\n<pre id=\"bkmrk-%2F%2F-set-game-delta-ti\"><code class=\"language-c++\">  // Set Game Delta-Time for fixed camera, world, and objects movement\n  glm::float32_t deltaTime = 0.0f;\n\n  // Create the 3D Camera and locate it in (6, 7) coordinates\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\n\n  // Create Engine Handlers (BSP, rendering, and user input)\n  bsp::Handler bsp_handler;\n  render::Handler render_handler;\n  input::Handler input_handler;\n\n</code></pre>\n<h4 id=\"bkmrk-resources-loading\">Resources Loading</h4>\n<pre id=\"bkmrk-%2F%2F-set-%60game%2Fresourc\"><code class=\"language-c++\">  // Set `Game/resources` as main resources directory for easy load\n  SearchAndSetResourceDir(\"Game/resources\");\n\n  // Load textures using Texture Manager\n  render_handler.load_texture(1, \"Wall1.png\");\n  render_handler.load_texture(2, \"Monster1-north.png\");\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\n\n  // Load Level sectors and segments from example level\n  bsp_handler.load_level(bsp::test_level_sectors);\n\n  // Load calculated sectors and segments by the BSP Handler\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\n\n  // Load sprites for example level\n  render_handler.load_sprites(bsp::test_level_sprites);\n\n</code></pre>\n<h4 id=\"bkmrk-delta-time-clamp-pre\">Delta-Time Clamp Prevention (recommended)</h4>\n<p id=\"bkmrk-first-we%27ll-add-the-\">First we\'ll add the function declaration at the top of the file below the includes:</p>\n<pre id=\"bkmrk-void-prevent_dt_clam\"><code class=\"language-c++\">void prevent_dt_clamp(glm::float32_t&amp; deltaTime);\n</code></pre>\n<p id=\"bkmrk-now-below-the-main-f\">Now below the main function we\'ll add this:</p>\n<pre id=\"bkmrk-void-prevent_dt_clam-1\"><code class=\"language-c++\">void prevent_dt_clamp(glm::float32_t&amp; deltaTime) {\n  if (deltaTime &gt; 0.05f) {\n    deltaTime = 0.0166f; \n  }\n}\n\n</code></pre>\n<p id=\"bkmrk-we%27ll-use-it-soon.\">We\'ll use it soon.</p>\n<h4 id=\"bkmrk-main-game-loop-%26-win\">Main Game Loop &amp; Window Management</h4>\n<pre id=\"bkmrk-%2F%2F-game-loop-%28run-un\"><code class=\"language-c++\">  // Game Loop (run until the window is closed)\n  while (!WindowShouldClose())\n  {\n    // Update and calculate Delta-Time:\n    deltaTime = GetFrameTime();\n    prevent_dt_clamp(deltaTime);\n    camera.pre_update(deltaTime);\n    input_handler.update(camera, render_handler.get_map_renderer());\n    \n    // Ask the BSP tree what is nearby\n    std::vector&lt;bsp::Sector&gt; nearby_sectors = bsp_handler.get_nearby_sectors(\n        camera.get_pos_2d(), \n        camera.get_player_radius()\n    );\n\n    // Update Camera, BSP Tree, and BSP Traverser \n    camera.update(deltaTime, nearby_sectors);\n    bsp_handler.update(camera.get_pos_2d());\n\n    // Render Everything\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\n  }\n</code></pre>\n<p id=\"bkmrk-at-the-end-of-the-ma\">At the end of the main function add this:</p>\n<pre id=\"bkmrk-%2F%2F-destroy-the-windo\"><code class=\"language-c++\">  // Destroy the window and cleanup the OpenGL context\n  CloseWindow();\n  return 0;\n</code></pre>\n<p id=\"bkmrk-you-should-see-this-\">You should see this resulting game if done right:</p>\n<p id=\"bkmrk-\"><a href=\"http://localhost:6875/uploads/images/gallery/2026-05/image-1778161088033.png\"><img src=\"http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/image-1778161088033.png\" alt=\"\"></a></p>\n','Introduction\nWe\'re going to create a simple game only in our main.cpp file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.\nAll of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.\nWe\'ll walk through each step of creating the engine.\nInclude Headers\n// 1. Standard IO Stream\n#include <iostream>\n\n// 2. Engine Cores\n#include <bsp/handler.h>\n#include <render/handler.h>\n#include <input/handler.h>\n\n// 3. Game Camera\n#include <bsp/camera.h>\n\n// 4. Example Level\n#include <test/level.h>\n\n// 5. RayLib-Related Code\n#include <raylib.h>\n#include <resource_dir.h>\n\n\n\nStandard IO Stream - Debugging\nEngine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters\nGame Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)\nExample Level - Provided by the engine for testing\nRayLib-Related Code - For basic configurations (such as window and resources folder finding)\n\nFrom now on all of the code will be placed in the main function:\nint main () {\n  ... Your code ...\n}\n\nRayLib Initializations\n  // Optional: Tell the window to use vsync and work on high DPI displays\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\n\n  // Must: Create the window and OpenGL context\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\n\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\n  SetTargetFPS(60);\n\n  // Must: Disable cursor for camera lookaround with 3D Camera\n  DisableCursor();\n\nEngine Initializations\n  // Set Game Delta-Time for fixed camera, world, and objects movement\n  glm::float32_t deltaTime = 0.0f;\n\n  // Create the 3D Camera and locate it in (6, 7) coordinates\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\n\n  // Create Engine Handlers (BSP, rendering, and user input)\n  bsp::Handler bsp_handler;\n  render::Handler render_handler;\n  input::Handler input_handler;\n\n\nResources Loading\n  // Set `Game/resources` as main resources directory for easy load\n  SearchAndSetResourceDir(\"Game/resources\");\n\n  // Load textures using Texture Manager\n  render_handler.load_texture(1, \"Wall1.png\");\n  render_handler.load_texture(2, \"Monster1-north.png\");\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\n\n  // Load Level sectors and segments from example level\n  bsp_handler.load_level(bsp::test_level_sectors);\n\n  // Load calculated sectors and segments by the BSP Handler\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\n\n  // Load sprites for example level\n  render_handler.load_sprites(bsp::test_level_sprites);\n\n\nDelta-Time Clamp Prevention (recommended)\nFirst we\'ll add the function declaration at the top of the file below the includes:\nvoid prevent_dt_clamp(glm::float32_t& deltaTime);\n\nNow below the main function we\'ll add this:\nvoid prevent_dt_clamp(glm::float32_t& deltaTime) {\n  if (deltaTime > 0.05f) {\n    deltaTime = 0.0166f; \n  }\n}\n\n\nWe\'ll use it soon.\nMain Game Loop & Window Management\n  // Game Loop (run until the window is closed)\n  while (!WindowShouldClose())\n  {\n    // Update and calculate Delta-Time:\n    deltaTime = GetFrameTime();\n    prevent_dt_clamp(deltaTime);\n    camera.pre_update(deltaTime);\n    input_handler.update(camera, render_handler.get_map_renderer());\n    \n    // Ask the BSP tree what is nearby\n    std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(\n        camera.get_pos_2d(), \n        camera.get_player_radius()\n    );\n\n    // Update Camera, BSP Tree, and BSP Traverser \n    camera.update(deltaTime, nearby_sectors);\n    bsp_handler.update(camera.get_pos_2d());\n\n    // Render Everything\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\n  }\n\nAt the end of the main function add this:\n  // Destroy the window and cleanup the OpenGL context\n  CloseWindow();\n  return 0;\n\nYou should see this resulting game if done right:\n\n',1,'2026-05-07 13:38:21','2026-05-07 13:38:21','creating-a-simple-game','getting-started','version','#### Introduction\r\nWe\'re going to create a simple game only in our `main.cpp` file! Also, we\'ll dive into more details in the next chapters, for now it\'s a rather simple game.\r\n\r\nAll of the used resources (except for the wabbit sprite) that\'ll be used in this tutorial are made by the engine creator.\r\n\r\nWe\'ll walk through each step of creating the engine.\r\n\r\n#### Include Headers\r\n```c++\r\n// 1. Standard IO Stream\r\n#include <iostream>\r\n\r\n// 2. Engine Cores\r\n#include <bsp/handler.h>\r\n#include <render/handler.h>\r\n#include <input/handler.h>\r\n\r\n// 3. Game Camera\r\n#include <bsp/camera.h>\r\n\r\n// 4. Example Level\r\n#include <test/level.h>\r\n\r\n// 5. RayLib-Related Code\r\n#include <raylib.h>\r\n#include <resource_dir.h>\r\n\r\n```\r\n1. Standard IO Stream - Debugging\r\n2. Engine Cores - All core systems needed for running the engine (BSP calculations, rendering, and user input). Will be detailed in next chapters\r\n3. Game Camera - A basic 3D Player Camera. Can be moved in multiple ways (lookaround and all axis movement)\r\n4. Example Level - Provided by the engine for testing\r\n5. RayLib-Related Code - For basic configurations (such as window and `resources` folder finding)\r\n\r\nFrom now on all of the code will be placed in the main function:\r\n```c++\r\nint main () {\r\n  ... Your code ...\r\n}\r\n```\r\n\r\n#### RayLib Initializations\r\n```c++\r\n  // Optional: Tell the window to use vsync and work on high DPI displays\r\n  SetConfigFlags(FLAG_WINDOW_HIGHDPI);\r\n\r\n  // Must: Create the window and OpenGL context\r\n  InitWindow(WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y, \"BSP Game Engine\");\r\n\r\n  // Optional: Set the target FPS to 60 so that our game loop runs at a consistent speed\r\n  SetTargetFPS(60);\r\n\r\n  // Must: Disable cursor for camera lookaround with 3D Camera\r\n  DisableCursor();\r\n```\r\n\r\n#### Engine Initializations\r\n```c++\r\n  // Set Game Delta-Time for fixed camera, world, and objects movement\r\n  glm::float32_t deltaTime = 0.0f;\r\n\r\n  // Create the 3D Camera and locate it in (6, 7) coordinates\r\n  bsp::Camera camera(glm::vec3(6.0f, CAM_HEIGHT, 7.0f), glm::vec3(0.0f, CAM_HEIGHT, 0.0f), 60.0f);\r\n\r\n  // Create Engine Handlers (BSP, rendering, and user input)\r\n  bsp::Handler bsp_handler;\r\n  render::Handler render_handler;\r\n  input::Handler input_handler;\r\n\r\n```\r\n\r\n#### Resources Loading\r\n```c++\r\n  // Set `Game/resources` as main resources directory for easy load\r\n  SearchAndSetResourceDir(\"Game/resources\");\r\n\r\n  // Load textures using Texture Manager\r\n  render_handler.load_texture(1, \"Wall1.png\");\r\n  render_handler.load_texture(2, \"Monster1-north.png\");\r\n  render_handler.load_texture(3, \"wabbit_alpha.png\");\r\n\r\n  // Load Level sectors and segments from example level\r\n  bsp_handler.load_level(bsp::test_level_sectors);\r\n\r\n  // Load calculated sectors and segments by the BSP Handler\r\n  render_handler.load_segments(bsp_handler.get_segments(), bsp_handler.get_segments(), bsp::test_level_sectors, WINDOW_RESOLUTION);\r\n\r\n  // Load sprites for example level\r\n  render_handler.load_sprites(bsp::test_level_sprites);\r\n\r\n```\r\n\r\n#### Delta-Time Clamp Prevention (recommended)\r\nFirst we\'ll add the function declaration at the top of the file below the includes:\r\n```c++\r\nvoid prevent_dt_clamp(glm::float32_t& deltaTime);\r\n```\r\n\r\nNow below the main function we\'ll add this:\r\n```c++\r\nvoid prevent_dt_clamp(glm::float32_t& deltaTime) {\r\n  if (deltaTime > 0.05f) {\r\n    deltaTime = 0.0166f; \r\n  }\r\n}\r\n\r\n```\r\n\r\nWe\'ll use it soon.\r\n\r\n#### Main Game Loop & Window Management\r\n```c++\r\n  // Game Loop (run until the window is closed)\r\n  while (!WindowShouldClose())\r\n  {\r\n    // Update and calculate Delta-Time:\r\n    deltaTime = GetFrameTime();\r\n    prevent_dt_clamp(deltaTime);\r\n    camera.pre_update(deltaTime);\r\n    input_handler.update(camera, render_handler.get_map_renderer());\r\n    \r\n    // Ask the BSP tree what is nearby\r\n    std::vector<bsp::Sector> nearby_sectors = bsp_handler.get_nearby_sectors(\r\n        camera.get_pos_2d(), \r\n        camera.get_player_radius()\r\n    );\r\n\r\n    // Update Camera, BSP Tree, and BSP Traverser \r\n    camera.update(deltaTime, nearby_sectors);\r\n    bsp_handler.update(camera.get_pos_2d());\r\n\r\n    // Render Everything\r\n    render_handler.render(camera.get_raylib_camera(), camera.get_pos_2d(), bsp_handler.get_segment_ids_to_render());\r\n  }\r\n```\r\n\r\nAt the end of the main function add this:\r\n```c++\r\n  // Destroy the window and cleanup the OpenGL context\r\n  CloseWindow();\r\n  return 0;\r\n```\r\n\r\nYou should see this resulting game if done right:\r\n\r\n[![](http://localhost:6875/uploads/images/gallery/2026-05/scaled-1680-/image-1778161088033.png)](http://localhost:6875/uploads/images/gallery/2026-05/image-1778161088033.png)','',9);
 /*!40000 ALTER TABLE `page_revisions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `password_resets`
@@ -963,10 +1031,13 @@ CREATE TABLE `password_resets` (
 -- Dumping data for table `password_resets`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `password_resets` WRITE;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `permission_role`
@@ -989,6 +1060,7 @@ CREATE TABLE `permission_role` (
 -- Dumping data for table `permission_role`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `permission_role` WRITE;
 /*!40000 ALTER TABLE `permission_role` DISABLE KEYS */;
 INSERT INTO `permission_role` VALUES
@@ -1053,6 +1125,7 @@ INSERT INTO `permission_role` VALUES
 (77,1),
 (78,1),
 (79,1),
+(80,1),
 (24,2),
 (25,2),
 (26,2),
@@ -1092,6 +1165,7 @@ INSERT INTO `permission_role` VALUES
 (72,2),
 (73,2),
 (76,2),
+(80,2),
 (48,3),
 (49,3),
 (50,3),
@@ -1101,6 +1175,7 @@ INSERT INTO `permission_role` VALUES
 (66,3),
 (67,3),
 (76,3),
+(80,3),
 (48,4),
 (49,4),
 (50,4),
@@ -1109,9 +1184,12 @@ INSERT INTO `permission_role` VALUES
 (53,4),
 (66,4),
 (67,4),
-(76,4);
+(76,4),
+(80,4);
 /*!40000 ALTER TABLE `permission_role` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `references`
@@ -1138,10 +1216,13 @@ CREATE TABLE `references` (
 -- Dumping data for table `references`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `references` WRITE;
 /*!40000 ALTER TABLE `references` DISABLE KEYS */;
 /*!40000 ALTER TABLE `references` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `role_permissions`
@@ -1157,13 +1238,14 @@ CREATE TABLE `role_permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `role_permissions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `role_permissions` WRITE;
 /*!40000 ALTER TABLE `role_permissions` DISABLE KEYS */;
 INSERT INTO `role_permissions` VALUES
@@ -1227,9 +1309,12 @@ INSERT INTO `role_permissions` VALUES
 (76,'content-export','2026-05-04 12:52:56','2026-05-04 12:52:56'),
 (77,'editor-change','2026-05-04 12:52:56','2026-05-04 12:52:56'),
 (78,'receive-notifications','2026-05-04 12:52:56','2026-05-04 12:52:56'),
-(79,'content-import','2026-05-04 12:52:56','2026-05-04 12:52:56');
+(79,'content-import','2026-05-04 12:52:56','2026-05-04 12:52:56'),
+(80,'revision-view-all','2026-11-08 17:32:52','2026-11-08 17:32:52');
 /*!40000 ALTER TABLE `role_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `role_user`
@@ -1252,6 +1337,7 @@ CREATE TABLE `role_user` (
 -- Dumping data for table `role_user`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `role_user` WRITE;
 /*!40000 ALTER TABLE `role_user` DISABLE KEYS */;
 INSERT INTO `role_user` VALUES
@@ -1259,6 +1345,8 @@ INSERT INTO `role_user` VALUES
 (2,4);
 /*!40000 ALTER TABLE `role_user` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `roles`
@@ -1286,6 +1374,7 @@ CREATE TABLE `roles` (
 -- Dumping data for table `roles`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` VALUES
@@ -1295,6 +1384,8 @@ INSERT INTO `roles` VALUES
 (4,'Public','The role given to public visitors if allowed','2026-05-04 12:52:56','2026-05-04 12:52:56','public','',0);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `search_terms`
@@ -1321,6 +1412,7 @@ CREATE TABLE `search_terms` (
 -- Dumping data for table `search_terms`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `search_terms` WRITE;
 /*!40000 ALTER TABLE `search_terms` DISABLE KEYS */;
 INSERT INTO `search_terms` VALUES
@@ -2195,6 +2287,8 @@ INSERT INTO `search_terms` VALUES
 (3667,'right','page',10,1);
 /*!40000 ALTER TABLE `search_terms` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `sessions`
@@ -2218,10 +2312,13 @@ CREATE TABLE `sessions` (
 -- Dumping data for table `sessions`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `settings`
@@ -2244,6 +2341,7 @@ CREATE TABLE `settings` (
 -- Dumping data for table `settings`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` VALUES
@@ -2277,6 +2375,8 @@ INSERT INTO `settings` VALUES
 ('registration-role','3','2026-05-04 15:16:15','2026-05-04 15:16:15','string');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `slug_history`
@@ -2305,6 +2405,7 @@ CREATE TABLE `slug_history` (
 -- Dumping data for table `slug_history`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `slug_history` WRITE;
 /*!40000 ALTER TABLE `slug_history` DISABLE KEYS */;
 INSERT INTO `slug_history` VALUES
@@ -2315,6 +2416,8 @@ INSERT INTO `slug_history` VALUES
 (5,'page',7,'setup','getting-started','2026-05-04 15:47:12','2026-05-04 15:47:12');
 /*!40000 ALTER TABLE `slug_history` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `social_accounts`
@@ -2341,10 +2444,13 @@ CREATE TABLE `social_accounts` (
 -- Dumping data for table `social_accounts`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `social_accounts` WRITE;
 /*!40000 ALTER TABLE `social_accounts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `social_accounts` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `sort_rules`
@@ -2367,10 +2473,13 @@ CREATE TABLE `sort_rules` (
 -- Dumping data for table `sort_rules`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `sort_rules` WRITE;
 /*!40000 ALTER TABLE `sort_rules` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sort_rules` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `tags`
@@ -2400,6 +2509,7 @@ CREATE TABLE `tags` (
 -- Dumping data for table `tags`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
 INSERT INTO `tags` VALUES
@@ -2409,6 +2519,8 @@ INSERT INTO `tags` VALUES
 (12,4,'chapter','category','technologies',0,'2026-05-04 14:06:57','2026-05-04 14:06:57');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `user_invites`
@@ -2433,10 +2545,13 @@ CREATE TABLE `user_invites` (
 -- Dumping data for table `user_invites`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `user_invites` WRITE;
 /*!40000 ALTER TABLE `user_invites` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_invites` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `users`
@@ -2455,7 +2570,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT 1,
   `image_id` int(11) NOT NULL DEFAULT 0,
-  `external_auth_id` varchar(191) NOT NULL,
+  `external_auth_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `system_name` varchar(191) DEFAULT NULL,
   `slug` varchar(180) NOT NULL,
   PRIMARY KEY (`id`),
@@ -2470,6 +2585,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
@@ -2477,6 +2593,8 @@ INSERT INTO `users` VALUES
 (2,'Guest','guest@example.com','',NULL,'2026-05-04 12:52:56','2026-05-04 12:52:56',1,0,'','public','guest');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `views`
@@ -2505,21 +2623,24 @@ CREATE TABLE `views` (
 -- Dumping data for table `views`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `views` WRITE;
 /*!40000 ALTER TABLE `views` DISABLE KEYS */;
 INSERT INTO `views` VALUES
 (1,1,1,'bookshelf',4,'2026-05-04 13:04:49','2026-05-04 13:11:02'),
-(2,1,2,'book',33,'2026-05-04 13:06:58','2026-05-07 13:33:08'),
+(2,1,2,'book',34,'2026-05-04 13:06:58','2026-11-08 17:34:18'),
 (3,1,3,'bookshelf',15,'2026-05-04 13:10:56','2026-05-04 15:30:07'),
-(4,1,4,'chapter',17,'2026-05-04 13:58:02','2026-05-04 15:47:21'),
-(5,1,5,'page',12,'2026-05-04 13:58:31','2026-05-04 15:01:22'),
-(6,1,6,'page',7,'2026-05-04 14:11:48','2026-05-04 15:01:22'),
+(4,1,4,'chapter',18,'2026-05-04 13:58:02','2026-11-08 17:34:20'),
+(5,1,5,'page',13,'2026-05-04 13:58:31','2026-11-08 17:34:22'),
+(6,1,6,'page',9,'2026-05-04 14:11:48','2026-11-08 18:01:00'),
 (7,1,7,'page',19,'2026-05-04 14:51:38','2026-05-07 13:33:10'),
 (8,1,8,'chapter',9,'2026-05-04 15:46:34','2026-05-07 13:33:09'),
 (9,1,9,'page',1,'2026-05-04 15:48:51','2026-05-04 15:48:51'),
 (10,1,10,'page',12,'2026-05-05 05:58:21','2026-05-07 13:38:21');
 /*!40000 ALTER TABLE `views` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `watches`
@@ -2547,10 +2668,13 @@ CREATE TABLE `watches` (
 -- Dumping data for table `watches`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `watches` WRITE;
 /*!40000 ALTER TABLE `watches` DISABLE KEYS */;
 /*!40000 ALTER TABLE `watches` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `webhook_tracked_events`
@@ -2575,10 +2699,13 @@ CREATE TABLE `webhook_tracked_events` (
 -- Dumping data for table `webhook_tracked_events`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `webhook_tracked_events` WRITE;
 /*!40000 ALTER TABLE `webhook_tracked_events` DISABLE KEYS */;
 /*!40000 ALTER TABLE `webhook_tracked_events` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
 --
 -- Table structure for table `webhooks`
@@ -2608,10 +2735,13 @@ CREATE TABLE `webhooks` (
 -- Dumping data for table `webhooks`
 --
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `webhooks` WRITE;
 /*!40000 ALTER TABLE `webhooks` DISABLE KEYS */;
 /*!40000 ALTER TABLE `webhooks` ENABLE KEYS */;
 UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -2622,4 +2752,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-05-07 13:43:45
+-- Dump completed on 2026-11-08 18:02:23
