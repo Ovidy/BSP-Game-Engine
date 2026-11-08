@@ -39,6 +39,7 @@ if [[ "$confirm" == [yY] || "$confirm" == [yY][eE][sS] ]]; then
     echo ""
     echo "⏳ Restoring uploaded files..."
     "$CONTAINER_ENGINE" exec -i bookstack tar -xzf - -C /config < "$WWW_BACKUP"
+    "$CONTAINER_ENGINE" exec -u 0 bookstack chown -R abc:users /config/www
 
     echo "⏳ Restoring database..."
     "$CONTAINER_ENGINE" exec -i mariadb sh -c 'mariadb -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' < "$DB_BACKUP"
